@@ -32,7 +32,6 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@azure/functions-core-tools": "^4.0.5455",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.11.19",
