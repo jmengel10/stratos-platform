@@ -314,6 +314,6 @@ Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Cyan
 Write-Host "  1. Review infrastructure/azure-setup.md for Azure AD B2C setup" -ForegroundColor White
 Write-Host "  2. Copy values from $OUTPUT_FILE to .env files" -ForegroundColor White
-Write-Host "  3. Deploy backend: cd ../backend; npm install; func azure functionapp publish $FUNCTIONAPP_NAME" -ForegroundColor White
+Write-Host "  3. Deploy backend to Function App: $FUNCTIONAPP_NAME" -ForegroundColor White
 Write-Host ""
 
