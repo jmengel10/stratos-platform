@@ -294,27 +294,26 @@ $FUNCTION_APP_URL = "https://$FUNCTIONAPP_NAME.azurewebsites.net"
 # Summary
 Write-Host ""
 Write-Host "==========================================" -ForegroundColor Cyan
-Write-Host "✅ Azure Infrastructure Setup Complete!" -ForegroundColor Green
+Write-Host "Setup Complete!" -ForegroundColor Green
 Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Resource Group: $RESOURCE_GROUP" -ForegroundColor White
-Write-Host "Location: $LOCATION" -ForegroundColor White
+Write-Host ("Resource Group: " + $RESOURCE_GROUP) -ForegroundColor White
+Write-Host ("Location: " + $LOCATION) -ForegroundColor White
 Write-Host ""
 Write-Host "Created Resources:" -ForegroundColor Yellow
-Write-Host "  - Azure OpenAI: $OPENAI_NAME" -ForegroundColor Gray
-Write-Host "  - Cosmos DB: $COSMOS_NAME" -ForegroundColor Gray
-Write-Host "  - Storage Account: $STORAGE_NAME" -ForegroundColor Gray
-Write-Host "  - Cognitive Search: $SEARCH_NAME" -ForegroundColor Gray
-Write-Host "  - Key Vault: $KEYVAULT_NAME" -ForegroundColor Gray
-Write-Host "  - Application Insights: $APPINSIGHTS_NAME" -ForegroundColor Gray
-Write-Host "  - Function App: $FUNCTIONAPP_NAME" -ForegroundColor Gray
+Write-Host ("  - Azure OpenAI: " + $OPENAI_NAME) -ForegroundColor Gray
+Write-Host ("  - Cosmos DB: " + $COSMOS_NAME) -ForegroundColor Gray
+Write-Host ("  - Storage Account: " + $STORAGE_NAME) -ForegroundColor Gray
+Write-Host ("  - Cognitive Search: " + $SEARCH_NAME) -ForegroundColor Gray
+Write-Host ("  - Key Vault: " + $KEYVAULT_NAME) -ForegroundColor Gray
+Write-Host ("  - Application Insights: " + $APPINSIGHTS_NAME) -ForegroundColor Gray
+Write-Host ("  - Function App: " + $FUNCTIONAPP_NAME) -ForegroundColor Gray
 Write-Host ""
-Write-Host "📋 Connection strings saved to: $OUTPUT_FILE" -ForegroundColor Yellow
+Write-Host ("Connection strings saved to: " + $OUTPUT_FILE) -ForegroundColor Yellow
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Cyan
 Write-Host "  1. Review infrastructure/azure-setup.md for Azure AD B2C setup" -ForegroundColor White
-Write-Host "  2. Copy values from $OUTPUT_FILE to .env files" -ForegroundColor White
+Write-Host ("  2. Copy values from " + $OUTPUT_FILE + " to .env files") -ForegroundColor White
 Write-Host "  3. Deploy backend to Function App" -ForegroundColor White
-Write-Host "     Function App Name: $FUNCTIONAPP_NAME" -ForegroundColor Gray
 Write-Host ""
 
