@@ -88,6 +88,23 @@ async function chatHandler(
       throw new ValidationError('Message is required');
     }
 
+    // 2b. Validate hierarchy (for new conversations)
+    if (!body.conversationId && body.projectId) {
+      // Verify project exists and belongs to tenant
+      const project = await cosmos.getDocument('projects', { id: body.projectId, tenantId: user.tenantId });
+      if (!project) {
+        throw new ValidationError('Project not found');
+      }
+      
+      // Get client to include industry context
+      if (body.clientId) {
+        const client = await cosmos.getDocument('clients', { id: body.clientId, tenantId: user.tenantId });
+        if (client && client.industry && !body.industry) {
+          body.industry = client.industry;
+        }
+      }
+    }
+
     // 3. Check usage limits
     const tenant = await cosmos.getDocument<Tenant>('tenants', user.tenantId, user.tenantId);
     

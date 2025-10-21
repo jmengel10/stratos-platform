@@ -200,6 +200,8 @@ export interface ChatRequest {
   agentName?: string;
   industry?: string;
   conversationId?: string;
+  projectId?: string;
+  clientId?: string;
   previousContext?: any;
   stream?: boolean;
 }
