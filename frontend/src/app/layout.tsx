@@ -1,7 +1,7 @@
 /**
  * Root Layout
  * 
- * Main layout with authentication provider, error boundary, and global styles
+ * Main layout with authentication provider, error boundary, tenant provider, and global styles
  */
 
 'use client';
@@ -9,6 +9,7 @@
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
+import { TenantProvider } from '@/components/providers/TenantProvider'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import './globals.css'
@@ -32,10 +33,19 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" 
+          rel="stylesheet" 
+        />
+      </head>
       <body className={inter.className}>
-        <ErrorBoundary>
-          {children}
-          <Toaster 
+        <TenantProvider>
+          <ErrorBoundary>
+            {children}
+            <Toaster 
             position="top-right"
             toastOptions={{
               duration: 3000,
@@ -60,7 +70,8 @@ export default function RootLayout({
               },
             }}
           />
-        </ErrorBoundary>
+          </ErrorBoundary>
+        </TenantProvider>
       </body>
     </html>
   )

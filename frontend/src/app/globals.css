@@ -4,6 +4,16 @@
 
 @layer base {
   :root {
+    /* Tenant-specific colors (dynamically set by TenantProvider) */
+    --color-primary: #0F172A;
+    --color-secondary: #33A7B5;
+    --color-accent: #EEEEEE;
+    --color-text: #16181B;
+    --color-background: #FFFFFF;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* Shadcn UI colors (preserved) */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -72,6 +82,12 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 }
 

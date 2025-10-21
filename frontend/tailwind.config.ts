@@ -9,6 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Dynamic tenant colors via CSS variables
+        'tenant-primary': 'var(--color-primary)',
+        'tenant-secondary': 'var(--color-secondary)',
+        'tenant-accent': 'var(--color-accent)',
+        'tenant-text': 'var(--color-text)',
+        'tenant-bg': 'var(--color-background)',
+        
+        // Shadcn UI colors (preserved)
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -60,6 +68,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        'tenant-heading': 'var(--font-heading)',
+        'tenant-body': 'var(--font-body)',
       },
       keyframes: {
         'accordion-down': {
