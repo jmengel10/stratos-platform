@@ -32,7 +32,6 @@ import {
 import { Message, Artifact } from '@/types/message.types'
 import { cn } from '@/lib/utils'
 import { formatRelativeTime } from '@/lib/utils'
-import { ArtifactCard } from './ArtifactCard'
 import { DataAnalysisDisplay } from './DataAnalysisDisplay'
 import { DeckGeneratorModal } from './DeckGeneratorModal'
 import toast from 'react-hot-toast'
@@ -257,7 +256,8 @@ function MessageBubble({
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  code({ node, inline, className, children, ...props }) {
+                  code({ node, className, children, ...props }: any) {
+                    const inline = !(props as any).inline
                     const match = /language-(\w+)/.exec(className || '')
                     const codeString = String(children).replace(/\n$/, '')
                     

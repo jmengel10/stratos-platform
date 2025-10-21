@@ -90,8 +90,8 @@ export function TableView({ data }: TableViewProps) {
       ...sortedRows.map((row: any) => {
         const values = Array.isArray(row)
           ? row
-          : headers.map(h => row[h])
-        return values.map(v => `"${v}"`).join(',')
+          : headers.map((h: string) => row[h])
+        return values.map((v: any) => `"${v}"`).join(',')
       }),
     ].join('\n')
 
