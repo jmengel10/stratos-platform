@@ -7,7 +7,7 @@ import { useClientStore } from '@/store/clientStore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  Plus, Search, Building, Filter, ArrowLeft, FolderKanban
+  Plus, Search, Building, Filter, ArrowLeft, FolderKanban, MessageSquare
 } from 'lucide-react';
 import { INDUSTRIES } from '@/types/client.types';
 
