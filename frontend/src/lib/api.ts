@@ -119,6 +119,8 @@ class APIClient {
     message: string;
     agentName?: string;
     conversationId?: string;
+    projectId?: string;
+    clientId?: string;
     industry?: string;
   }): Promise<any> {
     const response = await this.client.post('/chat', data);

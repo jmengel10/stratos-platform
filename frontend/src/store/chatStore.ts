@@ -78,8 +78,18 @@ export const useChatStore = create<ChatState>((set, get) => ({
         agentName,
         title: initialMessage?.substring(0, 50) || 'New conversation',
         messages: [
-          { role: 'user', content: initialMessage || 'Hello' },
-          { role: 'assistant', content: response.response.content },
+          { 
+            id: '1',
+            role: 'user', 
+            content: initialMessage || 'Hello',
+            timestamp: new Date()
+          },
+          { 
+            id: '2',
+            role: 'assistant', 
+            content: response.response.content,
+            timestamp: new Date()
+          },
         ],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -145,8 +155,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
     // Add user message optimistically
     const userMessage: Message = {
+      id: Date.now().toString(),
       role: 'user',
       content: message,
+      timestamp: new Date(),
     };
 
     set({ messages: [...get().messages, userMessage] });
@@ -162,8 +174,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
       // Add assistant response
       const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: response.response.content,
+        timestamp: new Date(),
       };
 
       const updatedMessages = [...get().messages, assistantMessage];
@@ -222,8 +236,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
       });
 
       const assistantMessage: Message = {
+        id: Date.now().toString(),
         role: 'assistant',
         content: response.response.content,
+        timestamp: new Date(),
       };
 
       set({ 
