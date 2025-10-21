@@ -260,7 +260,7 @@ export abstract class BaseAgent {
         lastMessageAt: new Date().toISOString(),
       };
 
-      await this.cosmos.createDocument('conversations', conversation);
+      await this.cosmos.createDocument('conversations', conversation as any);
 
       // Save output artifact
       const output = {
