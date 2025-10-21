@@ -2,6 +2,10 @@
  * StratOS Platform - Type Definitions
  */
 
+// Export new hierarchy models
+export * from './client.model';
+export * from './project.model';
+
 // ============================================
 // User & Tenant Models
 // ============================================
@@ -60,6 +64,8 @@ export interface Conversation {
   id: string;
   tenantId: string;
   userId: string;
+  projectId: string;
+  clientId: string;
   agentName: string;
   title: string;
   messages: Message[];

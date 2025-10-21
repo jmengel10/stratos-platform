@@ -234,6 +234,69 @@ class APIClient {
   async deleteOutput(outputId: string): Promise<void> {
     await this.client.delete(`/outputs/${outputId}`);
   }
+
+  // ===== Client Management =====
+
+  async createClient(data: any): Promise<any> {
+    const response = await this.client.post('/clients', data);
+    return response.data;
+  }
+
+  async getClients(filters?: any): Promise<any[]> {
+    const params = new URLSearchParams();
+    if (filters?.industry) params.append('industry', filters.industry);
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.search) params.append('search', filters.search);
+    
+    const response = await this.client.get(`/clients?${params.toString()}`);
+    return response.data;
+  }
+
+  async getClient(id: string): Promise<any> {
+    const response = await this.client.get(`/clients/${id}`);
+    return response.data;
+  }
+
+  async updateClient(id: string, updates: any): Promise<any> {
+    const response = await this.client.put(`/clients/${id}`, updates);
+    return response.data;
+  }
+
+  async deleteClient(id: string): Promise<void> {
+    await this.client.delete(`/clients/${id}`);
+  }
+
+  // ===== Project Management =====
+
+  async createProject(data: any): Promise<any> {
+    const response = await this.client.post('/projects', data);
+    return response.data;
+  }
+
+  async getProjects(filters?: any): Promise<any[]> {
+    const params = new URLSearchParams();
+    if (filters?.clientId) params.append('clientId', filters.clientId);
+    if (filters?.type) params.append('type', filters.type);
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.search) params.append('search', filters.search);
+    
+    const response = await this.client.get(`/projects?${params.toString()}`);
+    return response.data;
+  }
+
+  async getProject(id: string): Promise<any> {
+    const response = await this.client.get(`/projects/${id}`);
+    return response.data;
+  }
+
+  async updateProject(id: string, updates: any): Promise<any> {
+    const response = await this.client.put(`/projects/${id}`, updates);
+    return response.data;
+  }
+
+  async deleteProject(id: string): Promise<void> {
+    await this.client.delete(`/projects/${id}`);
+  }
 }
 
 // Export singleton instance
