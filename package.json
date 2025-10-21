@@ -4,8 +4,7 @@
   "private": true,
   "description": "StratOS - AI-powered strategy consulting and venture capital platform",
   "workspaces": [
-    "frontend",
-    "backend"
+    "frontend"
   ],
   "scripts": {
     "dev": "npm run dev --workspace=frontend & npm run start --workspace=backend",
