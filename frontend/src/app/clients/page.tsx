@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProtectedRoute } from '@/components/shared/ProtectedRoute';
 import { useClientStore } from '@/store/clientStore';
+import { useTenant } from '@/hooks/useTenant';
+import { Logo } from '@/components/ui/Logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -14,6 +16,7 @@ import { INDUSTRIES } from '@/types/client.types';
 export default function ClientsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const tenant = useTenant();
   const { clients, fetchClients, isLoading } = useClientStore();
   
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,7 +44,7 @@ export default function ClientsPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen" style={{ backgroundColor: tenant.colors.background }}>
         {/* Header */}
         <header className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-6">
@@ -56,14 +59,31 @@ export default function ClientsPage() {
                   Back
                 </Button>
                 <div>
-                  <h1 className="text-3xl font-bold text-slate-900">Clients</h1>
-                  <p className="text-slate-600 mt-1">{clients.length} total clients</p>
+                  <h1 
+                    className="text-3xl font-bold"
+                    style={{ 
+                      fontFamily: tenant.fonts.heading,
+                      color: tenant.colors.primary 
+                    }}
+                  >
+                    Clients
+                  </h1>
+                  <p style={{ color: tenant.colors.text, opacity: 0.7 }} className="mt-1">
+                    {clients.length} total clients
+                  </p>
                 </div>
               </div>
-              <Button onClick={() => router.push('/clients?modal=create')}>
-                <Plus className="w-4 h-4 mr-2" />
+              <button
+                onClick={() => router.push('/clients?modal=create')}
+                className="px-4 py-2 rounded-lg font-medium text-white flex items-center gap-2 transition-all hover:shadow-md"
+                style={{ 
+                  backgroundColor: tenant.colors.primary,
+                  borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+                }}
+              >
+                <Plus className="w-4 h-4" />
                 New Client
-              </Button>
+              </button>
             </div>
           </div>
         </header>
@@ -94,7 +114,10 @@ export default function ClientsPage() {
             {showFilters && (
               <div className="flex gap-4 p-4 bg-white rounded-lg border border-slate-200">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: tenant.colors.text }}
+                  >
                     Industry
                   </label>
                   <select
@@ -129,7 +152,11 @@ export default function ClientsPage() {
           {isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="h-48 bg-white rounded-xl border border-slate-200 animate-pulse" />
+                <div 
+                  key={i} 
+                  className="h-48 bg-white border border-slate-200 animate-pulse" 
+                  style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+                />
               ))}
             </div>
           ) : filteredClients.length > 0 ? (
@@ -138,13 +165,25 @@ export default function ClientsPage() {
                 <button
                   key={client.id}
                   onClick={() => router.push(`/clients/${client.id}`)}
-                  className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-all transform hover:-translate-y-1 text-left"
+                  className="bg-white border border-slate-200 p-6 hover:shadow-lg transition-all transform hover:-translate-y-1 text-left"
+                  style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
                 >
                   {/* Client Logo/Initial */}
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div 
+                      className="w-14 h-14 flex items-center justify-center flex-shrink-0"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${tenant.colors.primary} 0%, ${tenant.colors.secondary} 100%)`,
+                        borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem'
+                      }}
+                    >
                       {client.logoUrl ? (
-                        <img src={client.logoUrl} alt={client.name} className="w-14 h-14 rounded-xl object-cover" />
+                        <img 
+                          src={client.logoUrl} 
+                          alt={client.name} 
+                          className="w-14 h-14 object-cover" 
+                          style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+                        />
                       ) : (
                         <span className="text-2xl font-bold text-white">
                           {client.name.charAt(0).toUpperCase()}
@@ -161,27 +200,45 @@ export default function ClientsPage() {
                   </div>
 
                   {/* Client Info */}
-                  <h3 className="text-lg font-bold text-slate-900 mb-2 truncate">
+                  <h3 
+                    className="text-lg font-bold mb-2 truncate"
+                    style={{ color: tenant.colors.text }}
+                  >
                     {client.name}
                   </h3>
-                  <p className="text-sm text-slate-500 mb-4 line-clamp-2">
+                  <p 
+                    className="text-sm mb-4 line-clamp-2"
+                    style={{ color: tenant.colors.text, opacity: 0.6 }}
+                  >
                     {client.description}
                   </p>
 
                   {/* Industry Badge */}
                   <div className="mb-4">
-                    <span className="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full capitalize">
+                    <span 
+                      className="inline-block px-3 py-1 text-xs font-medium rounded-full capitalize"
+                      style={{ 
+                        backgroundColor: `${tenant.colors.primary}10`,
+                        color: tenant.colors.primary
+                      }}
+                    >
                       {client.industry}
                     </span>
                   </div>
 
                   {/* Stats */}
                   <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-                    <div className="flex items-center gap-2 text-sm text-slate-600">
+                    <div 
+                      className="flex items-center gap-2 text-sm"
+                      style={{ color: tenant.colors.text, opacity: 0.7 }}
+                    >
                       <FolderKanban className="w-4 h-4" />
                       <span>{client.stats?.projectCount || 0} projects</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-600">
+                    <div 
+                      className="flex items-center gap-2 text-sm"
+                      style={{ color: tenant.colors.text, opacity: 0.7 }}
+                    >
                       <MessageSquare className="w-4 h-4" />
                       <span>{client.stats?.conversationCount || 0} chats</span>
                     </div>
@@ -191,22 +248,44 @@ export default function ClientsPage() {
             </div>
           ) : (
             <div className="text-center py-20">
-              <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Building className="w-10 h-10 text-slate-400" />
+              <div 
+                className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+                style={{ backgroundColor: `${tenant.colors.primary}10` }}
+              >
+                <Building 
+                  className="w-10 h-10" 
+                  style={{ color: tenant.colors.primary }}
+                />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+              <h3 
+                className="text-xl font-semibold mb-2"
+                style={{ 
+                  fontFamily: tenant.fonts.heading,
+                  color: tenant.colors.text 
+                }}
+              >
                 No clients found
               </h3>
-              <p className="text-slate-600 mb-6 max-w-md mx-auto">
+              <p 
+                className="mb-6 max-w-md mx-auto"
+                style={{ color: tenant.colors.text, opacity: 0.7 }}
+              >
                 {searchQuery || industryFilter
                   ? 'Try adjusting your search or filters'
-                  : 'Create your first client to get started with StratOS'}
+                  : `Create your first client to get started with ${tenant.name}`}
               </p>
               {!searchQuery && !industryFilter && (
-                <Button onClick={() => router.push('/clients?modal=create')}>
-                  <Plus className="w-4 h-4 mr-2" />
+                <button
+                  onClick={() => router.push('/clients?modal=create')}
+                  className="px-6 py-3 rounded-lg font-semibold text-white flex items-center gap-2 mx-auto transition-all hover:shadow-md"
+                  style={{ 
+                    backgroundColor: tenant.colors.primary,
+                    borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+                  }}
+                >
+                  <Plus className="w-4 h-4" />
                   Create Your First Client
-                </Button>
+                </button>
               )}
             </div>
           )}
@@ -215,4 +294,3 @@ export default function ClientsPage() {
     </ProtectedRoute>
   );
 }
-

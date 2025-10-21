@@ -6,12 +6,14 @@ import { ProtectedRoute } from '@/components/shared/ProtectedRoute';
 import { useChatStore } from '@/store/chatStore';
 import { useProjectStore } from '@/store/projectStore';
 import { useClientStore } from '@/store/clientStore';
+import { useTenant } from '@/hooks/useTenant';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Home } from 'lucide-react';
 
 export default function ConsolePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const tenant = useTenant();
   
   const { currentConversation, createConversation, isLoading } = useChatStore();
   const { selectedProject } = useProjectStore();
@@ -38,7 +40,7 @@ export default function ConsolePage() {
 
   return (
     <ProtectedRoute>
-      <div className="h-screen flex flex-col bg-slate-50">
+      <div className="h-screen flex flex-col" style={{ backgroundColor: tenant.colors.background }}>
         {/* Header with Breadcrumb */}
         <header className="bg-white border-b border-slate-200 px-6 py-4">
           <div className="flex items-center justify-between">
@@ -56,26 +58,32 @@ export default function ConsolePage() {
                 <div className="flex items-center gap-2 text-sm">
                   <button
                     onClick={() => router.push('/clients')}
-                    className="text-slate-600 hover:text-slate-900 transition-colors"
+                    className="hover:underline transition-colors"
+                    style={{ color: tenant.colors.primary }}
                   >
                     Clients
                   </button>
-                  <span className="text-slate-400">/</span>
+                  <span style={{ color: tenant.colors.text, opacity: 0.4 }}>/</span>
                   <button
                     onClick={() => router.push(`/clients/${selectedClient.id}`)}
-                    className="text-slate-600 hover:text-slate-900 transition-colors"
+                    className="hover:underline transition-colors"
+                    style={{ color: tenant.colors.primary }}
                   >
                     {selectedClient.name}
                   </button>
-                  <span className="text-slate-400">/</span>
+                  <span style={{ color: tenant.colors.text, opacity: 0.4 }}>/</span>
                   <button
                     onClick={() => router.push(`/projects/${selectedProject.id}`)}
-                    className="text-slate-600 hover:text-slate-900 transition-colors"
+                    className="hover:underline transition-colors"
+                    style={{ color: tenant.colors.primary }}
                   >
                     {selectedProject.name}
                   </button>
-                  <span className="text-slate-400">/</span>
-                  <span className="text-slate-900 font-medium">
+                  <span style={{ color: tenant.colors.text, opacity: 0.4 }}>/</span>
+                  <span 
+                    className="font-medium"
+                    style={{ color: tenant.colors.text }}
+                  >
                     {currentConversation.title || 'Conversation'}
                   </span>
                 </div>
@@ -84,11 +92,27 @@ export default function ConsolePage() {
 
             {/* Project Context Badge */}
             {selectedProject && (
-              <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
-                <span className="text-sm text-blue-900 font-medium">
+              <div 
+                className="flex items-center gap-2 px-3 py-2 border rounded-lg"
+                style={{ 
+                  backgroundColor: `${tenant.colors.secondary}15`,
+                  borderColor: `${tenant.colors.secondary}40`,
+                  borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+                }}
+              >
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: tenant.colors.secondary }}
+                >
                   Project: {selectedProject.name}
                 </span>
-                <span className="px-2 py-0.5 bg-blue-200 text-blue-800 text-xs rounded capitalize">
+                <span 
+                  className="px-2 py-0.5 text-xs rounded capitalize"
+                  style={{ 
+                    backgroundColor: tenant.colors.secondary,
+                    color: 'white'
+                  }}
+                >
                   {selectedProject.type.replace('-', ' ')}
                 </span>
               </div>
@@ -101,8 +125,13 @@ export default function ConsolePage() {
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                <p className="text-slate-600">Loading conversation...</p>
+                <div 
+                  className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+                  style={{ borderColor: `${tenant.colors.primary} transparent transparent transparent` }}
+                />
+                <p style={{ color: tenant.colors.text, opacity: 0.7 }}>
+                  Loading conversation...
+                </p>
               </div>
             </div>
           ) : currentConversation ? (
@@ -111,7 +140,10 @@ export default function ConsolePage() {
               <div className="flex-1 overflow-y-auto p-6">
                 <div className="max-w-4xl mx-auto space-y-6">
                   {/* Chat messages would go here */}
-                  <div className="text-center text-slate-500">
+                  <div 
+                    className="text-center"
+                    style={{ color: tenant.colors.text, opacity: 0.6 }}
+                  >
                     <p>Chat interface will be integrated here</p>
                     <p className="text-sm mt-2">Conversation ID: {currentConversation.id}</p>
                   </div>
@@ -121,25 +153,52 @@ export default function ConsolePage() {
               {/* Input Area */}
               <div className="border-t border-slate-200 bg-white p-6">
                 <div className="max-w-4xl mx-auto">
-                  <p className="text-sm text-slate-500">Message input area (to be integrated with existing components)</p>
+                  <p 
+                    className="text-sm"
+                    style={{ color: tenant.colors.text, opacity: 0.6 }}
+                  >
+                    Message input area (to be integrated with existing components)
+                  </p>
                 </div>
               </div>
             </div>
           ) : (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ArrowLeft className="w-8 h-8 text-slate-400" />
+                <div 
+                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ backgroundColor: `${tenant.colors.primary}10` }}
+                >
+                  <ArrowLeft 
+                    className="w-8 h-8" 
+                    style={{ color: tenant.colors.primary }}
+                  />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                <h3 
+                  className="text-lg font-semibold mb-2"
+                  style={{ 
+                    fontFamily: tenant.fonts.heading,
+                    color: tenant.colors.text 
+                  }}
+                >
                   No conversation selected
                 </h3>
-                <p className="text-slate-600 mb-4">
+                <p 
+                  className="mb-4"
+                  style={{ color: tenant.colors.text, opacity: 0.7 }}
+                >
                   Go to a project and start a new conversation
                 </p>
-                <Button onClick={() => router.push('/home')}>
+                <button
+                  onClick={() => router.push('/home')}
+                  className="px-4 py-2 rounded-lg font-medium text-white"
+                  style={{ 
+                    backgroundColor: tenant.colors.primary,
+                    borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+                  }}
+                >
                   Go to Home
-                </Button>
+                </button>
               </div>
             </div>
           )}

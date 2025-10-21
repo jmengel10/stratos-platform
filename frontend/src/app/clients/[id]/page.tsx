@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { ProtectedRoute } from '@/components/shared/ProtectedRoute';
 import { useClientStore } from '@/store/clientStore';
 import { useProjectStore } from '@/store/projectStore';
+import { useTenant } from '@/hooks/useTenant';
 import { Button } from '@/components/ui/button';
 import {
   ArrowLeft, Plus, Edit, Building, FolderKanban,
@@ -16,6 +17,7 @@ export default function ClientDetailPage() {
   const router = useRouter();
   const params = useParams();
   const clientId = params.id as string;
+  const tenant = useTenant();
 
   const { selectedClient, selectClient, isLoading: clientLoading } = useClientStore();
   const { projects, fetchProjectsByClient, isLoading: projectsLoading } = useProjectStore();
@@ -43,10 +45,18 @@ export default function ClientDetailPage() {
 
   if (clientLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: tenant.colors.background }}
+      >
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-600">Loading client...</p>
+          <div 
+            className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+            style={{ borderColor: `${tenant.colors.primary} transparent transparent transparent` }}
+          />
+          <p style={{ color: tenant.colors.text, opacity: 0.7 }}>
+            Loading client...
+          </p>
         </div>
       </div>
     );
@@ -54,11 +64,34 @@ export default function ClientDetailPage() {
 
   if (!selectedClient) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: tenant.colors.background }}
+      >
         <div className="text-center">
-          <Building className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-slate-900 mb-2">Client not found</h2>
-          <Button onClick={() => router.push('/clients')}>Back to Clients</Button>
+          <Building 
+            className="w-16 h-16 mx-auto mb-4" 
+            style={{ color: tenant.colors.accent }}
+          />
+          <h2 
+            className="text-xl font-semibold mb-2"
+            style={{ 
+              fontFamily: tenant.fonts.heading,
+              color: tenant.colors.text 
+            }}
+          >
+            Client not found
+          </h2>
+          <button
+            onClick={() => router.push('/clients')}
+            className="px-4 py-2 rounded-lg font-medium text-white"
+            style={{ 
+              backgroundColor: tenant.colors.primary,
+              borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+            }}
+          >
+            Back to Clients
+          </button>
         </div>
       </div>
     );
@@ -66,75 +99,114 @@ export default function ClientDetailPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen" style={{ backgroundColor: tenant.colors.background }}>
         {/* Header */}
         <header className="bg-white border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-6">
             {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-sm text-slate-600 mb-4">
-              <button onClick={() => router.push('/home')} className="hover:text-slate-900">
+            <div 
+              className="flex items-center gap-2 text-sm mb-4"
+              style={{ color: tenant.colors.text, opacity: 0.7 }}
+            >
+              <button 
+                onClick={() => router.push('/home')} 
+                className="hover:underline"
+                style={{ color: tenant.colors.primary }}
+              >
                 Home
               </button>
               <span>/</span>
-              <button onClick={() => router.push('/clients')} className="hover:text-slate-900">
+              <button 
+                onClick={() => router.push('/clients')} 
+                className="hover:underline"
+                style={{ color: tenant.colors.primary }}
+              >
                 Clients
               </button>
               <span>/</span>
-              <span className="text-slate-900">{selectedClient.name}</span>
+              <span style={{ color: tenant.colors.text }}>{selectedClient.name}</span>
             </div>
 
             {/* Client Header */}
             <div className="flex items-start justify-between">
-              <div className="flex items-center gap-6">
-                {/* Logo */}
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+              <div className="flex items-start gap-6">
+                {/* Client Logo */}
+                <div 
+                  className="w-24 h-24 flex items-center justify-center flex-shrink-0"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${tenant.colors.primary} 0%, ${tenant.colors.secondary} 100%)`,
+                    borderRadius: tenant.id === 'sparkworks' ? '1.5rem' : '1rem'
+                  }}
+                >
                   {selectedClient.logoUrl ? (
                     <img
                       src={selectedClient.logoUrl}
                       alt={selectedClient.name}
-                      className="w-20 h-20 rounded-2xl object-cover"
+                      className="w-24 h-24 object-cover"
+                      style={{ borderRadius: tenant.id === 'sparkworks' ? '1.5rem' : '1rem' }}
                     />
                   ) : (
-                    <span className="text-3xl font-bold text-white">
+                    <span className="text-4xl font-bold text-white">
                       {selectedClient.name.charAt(0).toUpperCase()}
                     </span>
                   )}
                 </div>
 
-                {/* Info */}
+                {/* Client Info */}
                 <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-3xl font-bold text-slate-900">
-                      {selectedClient.name}
-                    </h1>
-                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                  <h1 
+                    className="text-3xl font-bold mb-2"
+                    style={{ 
+                      fontFamily: tenant.fonts.heading,
+                      color: tenant.colors.primary 
+                    }}
+                  >
+                    {selectedClient.name}
+                  </h1>
+                  <p 
+                    className="mb-4 max-w-2xl"
+                    style={{ color: tenant.colors.text, opacity: 0.7 }}
+                  >
+                    {selectedClient.description}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <span 
+                      className="px-3 py-1 text-sm font-medium rounded-full capitalize"
+                      style={{ 
+                        backgroundColor: `${tenant.colors.primary}15`,
+                        color: tenant.colors.primary
+                      }}
+                    >
+                      {selectedClient.industry}
+                    </span>
+                    <span className={`px-3 py-1 text-sm font-medium rounded-full ${
                       selectedClient.status === 'active' ? 'bg-green-100 text-green-700' :
                       selectedClient.status === 'inactive' ? 'bg-yellow-100 text-yellow-700' :
                       'bg-gray-100 text-gray-700'
                     }`}>
                       {selectedClient.status}
                     </span>
-                    <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full capitalize">
-                      {selectedClient.industry}
-                    </span>
                   </div>
-                  <p className="text-slate-600 max-w-2xl">
-                    {selectedClient.description}
-                  </p>
                 </div>
               </div>
 
+              {/* Actions */}
               <div className="flex items-center gap-3">
                 <Button
                   variant="outline"
+                  size="sm"
+                  onClick={() => router.push('/clients')}
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={() => setShowEditModal(true)}
                 >
                   <Edit className="w-4 h-4 mr-2" />
-                  Edit Client
-                </Button>
-                <Button onClick={() => router.push(`/clients/${clientId}/projects/new`)}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  New Project
+                  Edit
                 </Button>
               </div>
             </div>
@@ -145,161 +217,225 @@ export default function ClientDetailPage() {
         <main className="max-w-7xl mx-auto px-6 py-8">
           {/* Stats Cards */}
           <div className="grid md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-xl border border-slate-200 p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <FolderKanban className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-600">Total Projects</p>
-                  <p className="text-2xl font-bold text-slate-900">
-                    {selectedClient.stats?.projectCount || 0}
-                  </p>
-                </div>
+            <div 
+              className="bg-white border border-slate-200 p-6"
+              style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: tenant.colors.text, opacity: 0.7 }}
+                >
+                  Total Projects
+                </span>
+                <FolderKanban 
+                  className="w-5 h-5" 
+                  style={{ color: tenant.colors.primary }}
+                />
               </div>
+              <p 
+                className="text-3xl font-bold"
+                style={{ color: tenant.colors.text }}
+              >
+                {clientProjects.length}
+              </p>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200 p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-600">Conversations</p>
-                  <p className="text-2xl font-bold text-slate-900">
-                    {selectedClient.stats?.conversationCount || 0}
-                  </p>
-                </div>
+            <div 
+              className="bg-white border border-slate-200 p-6"
+              style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: tenant.colors.text, opacity: 0.7 }}
+                >
+                  Active Conversations
+                </span>
+                <MessageSquare 
+                  className="w-5 h-5" 
+                  style={{ color: tenant.colors.secondary }}
+                />
               </div>
+              <p 
+                className="text-3xl font-bold"
+                style={{ color: tenant.colors.text }}
+              >
+                {selectedClient.stats?.conversationCount || 0}
+              </p>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200 p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-600">Artifacts</p>
-                  <p className="text-2xl font-bold text-slate-900">
-                    {clientProjects.reduce((sum, p) => sum + (p.stats?.artifactCount || 0), 0)}
-                  </p>
-                </div>
+            <div 
+              className="bg-white border border-slate-200 p-6"
+              style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: tenant.colors.text, opacity: 0.7 }}
+                >
+                  Artifacts Generated
+                </span>
+                <FileText 
+                  className="w-5 h-5" 
+                  style={{ color: tenant.colors.accent === '#EEEEEE' ? '#6b7280' : tenant.colors.accent }}
+                />
               </div>
+              <p 
+                className="text-3xl font-bold"
+                style={{ color: tenant.colors.text }}
+              >
+                {(selectedClient.stats as any)?.artifactsCount || 0}
+              </p>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200 p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-600">Last Activity</p>
-                  <p className="text-sm font-medium text-slate-900">
-                    {selectedClient.stats?.lastActivity 
-                      ? new Date(selectedClient.stats.lastActivity).toLocaleDateString()
-                      : 'No activity'
-                    }
-                  </p>
-                </div>
+            <div 
+              className="bg-white border border-slate-200 p-6"
+              style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: tenant.colors.text, opacity: 0.7 }}
+                >
+                  Last Activity
+                </span>
+                <Calendar className="w-5 h-5 text-slate-400" />
               </div>
+              <p 
+                className="text-lg font-semibold"
+                style={{ color: tenant.colors.text }}
+              >
+                {new Date(selectedClient.updatedAt).toLocaleDateString()}
+              </p>
             </div>
           </div>
 
           {/* Projects Section */}
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <div className="mb-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-slate-900">Projects</h2>
-              <Button
-                size="sm"
-                onClick={() => router.push(`/clients/${clientId}/projects/new`)}
+              <h2 
+                className="text-2xl font-bold"
+                style={{ 
+                  fontFamily: tenant.fonts.heading,
+                  color: tenant.colors.primary 
+                }}
               >
-                <Plus className="w-4 h-4 mr-2" />
+                Projects
+              </h2>
+              <button
+                onClick={() => router.push(`/projects/new?clientId=${clientId}`)}
+                className="px-4 py-2 rounded-lg font-medium text-white flex items-center gap-2 transition-all hover:shadow-md"
+                style={{ 
+                  backgroundColor: tenant.colors.primary,
+                  borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+                }}
+              >
+                <Plus className="w-4 h-4" />
                 New Project
-              </Button>
+              </button>
             </div>
 
             {projectsLoading ? (
-              <div className="space-y-3">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[1, 2, 3].map(i => (
-                  <div key={i} className="h-24 bg-slate-100 rounded-lg animate-pulse" />
+                  <div 
+                    key={i} 
+                    className="h-40 bg-white border border-slate-200 animate-pulse"
+                    style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+                  />
                 ))}
               </div>
             ) : clientProjects.length > 0 ? (
-              <div className="grid md:grid-cols-2 gap-4">
-                {clientProjects.map(project => {
-                  const projectType = PROJECT_TYPES.find(t => t.value === project.type);
-                  return (
-                    <button
-                      key={project.id}
-                      onClick={() => router.push(`/projects/${project.id}`)}
-                      className="p-5 border-2 border-slate-200 rounded-xl hover:border-blue-500 hover:bg-slate-50 transition-all text-left"
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {clientProjects.map(project => (
+                  <button
+                    key={project.id}
+                    onClick={() => router.push(`/projects/${project.id}`)}
+                    className="bg-white border border-slate-200 p-6 hover:shadow-lg transition-all text-left"
+                    style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div 
+                        className="w-10 h-10 rounded-lg flex items-center justify-center"
+                        style={{ 
+                          backgroundColor: `${tenant.colors.secondary}15`,
+                          borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+                        }}
+                      >
+                        <FolderKanban 
+                          className="w-5 h-5" 
+                          style={{ color: tenant.colors.secondary }}
+                        />
+                      </div>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        project.status === 'active' ? 'bg-green-100 text-green-700' :
+                        project.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                        project.status === 'on-hold' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {project.status}
+                      </span>
+                    </div>
+
+                    <h3 
+                      className="font-bold mb-2"
+                      style={{ color: tenant.colors.text }}
                     >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl">{projectType?.icon || '📁'}</span>
-                          <div>
-                            <h3 className="font-semibold text-slate-900">{project.name}</h3>
-                            <p className="text-sm text-slate-500 capitalize">
-                              {project.type.replace('-', ' ')}
-                            </p>
-                          </div>
-                        </div>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          project.status === 'active' ? 'bg-green-100 text-green-700' :
-                          project.status === 'completed' ? 'bg-blue-100 text-blue-700' :
-                          project.status === 'on-hold' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-gray-100 text-gray-700'
-                        }`}>
-                          {project.status}
-                        </span>
-                      </div>
-                      
-                      <p className="text-sm text-slate-600 mb-3 line-clamp-2">
-                        {project.description}
-                      </p>
+                      {project.name}
+                    </h3>
+                    <p 
+                      className="text-sm mb-3 line-clamp-2"
+                      style={{ color: tenant.colors.text, opacity: 0.6 }}
+                    >
+                      {project.description}
+                    </p>
 
-                      {/* Project Stats */}
-                      <div className="flex items-center gap-4 text-xs text-slate-500">
-                        <span className="flex items-center gap-1">
-                          <MessageSquare className="w-3 h-3" />
-                          {project.stats?.conversationCount || 0} chats
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <FileText className="w-3 h-3" />
-                          {project.stats?.artifactCount || 0} artifacts
-                        </span>
-                      </div>
-
-                      {/* Tags */}
-                      {project.tags && project.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {project.tags.slice(0, 3).map((tag, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">
-                              {tag}
-                            </span>
-                          ))}
-                          {project.tags.length > 3 && (
-                            <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">
-                              +{project.tags.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
+                    <div className="flex items-center gap-2">
+                      <span 
+                        className="text-xs px-2 py-1 rounded-full capitalize"
+                        style={{ 
+                          backgroundColor: `${tenant.colors.primary}10`,
+                          color: tenant.colors.primary
+                        }}
+                      >
+                        {project.type.replace('-', ' ')}
+                      </span>
+                    </div>
+                  </button>
+                ))}
               </div>
             ) : (
-              <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-lg">
-                <FolderKanban className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-                <p className="text-slate-600 mb-4">No projects yet</p>
-                <Button
-                  size="sm"
-                  onClick={() => router.push(`/clients/${clientId}/projects/new`)}
+              <div 
+                className="bg-white border-2 border-dashed border-slate-200 p-12 text-center"
+                style={{ borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem' }}
+              >
+                <FolderKanban 
+                  className="w-12 h-12 mx-auto mb-4"
+                  style={{ color: tenant.colors.accent === '#EEEEEE' ? '#cbd5e1' : tenant.colors.accent }}
+                />
+                <h3 
+                  className="text-lg font-semibold mb-2"
+                  style={{ color: tenant.colors.text }}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  No projects yet
+                </h3>
+                <p 
+                  className="mb-4"
+                  style={{ color: tenant.colors.text, opacity: 0.6 }}
+                >
+                  Create your first project for {selectedClient.name}
+                </p>
+                <button
+                  onClick={() => router.push(`/projects/new?clientId=${clientId}`)}
+                  className="px-6 py-3 rounded-lg font-semibold text-white transition-all hover:shadow-md"
+                  style={{ 
+                    backgroundColor: tenant.colors.primary,
+                    borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
+                  }}
+                >
                   Create First Project
-                </Button>
+                </button>
               </div>
             )}
           </div>
@@ -308,4 +444,3 @@ export default function ClientDetailPage() {
     </ProtectedRoute>
   );
 }
-
