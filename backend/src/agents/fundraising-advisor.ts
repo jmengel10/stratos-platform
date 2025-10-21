@@ -108,8 +108,8 @@ Always provide:
       data: {
         slides: [
           { title: 'Cover', content: 'Company name, tagline, contact' },
-          { title: 'Problem', content: 'The pain point you're solving' },
-          { title: 'Solution', content: 'Your product/service' },
+          { title: 'Problem', content: 'The pain point you are solving' },
+          { title: 'Solution', content: 'Your product or service' },
           { title: 'Market Opportunity', content: 'TAM/SAM/SOM analysis' },
           { title: 'Product', content: 'Demo or product walkthrough' },
           { title: 'Traction', content: 'Key metrics and milestones' },
