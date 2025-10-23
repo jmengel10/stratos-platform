@@ -1,147 +1,176 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles, Database, FileText, Users, BarChart3, Zap } from 'lucide-react';
+import { Target, TrendingUp, Lightbulb, BarChart3 } from 'lucide-react';
+import { Card } from '@/components/ui/Card';
 
-export default function HomePage() {
-  const router = useRouter();
-
+export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="text-center space-y-8">
-          {/* Logo/Brand */}
-          <div className="flex justify-center">
-            <div className="px-6 py-3 bg-blue-600 rounded-2xl">
-              <h1 className="text-4xl font-bold text-white">StratOS</h1>
-            </div>
-          </div>
-
-          {/* Headline */}
-          <h2 className="text-5xl md:text-6xl font-bold text-slate-900 max-w-4xl mx-auto leading-tight">
-            AI-Powered Strategy Consulting Platform
-          </h2>
-
-          {/* Subheadline */}
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Transform your business with specialized AI agents for strategy, operations, 
-            fundraising, product development, and data analysis.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex items-center justify-center gap-4 pt-4">
-            <Button 
-              size="lg" 
-              onClick={() => router.push('/dashboard')}
-              className="text-lg px-8 py-6"
-            >
-              Go to Dashboard
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              onClick={() => router.push('/settings')}
-              className="text-lg px-8 py-6"
-            >
-              Settings
-            </Button>
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <div className="mt-24 grid md:grid-cols-3 gap-8">
-          {/* Feature 1 */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-            <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-              <Sparkles className="w-8 h-8 text-blue-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">5 Specialized AI Agents</h3>
-            <p className="text-slate-600">
-              Access expert AI agents for GTM strategy, operations, fundraising, product development, and data analysis.
-            </p>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-            <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6">
-              <Database className="w-8 h-8 text-green-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Data Analysis</h3>
-            <p className="text-slate-600">
-              Upload your data and get instant insights, visualizations, and business intelligence.
-            </p>
-          </div>
-
-          {/* Feature 3 */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-            <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
-              <FileText className="w-8 h-8 text-purple-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Generate Presentations</h3>
-            <p className="text-slate-600">
-              Automatically create professional PowerPoint decks from your conversations and analyses.
-            </p>
-          </div>
-
-          {/* Feature 4 */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-            <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center mb-6">
-              <BarChart3 className="w-8 h-8 text-amber-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Real-Time Analytics</h3>
-            <p className="text-slate-600">
-              Track your usage, monitor performance, and optimize your strategic workflows.
-            </p>
-          </div>
-
-          {/* Feature 5 */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-            <div className="w-14 h-14 bg-rose-100 rounded-xl flex items-center justify-center mb-6">
-              <Users className="w-8 h-8 text-rose-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Team Collaboration</h3>
-            <p className="text-slate-600">
-              Invite team members, manage roles, and collaborate on strategic initiatives.
-            </p>
-          </div>
-
-          {/* Feature 6 */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200">
-            <div className="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-              <Zap className="w-8 h-8 text-indigo-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Enterprise Ready</h3>
-            <p className="text-slate-600">
-              Built on Azure with enterprise-grade security, scalability, and multi-tenant architecture.
-            </p>
-          </div>
-        </div>
-
-        {/* Quick Links */}
-        <div className="mt-16 text-center">
-          <p className="text-slate-600 mb-6">Explore the platform:</p>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <Button variant="outline" onClick={() => router.push('/dashboard')}>
-              Dashboard
-            </Button>
-            <Button variant="outline" onClick={() => router.push('/settings')}>
-              Settings
-            </Button>
-          </div>
-        </div>
+    <div className="p-8 space-y-6">
+      {/* Welcome Section */}
+      <div>
+        <h1 className="text-4xl font-bold text-navy font-serif">Welcome back, Sarah</h1>
+        <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your work today</p>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white mt-20">
-        <div className="max-w-7xl mx-auto px-6 py-8 text-center text-sm text-slate-500">
-          <p>StratOS Platform v1.0.0 - AI-Powered Strategy Consulting</p>
-          <p className="mt-2">Built with Azure OpenAI, Cosmos DB, and Next.js</p>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Total Clients</p>
+              <p className="text-3xl font-bold text-navy">12</p>
+              <p className="text-sm text-green-600">↑+2</p>
+            </div>
+            <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+              <Target className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Active Projects</p>
+              <p className="text-3xl font-bold text-navy">18</p>
+              <p className="text-sm text-green-600">↑+3</p>
+            </div>
+            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Conversations</p>
+              <p className="text-3xl font-bold text-navy">47</p>
+              <p className="text-sm text-green-600">↑+15</p>
+            </div>
+            <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+              <BarChart3 className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Completion Rate</p>
+              <p className="text-3xl font-bold text-navy">78%</p>
+              <p className="text-sm text-green-600">↑+5%</p>
+            </div>
+            <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+              <Lightbulb className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Activity Overview Chart */}
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold text-navy mb-4">Activity Overview</h2>
+        <p className="text-gray-600 mb-6">Your activity for the past 7 days</p>
+        <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+          <p className="text-gray-500">Chart visualization would go here</p>
         </div>
-      </footer>
+      </Card>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
+          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Target className="w-6 h-6 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-navy mb-2">New Client</h3>
+          <p className="text-gray-600 text-sm">Add a new client to organize projects</p>
+        </Card>
+
+        <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
+          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <TrendingUp className="w-6 h-6 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-navy mb-2">New Project</h3>
+          <p className="text-gray-600 text-sm">Start a new project for a client</p>
+        </Card>
+
+        <Card className="p-6 text-center bg-primary text-white hover:shadow-md transition-shadow cursor-pointer">
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+            <BarChart3 className="w-6 h-6 text-primary" />
+          </div>
+          <h3 className="text-lg font-semibold mb-2">New Chat</h3>
+          <p className="text-white/80 text-sm">Start a new conversation for a project</p>
+        </Card>
+      </div>
+
+      {/* Recent Clients */}
+      <Card className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-navy">Recent Clients</h2>
+          <span className="text-sm text-gray-500">8 clients</span>
+        </div>
+        <div className="space-y-4">
+          {[
+            { name: 'Acme Corporation', industry: 'Financial Services', projects: 6, lastActive: '2 days ago', avatar: 'A' },
+            { name: 'TechVentures Group', industry: 'Healthcare Technology', projects: 4, lastActive: '1 week ago', avatar: 'T' },
+            { name: 'HealthFirst Systems', industry: 'Medical Devices', projects: 3, lastActive: '3 days ago', avatar: 'H' },
+            { name: 'GlobalTech Solutions', industry: 'Enterprise Software', projects: 5, lastActive: '1 day ago', avatar: 'G' }
+          ].map((client, index) => (
+            <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+                {client.avatar}
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-navy">{client.name}</h3>
+                <p className="text-sm text-gray-600">{client.industry}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium text-navy">{client.projects} Projects</p>
+                <p className="text-xs text-gray-500">Active {client.lastActive}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Recent Projects */}
+      <Card className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-navy">Recent Projects</h2>
+          <span className="text-sm text-gray-500">10 projects</span>
+        </div>
+        <div className="space-y-4">
+          {[
+            { title: 'GTM Strategy 2024', client: 'Acme Corporation', status: 'Active', conversations: 8, lastActive: '2 hours ago', tags: ['GTM Strategy', 'Transformation'] },
+            { title: 'Market Expansion', client: 'TechVentures Group', status: 'In Progress', conversations: 5, lastActive: '1 day ago', tags: ['Fundraising', 'Operations'] },
+            { title: 'Financial Planning', client: 'HealthFirst Systems', status: 'Active', conversations: 3, lastActive: '3 hours ago', tags: ['Market Entry', 'Operations'] }
+          ].map((project, index) => (
+            <div key={index} className="p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-navy">{project.title}</h3>
+                  <p className="text-sm text-gray-600">@{project.client}</p>
+                  <div className="flex items-center space-x-2 mt-2">
+                    {project.tags.map((tag, tagIndex) => (
+                      <span key={tagIndex} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className={`w-2 h-2 rounded-full ${project.status === 'Active' ? 'bg-green-500' : 'bg-blue-500'}`}></div>
+                    <span className="text-sm font-medium text-navy">{project.status}</span>
+                  </div>
+                  <p className="text-sm text-gray-600">{project.conversations} conversations</p>
+                  <p className="text-xs text-gray-500">Active {project.lastActive}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   );
 }
-

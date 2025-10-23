@@ -8,8 +8,8 @@
 
 import { useState } from 'react'
 import { Presentation, Download, Loader2, X, FileText } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 import toast from 'react-hot-toast'
 
 interface DeckGeneratorModalProps {
@@ -209,7 +209,7 @@ export function DeckGeneratorModal({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               disabled={isGenerating}
-              className="w-full h-64 p-4 border border-slate-300 rounded-lg font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-slate-50"
+              className="w-full h-64 p-4 border border-slate-300 rounded-lg font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#33A7B5]-500 focus:border-transparent disabled:bg-slate-50"
               placeholder="## Executive Summary
 
 - Key point 1

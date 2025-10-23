@@ -4,14 +4,18 @@ import { cn } from '@/lib/utils';
 interface CardProps {
   children: ReactNode;
   className?: string;
+  hover?: boolean;
 }
 
-export function Card({ children, className }: CardProps) {
+export function Card({ children, className, hover = false }: CardProps) {
   return (
-    <div className={cn(
-      'bg-white rounded-lg border border-gray-200 shadow-sm',
-      className
-    )}>
+    <div 
+      className={cn(
+        'bg-white border border-[#E5E7EB] rounded-lg shadow-sm',
+        hover && 'hover:shadow-md transition-shadow',
+        className
+      )}
+    >
       {children}
     </div>
   );

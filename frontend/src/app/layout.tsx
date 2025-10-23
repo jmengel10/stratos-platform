@@ -6,18 +6,25 @@
 
 'use client';
 
-import { Inter } from 'next/font/google'
+import { Inter, Playfair_Display } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
+import { ProductionErrorBoundary } from '@/components/shared/ProductionErrorBoundary'
 import { TenantProvider } from '@/components/providers/TenantProvider'
-import { Navigation } from '@/components/shared/Navigation'
+import { Sidebar } from '@/components/layout/Sidebar'
+import { TopBar } from '@/components/layout/TopBar'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
+// import { setupGlobalErrorHandling, trackPerformance } from '@/lib/monitoring'
 import './globals.css'
 
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
+})
+
+const playfair = Playfair_Display({ 
+  subsets: ['latin'],
+  variable: '--font-playfair',
 })
 
 export default function RootLayout({
@@ -30,22 +37,29 @@ export default function RootLayout({
   useEffect(() => {
     // Initialize authentication on mount
     refreshToken();
+    
+    // Setup production monitoring
+    // setupGlobalErrorHandling();
+    // trackPerformance();
   }, [refreshToken]);
 
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={inter.className}>
         <TenantProvider>
-          <ErrorBoundary>
-            <div className="flex h-screen overflow-hidden">
-              <Navigation />
-              <main className="flex-1 ml-64 overflow-y-auto">
-                {children}
-              </main>
+          <ProductionErrorBoundary>
+            <div className="flex h-screen overflow-hidden bg-background">
+              <Sidebar />
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <TopBar />
+                <main className="flex-1 overflow-y-auto">
+                  {children}
+                </main>
+              </div>
             </div>
             <Toaster 
             position="top-right"
@@ -72,7 +86,7 @@ export default function RootLayout({
               },
             }}
           />
-          </ErrorBoundary>
+          </ProductionErrorBoundary>
         </TenantProvider>
       </body>
     </html>

@@ -1,427 +1,180 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ProtectedRoute } from '@/components/shared/ProtectedRoute';
-import { useAuthStore } from '@/store/authStore';
-import { useClientStore } from '@/store/clientStore';
-import { useProjectStore } from '@/store/projectStore';
-import { useTenant } from '@/hooks/useTenant';
-import { Logo } from '@/components/ui/Logo';
-import { Button } from '@/components/ui/button';
-import {
-  Users, FolderKanban, MessageSquare, Plus,
-  Building, TrendingUp, Clock, ArrowRight
+import { 
+  Briefcase, 
+  FolderOpen, 
+  MessageSquare, 
+  Target,
+  TrendingUp,
+  Users,
+  Clock,
+  Calendar,
+  FileText
 } from 'lucide-react';
+import { StatsCard } from '@/components/ui/StatsCard';
+import { Card } from '@/components/ui/Card';
+import { ActivityItem } from '@/components/features/ActivityItem';
+import { mockActivity } from '@/lib/mockData';
 
-export default function HomePage() {
-  const router = useRouter();
-  const { user } = useAuthStore();
-  const tenant = useTenant();
-  const { clients, fetchClients, isLoading: clientsLoading } = useClientStore();
-  const { projects, fetchProjects, isLoading: projectsLoading } = useProjectStore();
-
-  useEffect(() => {
-    fetchClients();
-    fetchProjects();
-  }, [fetchClients, fetchProjects]);
-
-  const recentClients = clients.slice(0, 5);
-  const recentProjects = projects.slice(0, 5);
-
+export default function DashboardPage() {
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen" style={{ backgroundColor: tenant.colors.background }}>
-        {/* Header */}
-        <header className="bg-white border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6 py-6">
-            <div className="flex items-center justify-between">
-              <Logo size="md" />
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  onClick={() => router.push('/dashboard')}
-                >
-                  Dashboard
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => router.push('/settings')}
-                >
-                  Settings
-                </Button>
-              </div>
-            </div>
-          </div>
-        </header>
+    <div className="p-8 space-y-8">
+      {/* Welcome Header */}
+      <div>
+        <h1 className="text-4xl font-bold text-navy font-serif">Welcome back, Sarah</h1>
+        <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your work today</p>
+      </div>
 
-        {/* Hero Section */}
-        <div className="bg-white border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6 py-12">
-            <h1 
-              className="text-4xl md:text-5xl font-bold mb-4"
-              style={{ 
-                fontFamily: tenant.fonts.heading,
-                color: tenant.colors.primary 
-              }}
-            >
-              Welcome back, {user?.name}!
-            </h1>
-            <p 
-              className="text-lg md:text-xl"
-              style={{ color: tenant.colors.text, opacity: 0.7 }}
-            >
-              {tenant.tagline}
-            </p>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatsCard
+          icon={<Briefcase className="w-8 h-8" />}
+          label="Total Clients"
+          value="12"
+          subtext="↑+2"
+          trend={{ value: "+2", positive: true }}
+        />
+        <StatsCard
+          icon={<FolderOpen className="w-8 h-8" />}
+          label="Active Projects"
+          value="18"
+          subtext="↑+3"
+          trend={{ value: "+3", positive: true }}
+        />
+        <StatsCard
+          icon={<MessageSquare className="w-8 h-8" />}
+          label="Conversations"
+          value="47"
+          subtext="↑+15"
+          trend={{ value: "+15", positive: true }}
+        />
+        <StatsCard
+          icon={<Target className="w-8 h-8" />}
+          label="Completion Rate"
+          value="78%"
+          subtext="↑+5%"
+          trend={{ value: "+5%", positive: true }}
+        />
+      </div>
+
+      {/* Activity Overview Chart */}
+      <Card className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-xl font-semibold text-navy font-serif">Activity Overview</h3>
+            <p className="text-gray-600">Your activity for the past 7 days</p>
           </div>
         </div>
+        
+        {/* Simple chart representation */}
+        <div className="h-64 bg-gray-50 rounded-lg flex items-end justify-between p-4">
+          {[20, 35, 25, 40, 30, 45, 50].map((height, index) => (
+            <div key={index} className="flex flex-col items-center space-y-2">
+              <div 
+                className="w-8 bg-primary rounded-t"
+                style={{ height: `${height}%` }}
+              />
+              <span className="text-xs text-gray-500">
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index]}
+              </span>
+            </div>
+          ))}
+        </div>
+        
+        <div className="flex items-center space-x-4 mt-4">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-primary rounded-full" />
+            <span className="text-sm text-gray-600">Conversations</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-blue-400 rounded-full" />
+            <span className="text-sm text-gray-600">Projects</span>
+          </div>
+        </div>
+      </Card>
 
-        {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-6 py-8">
-          {/* Quick Actions */}
-          <div className="mb-12">
-            <h2 
-              className="text-2xl font-semibold mb-6"
-              style={{ 
-                fontFamily: tenant.fonts.heading,
-                color: tenant.colors.primary 
-              }}
-            >
-              Quick Actions
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* New Client */}
-              <button
-                onClick={() => router.push('/clients?action=new')}
-                className="bg-white rounded-xl border-2 border-dashed hover:shadow-lg p-8 transition-all group"
-                style={{ 
-                  borderColor: tenant.colors.accent,
-                  borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = tenant.colors.primary;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = tenant.colors.accent;
-                }}
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div 
-                    className="w-16 h-16 rounded-xl flex items-center justify-center transition-all"
-                    style={{ 
-                      backgroundColor: `${tenant.colors.primary}15`,
-                      borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem'
-                    }}
-                  >
-                    <Building 
-                      className="w-8 h-8" 
-                      style={{ color: tenant.colors.primary }}
-                    />
-                  </div>
-                  <div>
-                    <h3 
-                      className="font-semibold text-lg mb-1"
-                      style={{ color: tenant.colors.text }}
-                    >
-                      New Client
-                    </h3>
-                    <p 
-                      className="text-sm"
-                      style={{ color: tenant.colors.text, opacity: 0.6 }}
-                    >
-                      Add a new client to your portfolio
-                    </p>
-                  </div>
-                </div>
-              </button>
-
-              {/* New Project */}
-              <button
-                onClick={() => router.push('/clients?action=new-project')}
-                className="bg-white rounded-xl border-2 border-dashed hover:shadow-lg p-8 transition-all group"
-                style={{ 
-                  borderColor: tenant.colors.accent,
-                  borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = tenant.colors.secondary;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = tenant.colors.accent;
-                }}
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div 
-                    className="w-16 h-16 rounded-xl flex items-center justify-center transition-all"
-                    style={{ 
-                      backgroundColor: `${tenant.colors.secondary}15`,
-                      borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem'
-                    }}
-                  >
-                    <FolderKanban 
-                      className="w-8 h-8" 
-                      style={{ color: tenant.colors.secondary }}
-                    />
-                  </div>
-                  <div>
-                    <h3 
-                      className="font-semibold text-lg mb-1"
-                      style={{ color: tenant.colors.text }}
-                    >
-                      New Project
-                    </h3>
-                    <p 
-                      className="text-sm"
-                      style={{ color: tenant.colors.text, opacity: 0.6 }}
-                    >
-                      Start a new project for a client
-                    </p>
-                  </div>
-                </div>
-              </button>
-
-              {/* Continue Working */}
-              <button
-                onClick={() => {
-                  if (recentProjects.length > 0) {
-                    router.push(`/projects/${recentProjects[0].id}`);
-                  } else {
-                    router.push('/clients');
-                  }
-                }}
-                className="bg-white rounded-xl border-2 hover:shadow-lg p-8 transition-all group"
-                style={{ 
-                  borderColor: tenant.colors.primary,
-                  backgroundColor: `${tenant.colors.primary}05`,
-                  borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem'
-                }}
-              >
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div 
-                    className="w-16 h-16 rounded-xl flex items-center justify-center"
-                    style={{ 
-                      backgroundColor: tenant.colors.primary,
-                      borderRadius: tenant.id === 'sparkworks' ? '1rem' : '0.75rem'
-                    }}
-                  >
-                    <MessageSquare className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 
-                      className="font-semibold text-lg mb-1"
-                      style={{ color: tenant.colors.primary }}
-                    >
-                      Continue Working
-                    </h3>
-                    <p 
-                      className="text-sm"
-                      style={{ color: tenant.colors.text, opacity: 0.6 }}
-                    >
-                      Pick up where you left off
-                    </p>
-                  </div>
-                </div>
-              </button>
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="p-6 hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <Briefcase className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-navy">New Client</h3>
+              <p className="text-sm text-gray-600">Add a new client to organize projects</p>
             </div>
           </div>
+        </Card>
 
-          {/* Recent Activity Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Recent Clients */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 
-                  className="text-xl font-semibold"
-                  style={{ 
-                    fontFamily: tenant.fonts.heading,
-                    color: tenant.colors.primary 
-                  }}
-                >
-                  Recent Clients
-                </h2>
-                <button
-                  onClick={() => router.push('/clients')}
-                  className="text-sm flex items-center gap-1 hover:underline"
-                  style={{ color: tenant.colors.primary }}
-                >
-                  View all <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {clientsLoading ? (
-                <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
-                  <div 
-                    className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin mx-auto"
-                    style={{ borderColor: `${tenant.colors.primary} transparent transparent transparent` }}
-                  />
-                  <p className="mt-4 text-sm" style={{ color: tenant.colors.text, opacity: 0.6 }}>
-                    Loading clients...
-                  </p>
-                </div>
-              ) : recentClients.length > 0 ? (
-                <div className="space-y-3">
-                  {recentClients.map((client) => (
-                    <button
-                      key={client.id}
-                      onClick={() => router.push(`/clients/${client.id}`)}
-                      className="w-full bg-white rounded-lg border border-slate-200 p-4 hover:shadow-md transition-all text-left flex items-center justify-between group"
-                      style={{ borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem' }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-white"
-                          style={{ 
-                            backgroundColor: tenant.colors.primary,
-                            borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
-                          }}
-                        >
-                          {client.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p 
-                            className="font-medium"
-                            style={{ color: tenant.colors.text }}
-                          >
-                            {client.name}
-                          </p>
-                          <p 
-                            className="text-sm capitalize"
-                            style={{ color: tenant.colors.text, opacity: 0.6 }}
-                          >
-                            {client.industry}
-                          </p>
-                        </div>
-                      </div>
-                      <ArrowRight 
-                        className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
-                        style={{ color: tenant.colors.primary }}
-                      />
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white rounded-xl border-2 border-dashed border-slate-200 p-8 text-center">
-                  <Building 
-                    className="w-12 h-12 mx-auto mb-3"
-                    style={{ color: tenant.colors.accent }}
-                  />
-                  <p style={{ color: tenant.colors.text, opacity: 0.6 }}>
-                    No clients yet
-                  </p>
-                  <button
-                    onClick={() => router.push('/clients?action=new')}
-                    className="mt-4 px-4 py-2 rounded-lg font-medium text-white transition-colors"
-                    style={{ 
-                      backgroundColor: tenant.colors.primary,
-                      borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
-                    }}
-                  >
-                    Create your first client
-                  </button>
-                </div>
-              )}
+        <Card className="p-6 hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <FolderOpen className="w-6 h-6 text-primary" />
             </div>
-
-            {/* Recent Projects */}
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 
-                  className="text-xl font-semibold"
-                  style={{ 
-                    fontFamily: tenant.fonts.heading,
-                    color: tenant.colors.primary 
-                  }}
-                >
-                  Recent Projects
-                </h2>
-                <button
-                  onClick={() => router.push('/clients')}
-                  className="text-sm flex items-center gap-1 hover:underline"
-                  style={{ color: tenant.colors.primary }}
-                >
-                  View all <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {projectsLoading ? (
-                <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
-                  <div 
-                    className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin mx-auto"
-                    style={{ borderColor: `${tenant.colors.secondary} transparent transparent transparent` }}
-                  />
-                  <p className="mt-4 text-sm" style={{ color: tenant.colors.text, opacity: 0.6 }}>
-                    Loading projects...
-                  </p>
-                </div>
-              ) : recentProjects.length > 0 ? (
-                <div className="space-y-3">
-                  {recentProjects.map((project) => (
-                    <button
-                      key={project.id}
-                      onClick={() => router.push(`/projects/${project.id}`)}
-                      className="w-full bg-white rounded-lg border border-slate-200 p-4 hover:shadow-md transition-all text-left flex items-center justify-between group"
-                      style={{ borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem' }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-10 h-10 rounded-lg flex items-center justify-center"
-                          style={{ 
-                            backgroundColor: `${tenant.colors.secondary}15`,
-                            borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
-                          }}
-                        >
-                          <FolderKanban 
-                            className="w-5 h-5" 
-                            style={{ color: tenant.colors.secondary }}
-                          />
-                        </div>
-                        <div>
-                          <p 
-                            className="font-medium"
-                            style={{ color: tenant.colors.text }}
-                          >
-                            {project.name}
-                          </p>
-                          <p 
-                            className="text-sm capitalize"
-                            style={{ color: tenant.colors.text, opacity: 0.6 }}
-                          >
-                            {project.type.replace('-', ' ')}
-                          </p>
-                        </div>
-                      </div>
-                      <ArrowRight 
-                        className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
-                        style={{ color: tenant.colors.secondary }}
-                      />
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white rounded-xl border-2 border-dashed border-slate-200 p-8 text-center">
-                  <FolderKanban 
-                    className="w-12 h-12 mx-auto mb-3"
-                    style={{ color: tenant.colors.accent }}
-                  />
-                  <p style={{ color: tenant.colors.text, opacity: 0.6 }}>
-                    No projects yet
-                  </p>
-                  <button
-                    onClick={() => router.push('/clients?action=new-project')}
-                    className="mt-4 px-4 py-2 rounded-lg font-medium text-white transition-colors"
-                    style={{ 
-                      backgroundColor: tenant.colors.secondary,
-                      borderRadius: tenant.id === 'sparkworks' ? '0.75rem' : '0.5rem'
-                    }}
-                  >
-                    Create your first project
-                  </button>
-                </div>
-              )}
+              <h3 className="font-semibold text-navy">New Project</h3>
+              <p className="text-sm text-gray-600">Start a new project for a client</p>
             </div>
           </div>
-        </main>
+        </Card>
+
+        <Card className="p-6 bg-primary text-white hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+              <MessageSquare className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-white">New Chat</h3>
+              <p className="text-sm text-white/80">Start a new conversation for a project</p>
+            </div>
+          </div>
+          <div className="mt-4 flex justify-center">
+            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-white font-bold">+</span>
+            </div>
+          </div>
+        </Card>
       </div>
-    </ProtectedRoute>
+
+      {/* Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Card className="p-6">
+          <h3 className="text-xl font-semibold text-navy font-serif mb-6">Recent Activity</h3>
+          <div className="space-y-4">
+            {mockActivity.map((activity) => (
+              <ActivityItem key={activity.id} activity={activity} />
+            ))}
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <h3 className="text-xl font-semibold text-navy font-serif mb-6">Upcoming Events</h3>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Calendar className="w-5 h-5 text-primary" />
+              <div>
+                <p className="font-medium text-navy">GTM Strategy Call</p>
+                <p className="text-sm text-gray-600">Acme Corporation • 2:00 PM</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Users className="w-5 h-5 text-primary" />
+              <div>
+                <p className="font-medium text-navy">Team Meeting</p>
+                <p className="text-sm text-gray-600">Tomorrow • 10:00 AM</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <FileText className="w-5 h-5 text-primary" />
+              <div>
+                <p className="font-medium text-navy">Report Review</p>
+                <p className="text-sm text-gray-600">Friday • 3:00 PM</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
   );
 }

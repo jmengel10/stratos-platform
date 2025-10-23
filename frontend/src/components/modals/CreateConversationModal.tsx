@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useChatStore } from '@/store/chatStore';
 import { useTenant } from '@/hooks/useTenant';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { X, MessageSquare, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
 
