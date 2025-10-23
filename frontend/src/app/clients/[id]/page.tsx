@@ -39,7 +39,7 @@ export default function ClientDetailPage() {
 
     loadClient();
     fetchProjectsByClient(clientId);
-  }, [clientId]);
+  }, [clientId, fetchProjectsByClient, selectClient]);
 
   const clientProjects = projects.filter(p => p.clientId === clientId);
 

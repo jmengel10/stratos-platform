@@ -354,7 +354,7 @@ export default function DashboardPage() {
                   </Button>
                 ) : (
                   <div className="text-sm opacity-75">
-                    You're doing great! {(100 - usagePercentage).toFixed(0)}% quota remaining
+                    You&apos;re doing great! {(100 - usagePercentage).toFixed(0)}% quota remaining
                   </div>
                 )}
               </div>
@@ -449,7 +449,7 @@ export default function DashboardPage() {
                   <p className={`text-sm mb-3 ${
                     usagePercentage > 90 ? 'text-red-700' : 'text-orange-700'
                   }`}>
-                    You've used {usagePercentage.toFixed(0)}% of your monthly quota. 
+                    You&apos;ve used {usagePercentage.toFixed(0)}% of your monthly quota. 
                     {usagePercentage > 90 
                       ? ' Upgrade now to avoid interruptions.' 
                       : ' Consider upgrading for unlimited access.'}

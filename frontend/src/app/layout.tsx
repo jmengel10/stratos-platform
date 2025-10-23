@@ -10,6 +10,7 @@ import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 import { TenantProvider } from '@/components/providers/TenantProvider'
+import { Navigation } from '@/components/shared/Navigation'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import './globals.css'
@@ -36,15 +37,16 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" 
-          rel="stylesheet" 
-        />
       </head>
       <body className={inter.className}>
         <TenantProvider>
           <ErrorBoundary>
-            {children}
+            <div className="flex h-screen overflow-hidden">
+              <Navigation />
+              <main className="flex-1 ml-64 overflow-y-auto">
+                {children}
+              </main>
+            </div>
             <Toaster 
             position="top-right"
             toastOptions={{

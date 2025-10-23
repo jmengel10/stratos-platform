@@ -93,7 +93,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
             {/* Description */}
             <p className="text-slate-600 text-center mb-6">
-              We're sorry, but something unexpected happened. Don't worry, your data is safe.
+              We&apos;re sorry, but something unexpected happened. Don&apos;t worry, your data is safe.
               You can try refreshing the page or return to the homepage.
             </p>
 

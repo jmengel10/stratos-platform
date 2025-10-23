@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "setup-stripe": "node ../scripts/setupStripe.js",
+    "seed-config": "node ../scripts/seedConfig.js"
   },
   "dependencies": {
     "next": "14.1.0",
@@ -32,7 +34,12 @@
     "clsx": "^2.1.0",
     "tailwind-merge": "^2.2.1",
     "react-hot-toast": "^2.4.1",
-    "react-dropzone": "^14.2.3"
+    "react-dropzone": "^14.2.3",
+    "@azure/cosmos": "^4.0.0",
+    "stripe": "^14.0.0",
+    "joi": "^17.11.0",
+    "uuid": "^9.0.1",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "typescript": "^5.3.3",

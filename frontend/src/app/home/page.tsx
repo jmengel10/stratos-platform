@@ -24,7 +24,7 @@ export default function HomePage() {
   useEffect(() => {
     fetchClients();
     fetchProjects();
-  }, []);
+  }, [fetchClients, fetchProjects]);
 
   const recentClients = clients.slice(0, 5);
   const recentProjects = projects.slice(0, 5);

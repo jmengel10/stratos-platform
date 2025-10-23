@@ -30,7 +30,7 @@ export default function ClientsPage() {
     if (searchParams.get('action') === 'new') {
       router.push('/clients?modal=create');
     }
-  }, []);
+  }, [fetchClients, searchParams, router]);
 
   useEffect(() => {
     const filters = {
@@ -38,7 +38,7 @@ export default function ClientsPage() {
       industry: industryFilter || undefined,
     };
     fetchClients(filters);
-  }, [searchQuery, industryFilter]);
+  }, [searchQuery, industryFilter, fetchClients]);
 
   const filteredClients = clients;
 

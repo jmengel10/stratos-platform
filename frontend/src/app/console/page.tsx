@@ -36,7 +36,7 @@ export default function ConsolePage() {
           console.error('Failed to create conversation:', error);
         });
     }
-  }, [projectId, clientId, agent]);
+  }, [projectId, clientId, agent, createConversation, currentConversation, initialMessage, router]);
 
   return (
     <ProtectedRoute>

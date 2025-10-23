@@ -23,7 +23,7 @@ export function TableView({ data }: TableViewProps) {
 
   // Extract headers and rows
   const headers = data.headers || Object.keys(data.rows?.[0] || {})
-  const rows = data.rows || []
+  const rows = useMemo(() => data.rows || [], [data.rows])
 
   // Filter rows by search
   const filteredRows = useMemo(() => {

@@ -34,7 +34,7 @@ export function CreateProjectModal({ isOpen, onClose, clientId: preSelectedClien
     if (isOpen) {
       fetchClients();
     }
-  }, [isOpen]);
+  }, [isOpen, fetchClients]);
 
   useEffect(() => {
     if (preSelectedClientId) {

@@ -42,7 +42,7 @@ export default function ProjectDetailPage() {
     };
 
     loadProject();
-  }, [projectId]);
+  }, [projectId, selectProject, selectClient]);
 
   if (projectLoading || !selectedProject) {
     return (
