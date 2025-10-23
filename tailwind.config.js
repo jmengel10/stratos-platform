@@ -1,20 +1,39 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
-        serif: ['var(--font-playfair)', 'Playfair Display', 'serif'],
-      },
       colors: {
-        'navy': '#0F172A',
-        'teal': '#33A7B5',
-        'gray-text': '#6B7280',
+        primary: '#33A7B5',
+        navy: '#0F172A',
+        background: '#F9FAFB',
+        border: '#E5E7EB',
         'border-gray': '#E5E7EB',
+        'gray-text': '#6B7280',
         'bg-gray': '#F3F4F6',
-        'page-bg': '#F9FAFB',
+        teal: '#33A7B5',
+        // Additional colors for proper styling
+        'text-navy': '#0F172A',
+        'text-primary': '#33A7B5',
+        'text-gray-600': '#6B7280',
+        'text-gray-500': '#9CA3AF',
+        'text-green-600': '#059669',
+        'text-red-600': '#DC2626',
+        'bg-white': '#FFFFFF',
+        'bg-gray-50': '#F9FAFB',
+        'bg-gray-100': '#F3F4F6',
+        'border-gray-200': '#E5E7EB',
+        'border-gray-300': '#D1D5DB',
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
       },
     },
   },
   plugins: [],
-};
+}

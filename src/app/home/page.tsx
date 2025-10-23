@@ -1,8 +1,12 @@
 'use client';
 
 import { Target, FolderOpen, MessageSquare, TrendingUp, Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { mockClients, mockProjects } from '@/lib/mockData';
 
 export default function HomePage() {
+  const router = useRouter();
+
   return (
     <div className="p-8 space-y-6">
       {/* Welcome Section */}
@@ -17,7 +21,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-[#6B7280]">Total Clients</p>
-              <p className="text-4xl font-bold text-[#0F172A]">12</p>
+              <p className="text-4xl font-bold text-[#0F172A]">{mockClients.length}</p>
               <p className="text-sm text-green-600">↑+2</p>
             </div>
             <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
@@ -30,7 +34,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-[#6B7280]">Active Projects</p>
-              <p className="text-4xl font-bold text-[#0F172A]">18</p>
+              <p className="text-4xl font-bold text-[#0F172A]">{mockProjects.length}</p>
               <p className="text-sm text-green-600">↑+3</p>
             </div>
             <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
@@ -113,17 +117,19 @@ export default function HomePage() {
         <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-[#0F172A]">Recent Clients</h2>
-            <span className="text-sm text-[#6B7280]">8 clients</span>
+            <span className="text-sm text-[#6B7280]">{mockClients.length} clients</span>
           </div>
           <div className="space-y-4">
-            {[
-              { name: 'Acme Corporation', industry: 'Financial Services', projects: 6, lastActive: '2 days ago', avatar: 'A', color: 'bg-[#0F172A]' },
-              { name: 'TechVentures Group', industry: 'Healthcare Technology', projects: 4, lastActive: '1 week ago', avatar: 'T', color: 'bg-[#33A7B5]' },
-              { name: 'HealthFirst Systems', industry: 'Medical Devices', projects: 3, lastActive: '3 days ago', avatar: 'H', color: 'bg-[#6B7280]' },
-              { name: 'GlobalTech Solutions', industry: 'Enterprise Software', projects: 5, lastActive: '1 day ago', avatar: 'G', color: 'bg-[#6B7280]' }
-            ].map((client, index) => (
-              <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                <div className={`w-10 h-10 ${client.color} rounded-full flex items-center justify-center text-white font-semibold`}>
+            {mockClients.slice(0, 4).map((client) => (
+              <div 
+                key={client.id} 
+                className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
+                onClick={() => router.push(`/clients/${client.id}`)}
+              >
+                <div 
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold"
+                  style={{ backgroundColor: client.avatarColor }}
+                >
                   {client.avatar}
                 </div>
                 <div className="flex-1">
@@ -143,34 +149,40 @@ export default function HomePage() {
         <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-[#0F172A]">Recent Projects</h2>
-            <span className="text-sm text-[#6B7280]">10 projects</span>
+            <span className="text-sm text-[#6B7280]">{mockProjects.length} projects</span>
           </div>
           <div className="space-y-4">
-            {[
-              { title: 'GTM Strategy 2024', client: 'Acme Corporation', status: 'Active', conversations: 8, lastActive: '2 hours ago', tags: ['GTM Strategy', 'Active'] },
-              { title: 'Market Expansion', client: 'TechVentures Group', status: 'In Progress', conversations: 5, lastActive: '1 day ago', tags: ['Fundraising', 'In Progress'] },
-              { title: 'Financial Planning', client: 'HealthFirst Systems', status: 'Active', conversations: 3, lastActive: '3 hours ago', tags: ['Market Entry', 'Active'] }
-            ].map((project, index) => (
-              <div key={index} className="p-4 bg-gray-50 rounded-lg">
+            {mockProjects.slice(0, 3).map((project) => (
+              <div 
+                key={project.id} 
+                className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
+                onClick={() => router.push(`/projects/${project.id}`)}
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-[#0F172A]">{project.title}</h3>
-                    <p className="text-sm text-[#6B7280]">@{project.client}</p>
+                    <h3 className="font-semibold text-[#0F172A]">{project.name}</h3>
+                    <p className="text-sm text-[#6B7280]">@{project.clientName}</p>
                     <div className="flex items-center space-x-2 mt-2">
-                      {project.tags.map((tag, tagIndex) => (
-                        <span key={tagIndex} className={`px-2 py-1 text-xs rounded-full ${
-                          tag === 'Active' ? 'bg-green-100 text-green-800' : 
-                          tag === 'In Progress' ? 'bg-blue-100 text-blue-800' :
-                          'bg-[#33A7B5]/10 text-[#33A7B5]'
-                        }`}>
-                          {tag}
-                        </span>
-                      ))}
+                      <span className="px-2 py-1 bg-[#33A7B5]/10 text-[#33A7B5] text-xs rounded-full">
+                        {project.type}
+                      </span>
+                      <span className={`px-2 py-1 text-xs rounded-full ${
+                        project.status === 'active' ? 'bg-green-100 text-green-800' : 
+                        project.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
+                        project.status === 'planning' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {project.status}
+                      </span>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center space-x-2 mb-2">
-                      <div className={`w-2 h-2 rounded-full ${project.status === 'Active' ? 'bg-green-500' : 'bg-blue-500'}`}></div>
+                      <div className={`w-2 h-2 rounded-full ${
+                        project.status === 'active' ? 'bg-green-500' : 
+                        project.status === 'in-progress' ? 'bg-blue-500' : 
+                        project.status === 'planning' ? 'bg-yellow-500' : 'bg-gray-500'
+                      }`}></div>
                       <span className="text-sm font-medium text-[#0F172A]">{project.status}</span>
                     </div>
                     <p className="text-sm text-[#6B7280]">{project.conversations} conversations</p>

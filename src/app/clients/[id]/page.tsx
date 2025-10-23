@@ -1,124 +1,141 @@
+'use client';
+
 import { Calendar, User, Edit, Plus, FolderOpen, MessageSquare, FileText, Clock, MoreVertical, Grid, List } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { getClientById, getProjectsByClientId } from '@/lib/mockData';
 
 export async function generateStaticParams() {
   return [
-    { id: 'acme-corporation' },
-    { id: 'techventures-group' },
-    { id: 'healthfirst-systems' },
-    { id: 'globaltech-partners' },
-    { id: 'medcore-solutions' },
-    { id: 'innovateco' },
-    { id: 'fintech-dynamics' },
-    { id: 'enterprise-solutions' },
-    { id: 'nexgen-industries' }
+    { id: 'client_1' },
+    { id: 'client_2' },
+    { id: 'client_3' },
+    { id: 'client_4' },
+    { id: 'client_5' },
+    { id: 'client_6' }
   ];
 }
 
-export default function ClientDetailPage() {
+export default function ClientDetailPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const client = getClientById(params.id);
+  const projects = getProjectsByClientId(params.id);
+
+  if (!client) {
+    return (
+      <div className="p-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-[#0F172A] mb-4">Client not found</h1>
+          <button 
+            onClick={() => router.push('/clients')}
+            className="bg-[#33A7B5] text-white px-4 py-2 rounded-lg hover:bg-[#33A7B5]/90 transition-colors"
+          >
+            Back to Clients
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-8 space-y-6">
       {/* Breadcrumb */}
       <div className="text-sm text-[#6B7280]">
-        Home &gt; Clients &gt; Acme Corporation
+        <span 
+          className="hover:text-[#0F172A] cursor-pointer"
+          onClick={() => router.push('/home')}
+        >
+          Home
+        </span> &gt; <span 
+          className="hover:text-[#0F172A] cursor-pointer"
+          onClick={() => router.push('/clients')}
+        >
+          Clients
+        </span> &gt; {client.name}
       </div>
 
       {/* Client Header */}
       <div className="bg-white border-b border-[#E5E7EB] p-8">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-6">
-            <div className="w-20 h-20 bg-[#0F172A] rounded-full flex items-center justify-center text-white text-2xl font-semibold">
-              A
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-6">
+            <div 
+              className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-semibold"
+              style={{ backgroundColor: client.avatarColor }}
+            >
+              {client.avatar}
             </div>
-          <div>
-              <h1 className="text-4xl font-bold text-[#0F172A] font-serif">Acme Corporation</h1>
+            <div>
+              <h1 className="text-4xl font-bold text-[#0F172A] font-serif">{client.name}</h1>
               <div className="flex items-center space-x-4 mt-2 text-[#6B7280]">
-              <div className="flex items-center space-x-1">
-                <Calendar className="w-4 h-4" />
+                <div className="flex items-center space-x-1">
+                  <Calendar className="w-4 h-4" />
                   <span>Client since March 2022</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <User className="w-4 h-4" />
-                  <span>Primary: John Williams, CFO</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <User className="w-4 h-4" />
+                  <span>Industry: {client.industry}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3">
             <button className="flex items-center space-x-2 px-4 py-2 border border-[#E5E7EB] text-[#6B7280] rounded-lg hover:bg-gray-50">
-            <Edit className="w-4 h-4" />
-            <span>Edit Client</span>
+              <Edit className="w-4 h-4" />
+              <span>Edit Client</span>
             </button>
             <button className="flex items-center space-x-2 px-4 py-2 bg-[#33A7B5] text-white rounded-lg hover:bg-[#33A7B5]/90">
-            <Plus className="w-4 h-4" />
-              <span>New Proj</span>
+              <Plus className="w-4 h-4" />
+              <span>New Project</span>
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Tabs */}
-      <div className="flex items-center space-x-8 border-b border-[#E5E7EB]">
-        <button className="pb-3 border-b-3 border-[#33A7B5] text-[#0F172A] font-semibold">
-            Overview
-          </button>
-        <button className="pb-3 text-[#6B7280] hover:text-[#0F172A]">
-            Information
-          </button>
-        <button className="pb-3 text-[#6B7280] hover:text-[#0F172A]">
-            Settings
-          </button>
+        {/* Tabs */}
+        <div className="flex border-b border-[#E5E7EB] mt-8">
+          <button className="pb-3 px-4 text-[#0F172A] font-semibold border-b-3 border-[#33A7B5]">Overview</button>
+          <button className="pb-3 px-4 text-[#6B7280] hover:text-[#0F172A]">Information</button>
+          <button className="pb-3 px-4 text-[#6B7280] hover:text-[#0F172A]">Settings</button>
+        </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
           <div className="flex items-center justify-between">
+            <FolderOpen className="w-6 h-6 text-[#33A7B5]" />
             <div>
-              <p className="text-sm text-[#6B7280]">Total Projects</p>
-              <p className="text-4xl font-bold text-[#0F172A]">6</p>
-              <p className="text-sm text-[#6B7280]">2 active</p>
-            </div>
-            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
-              <FolderOpen className="w-6 h-6 text-white" />
+              <p className="text-4xl font-bold text-[#0F172A] text-right">{client.projects}</p>
+              <p className="text-sm text-[#6B7280] text-right">Total Projects</p>
+              <p className="text-xs text-[#6B7280] text-right">{projects.filter(p => p.status === 'active').length} active</p>
             </div>
           </div>
         </div>
-
         <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
           <div className="flex items-center justify-between">
+            <MessageSquare className="w-6 h-6 text-[#33A7B5]" />
             <div>
-              <p className="text-sm text-[#6B7280]">Active Conversations</p>
-              <p className="text-4xl font-bold text-[#0F172A]">18</p>
-              <p className="text-sm text-[#6B7280]">Last 30 days</p>
-            </div>
-            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
-              <MessageSquare className="w-6 h-6 text-white" />
+              <p className="text-4xl font-bold text-[#0F172A] text-right">{client.conversations}</p>
+              <p className="text-sm text-[#6B7280] text-right">Active Conversations</p>
+              <p className="text-xs text-[#6B7280] text-right">Last 30 days</p>
             </div>
           </div>
         </div>
-
         <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
           <div className="flex items-center justify-between">
+            <FileText className="w-6 h-6 text-[#33A7B5]" />
             <div>
-              <p className="text-sm text-[#6B7280]">Artifacts Generated</p>
-              <p className="text-4xl font-bold text-[#0F172A]">43</p>
-              <p className="text-sm text-[#6B7280]">Frameworks & decks</p>
-            </div>
-            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
-              <FileText className="w-6 h-6 text-white" />
+              <p className="text-4xl font-bold text-[#0F172A] text-right">43</p>
+              <p className="text-sm text-[#6B7280] text-right">Artifacts Generated</p>
+              <p className="text-xs text-[#6B7280] text-right">Frameworks & decks</p>
             </div>
           </div>
         </div>
-
         <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
           <div className="flex items-center justify-between">
+            <Clock className="w-6 h-6 text-[#33A7B5]" />
             <div>
-              <p className="text-sm text-[#6B7280]">Last Engagement</p>
-              <p className="text-4xl font-bold text-[#0F172A]">2 days ago</p>
-              <p className="text-sm text-[#6B7280]">GTM Strategy call</p>
-            </div>
-            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
-              <Clock className="w-6 h-6 text-white" />
+              <p className="text-4xl font-bold text-[#0F172A] text-right">{client.lastActive}</p>
+              <p className="text-sm text-[#6B7280] text-right">Last Engagement</p>
+              <p className="text-xs text-[#6B7280] text-right">GTM Strategy call</p>
             </div>
           </div>
         </div>
@@ -139,316 +156,93 @@ export default function ClientDetailPage() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Project Card 1 */}
-          <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#33A7B5] rounded-full flex items-center justify-center">
-                  <FolderOpen className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#0F172A]">GTM Strategy 2024</h3>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="px-2 py-1 bg-[#33A7B5]/10 text-[#33A7B5] text-xs rounded-full">GTM Strategy</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-green-600">Active</span>
+          {projects.map((project) => (
+            <div 
+              key={project.id} 
+              className="bg-white border border-[#E5E7EB] rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => router.push(`/projects/${project.id}`)}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-[#33A7B5] rounded-full flex items-center justify-center">
+                    <FolderOpen className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-[#0F172A]">{project.name}</h3>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <span className="px-2 py-1 bg-[#33A7B5]/10 text-[#33A7B5] text-xs rounded-full">{project.type}</span>
+                      <div className="flex items-center space-x-1">
+                        <div className={`w-2 h-2 rounded-full ${
+                          project.status === 'active' ? 'bg-green-500' : 
+                          project.status === 'in-progress' ? 'bg-blue-500' : 
+                          project.status === 'planning' ? 'bg-yellow-500' : 'bg-gray-500'
+                        }`}></div>
+                        <span className={`text-sm ${
+                          project.status === 'active' ? 'text-green-600' : 
+                          project.status === 'in-progress' ? 'text-blue-600' : 
+                          project.status === 'planning' ? 'text-yellow-600' : 'text-gray-600'
+                        }`}>{project.status}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <button className="p-1 text-[#6B7280] hover:bg-gray-100 rounded">
+                  <MoreVertical className="w-4 h-4" />
+                </button>
               </div>
-              <button className="p-1 text-[#6B7280] hover:bg-gray-100 rounded">
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            </div>
-            
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#6B7280]">Progress</span>
-                <span className="text-sm font-medium text-[#0F172A]">60%</span>
+              
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-[#6B7280]">Progress</span>
+                  <span className="text-sm font-medium text-[#0F172A]">{project.progress}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-[#33A7B5] h-2 rounded-full" style={{ width: `${project.progress}%` }}></div>
+                </div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-[#33A7B5] h-2 rounded-full" style={{ width: '60%' }}></div>
-              </div>
-            </div>
 
-            <div className="space-y-2 text-sm text-[#6B7280]">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>8 conversations</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <User className="w-4 h-4" />
-                  <span>3 members</span>
-                </div>
-              </div>
-              <p>Started Jan 2024 • Due Mar 2024</p>
-              <p>Active 3 hours ago</p>
-            </div>
-          </div>
-
-          {/* Project Card 2 */}
-          <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#33A7B5] rounded-full flex items-center justify-center">
-                  <FolderOpen className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#0F172A]">Operations Review Q1</h3>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Operations</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="text-sm text-blue-600">In Progress</span>
-                    </div>
+              <div className="space-y-2 text-sm text-[#6B7280]">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-1">
+                    <MessageSquare className="w-4 h-4" />
+                    <span>{project.conversations} conversations</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <User className="w-4 h-4" />
+                    <span>{project.members} members</span>
                   </div>
                 </div>
-              </div>
-              <button className="p-1 text-[#6B7280] hover:bg-gray-100 rounded">
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            </div>
-            
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#6B7280]">Progress</span>
-                <span className="text-sm font-medium text-[#0F172A]">35%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-[#33A7B5] h-2 rounded-full" style={{ width: '35%' }}></div>
+                <p>Started {project.startDate} • Due {project.dueDate}</p>
+                <p>Active {project.lastActive}</p>
               </div>
             </div>
-
-            <div className="space-y-2 text-sm text-[#6B7280]">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>5 conversations</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <User className="w-4 h-4" />
-                  <span>2 members</span>
-                </div>
-              </div>
-              <p>Started Feb 2024 • Due Apr 2024</p>
-              <p>Active 2 days ago</p>
-            </div>
-          </div>
-
-          {/* Project Card 3 */}
-          <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#33A7B5] rounded-full flex items-center justify-center">
-                  <FolderOpen className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#0F172A]">Digital Transformation</h3>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs rounded-full">Technology</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-green-600">Active</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button className="p-1 text-[#6B7280] hover:bg-gray-100 rounded">
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            </div>
-            
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#6B7280]">Progress</span>
-                <span className="text-sm font-medium text-[#0F172A]">80%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-[#33A7B5] h-2 rounded-full" style={{ width: '80%' }}></div>
-              </div>
-            </div>
-
-            <div className="space-y-2 text-sm text-[#6B7280]">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>12 conversations</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <User className="w-4 h-4" />
-                  <span>4 members</span>
-                </div>
-              </div>
-              <p>Started Dec 2023 • Due Feb 2024</p>
-              <p>Active Yesterday</p>
-            </div>
-          </div>
-
-          {/* Project Card 4 */}
-          <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#33A7B5] rounded-full flex items-center justify-center">
-                  <FolderOpen className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#0F172A]">Board Advisory - Series B</h3>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="px-2 py-1 bg-[#33A7B5]/10 text-[#33A7B5] text-xs rounded-full">Advisory</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                      <span className="text-sm text-yellow-600">Planning</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button className="p-1 text-[#6B7280] hover:bg-gray-100 rounded">
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            </div>
-            
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#6B7280]">Progress</span>
-                <span className="text-sm font-medium text-[#0F172A]">25%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-[#33A7B5] h-2 rounded-full" style={{ width: '25%' }}></div>
-              </div>
-            </div>
-
-            <div className="space-y-2 text-sm text-[#6B7280]">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>3 conversations</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <User className="w-4 h-4" />
-                  <span>2 members</span>
-                </div>
-              </div>
-              <p>Started Mar 2024 • Due Jun 2024</p>
-              <p>Active 1 week ago</p>
-            </div>
-          </div>
-
-          {/* Project Card 5 */}
-          <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#33A7B5] rounded-full flex items-center justify-center">
-                  <FolderOpen className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#0F172A]">M&A Due Diligence</h3>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">M&A</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                      <span className="text-sm text-gray-600">Completed</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button className="p-1 text-[#6B7280] hover:bg-gray-100 rounded">
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="space-y-2 text-sm text-[#6B7280]">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>15 conversations</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <User className="w-4 h-4" />
-                  <span>5 members</span>
-                </div>
-              </div>
-              <p>Started Nov 2023 • Due Jan 2024</p>
-              <p>Active Today</p>
-            </div>
-          </div>
-
-          {/* Project Card 6 */}
-          <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#33A7B5] rounded-full flex items-center justify-center">
-                  <FolderOpen className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#0F172A]">Strategic Planning 2025</h3>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Strategy</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                      <span className="text-sm text-yellow-600">Planning</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button className="p-1 text-[#6B7280] hover:bg-gray-100 rounded">
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            </div>
-            
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#6B7280]">Progress</span>
-                <span className="text-sm font-medium text-[#0F172A]">15%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-[#33A7B5] h-2 rounded-full" style={{ width: '15%' }}></div>
-              </div>
-            </div>
-
-            <div className="space-y-2 text-sm text-[#6B7280]">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>4 conversations</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <User className="w-4 h-4" />
-                  <span>3 members</span>
-                </div>
-              </div>
-              <p>Started Mar 2024 • Due May 2024</p>
-              <p>Active 3 days ago</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
       {/* Recent Activity */}
       <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
         <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Recent Activity</h2>
-          <div className="space-y-4">
+        <div className="space-y-4">
           {[
-            { text: "New conversation started in GTM Strategy 2024", time: "2 hours ago" },
-            { text: "Framework document generated", time: "5 hours ago" },
-            { text: "Operations Review Q1 marked as completed", time: "Yesterday" },
-            { text: "New team member added to Digital Transformation", time: "2 days ago" },
-            { text: "Board Advisory meeting scheduled", time: "3 days ago" }
-          ].map((activity, index) => (
-            <div key={index} className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-[#33A7B5] rounded-full flex items-center justify-center">
-                <MessageSquare className="w-4 h-4 text-white" />
+            { icon: MessageSquare, text: 'New conversation started in GTM Strategy 2024', time: '2 hours ago' },
+            { icon: FileText, text: 'Framework document generated', time: '5 hours ago' },
+            { icon: FolderOpen, text: 'Operations Review Q1 marked as completed', time: 'Yesterday' },
+            { icon: User, text: 'New team member added to Digital Transformation', time: '2 days ago' },
+            { icon: Calendar, text: 'Board Advisory meeting scheduled', time: '3 days ago' },
+          ].map((activity, index) => {
+            const Icon = activity.icon;
+            return (
+              <div key={index} className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-[#33A7B5] rounded-full flex items-center justify-center text-white">
+                  <Icon className="w-4 h-4" />
+                </div>
+                <p className="flex-1 text-[#6B7280]">{activity.text}</p>
+                <span className="text-xs text-[#6B7280]">{activity.time}</span>
               </div>
-              <div className="flex-1">
-                <p className="text-[#0F172A]">{activity.text}</p>
-              </div>
-              <div className="text-sm text-[#6B7280]">
-                {activity.time}
-              </div>
-            </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
