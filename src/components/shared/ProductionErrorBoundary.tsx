@@ -2,9 +2,9 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import MonitoringService from '@/lib/monitoring';
+// import MonitoringService from '@/lib/monitoring';
 
 interface Props {
   children: ReactNode;

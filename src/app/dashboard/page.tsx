@@ -22,7 +22,7 @@ import {
   Download,
   Sparkles,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 import { formatRelativeTime } from '@/lib/utils'
 
 export default function DashboardPage() {

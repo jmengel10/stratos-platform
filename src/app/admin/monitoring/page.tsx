@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { 
   Activity, 
   Server, 
@@ -162,7 +162,7 @@ export default function MonitoringPage() {
                   </span>
                 </div>
               </div>
-              <Badge className={getStatusColor(healthStatus.status)}>
+              <Badge variant={healthStatus.status === 'healthy' ? 'success' : healthStatus.status === 'degraded' ? 'warning' : 'error'}>   
                 {healthStatus.status}
               </Badge>
             </div>

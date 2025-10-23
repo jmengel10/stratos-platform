@@ -183,7 +183,7 @@ export default function ChatConsolePage() {
             </div>
             <div className="bg-white border border-border p-4 rounded-lg max-w-2xl">
               <p className="mb-4">
-                I'll help you analyze the target market. Let me break this down into key areas:
+                I&apos;ll help you analyze the target market. Let me break this down into key areas:
               </p>
               <div className="space-y-3">
                 <div>

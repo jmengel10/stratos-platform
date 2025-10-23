@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useClientStore } from '@/store/clientStore';
 import { useTenant } from '@/hooks/useTenant';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { X, Building } from 'lucide-react';
 import { INDUSTRIES } from '@/types/client.types';

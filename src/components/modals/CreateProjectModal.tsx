@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useProjectStore } from '@/store/projectStore';
 import { useClientStore } from '@/store/clientStore';
 import { useTenant } from '@/hooks/useTenant';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { X, FolderKanban } from 'lucide-react';
 import { PROJECT_TYPES } from '@/types/project.types';

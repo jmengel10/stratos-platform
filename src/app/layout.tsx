@@ -14,7 +14,7 @@ import { Sidebar } from '@/components/layout/Sidebar'
 import { TopBar } from '@/components/layout/TopBar'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
-import { setupGlobalErrorHandling, trackPerformance } from '@/lib/monitoring'
+// import { setupGlobalErrorHandling, trackPerformance } from '@/lib/monitoring'
 import './globals.css'
 
 const inter = Inter({ 
@@ -39,8 +39,8 @@ export default function RootLayout({
     refreshToken();
     
     // Setup production monitoring
-    setupGlobalErrorHandling();
-    trackPerformance();
+    // setupGlobalErrorHandling();
+    // trackPerformance();
   }, [refreshToken]);
 
   return (

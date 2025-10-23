@@ -22,7 +22,7 @@ export default function DashboardPage() {
       {/* Welcome Header */}
       <div>
         <h1 className="text-4xl font-bold text-navy font-serif">Welcome back, Sarah</h1>
-        <p className="text-gray-600 mt-2">Here's what's happening with your work today</p>
+        <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your work today</p>
       </div>
 
       {/* Stats Cards */}
