@@ -112,17 +112,23 @@ deploy_frontend() {
     
     cd frontend
     
-    # Get deployment token
-    DEPLOYMENT_TOKEN=$(az staticwebapp secrets list --name $STATIC_WEB_APP_NAME --resource-group $RESOURCE_GROUP --query "properties.apiKey" -o tsv)
-    
-    if [ -z "$DEPLOYMENT_TOKEN" ]; then
-        print_error "Failed to get deployment token"
-        exit 1
+    # Get deployment token from environment variable or Azure CLI
+    if [ -z "$SWA_DEPLOYMENT_TOKEN" ]; then
+        print_status "Getting deployment token from Azure..."
+        DEPLOYMENT_TOKEN=$(az staticwebapp secrets list --name $STATIC_WEB_APP_NAME --resource-group $RESOURCE_GROUP --query "properties.apiKey" -o tsv)
+        
+        if [ -z "$DEPLOYMENT_TOKEN" ]; then
+            print_error "Failed to get deployment token. Please set SWA_DEPLOYMENT_TOKEN environment variable or ensure Azure CLI is configured."
+            exit 1
+        fi
+    else
+        DEPLOYMENT_TOKEN="$SWA_DEPLOYMENT_TOKEN"
+        print_status "Using deployment token from environment variable"
     fi
     
     # Deploy using SWA CLI
     print_status "Deploying frontend..."
-    npx @azure/static-web-apps-cli deploy . --deployment-token $DEPLOYMENT_TOKEN --app-location "." --output-location ".next"
+    npx @azure/static-web-apps-cli deploy . --deployment-token $DEPLOYMENT_TOKEN --app-location "." --output-location "out"
     
     print_success "Frontend deployed successfully"
     cd ..

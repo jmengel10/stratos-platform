@@ -15,6 +15,22 @@ out/
 .env.local
 .env.production
 .env.development
+.env.*.local
+.env.*.production
+.env.*.development
+
+# Azure secrets and tokens
+*.token
+*.key
+deployment-token.txt
+azure-credentials.json
+
+# Security files
+secrets/
+credentials/
+*.pem
+*.p12
+*.pfx
 
 # IDE files
 .vscode/
