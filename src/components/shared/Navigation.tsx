@@ -45,7 +45,7 @@ export function Navigation() {
     <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg">
       {/* Logo */}
       <div className="flex h-16 items-center px-6 border-b border-gray-200">
-        <Logo size="sm" />
+        <Logo />
       </div>
       
       {/* Main Navigation */}

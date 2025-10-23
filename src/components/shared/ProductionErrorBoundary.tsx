@@ -19,7 +19,7 @@ interface State {
 }
 
 export class ProductionErrorBoundary extends Component<Props, State> {
-  private monitoring: MonitoringService;
+  // private monitoring: MonitoringService;
 
   constructor(props: Props) {
     super(props);
@@ -29,7 +29,7 @@ export class ProductionErrorBoundary extends Component<Props, State> {
       errorInfo: null,
       errorId: ''
     };
-    this.monitoring = MonitoringService.getInstance();
+    // this.monitoring = MonitoringService.getInstance();
   }
 
   static getDerivedStateFromError(error: Error): State {
@@ -49,13 +49,13 @@ export class ProductionErrorBoundary extends Component<Props, State> {
     });
 
     // Track error in monitoring service
-    this.monitoring.trackException(error, {
-      componentStack: errorInfo.componentStack,
-      errorId: this.state.errorId,
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
-      url: window.location.href
-    });
+    // this.monitoring.trackException(error, {
+    //   componentStack: errorInfo.componentStack,
+    //   errorId: this.state.errorId,
+    //   timestamp: new Date().toISOString(),
+    //   userAgent: navigator.userAgent,
+    //   url: window.location.href
+    // });
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
@@ -128,7 +128,7 @@ export class ProductionErrorBoundary extends Component<Props, State> {
               <Button
                 onClick={this.handleRetry}
                 className="w-full"
-                variant="default"
+                variant="secondary"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Try Again

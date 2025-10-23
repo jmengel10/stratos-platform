@@ -5,9 +5,10 @@ interface BadgeProps {
   children: ReactNode;
   variant?: 'default' | 'active' | 'in-progress' | 'planning' | 'completed' | 'role-owner' | 'role-admin' | 'role-member' | 'role-client' | 'role-viewer';
   size?: 'sm' | 'md';
+  className?: string;
 }
 
-export function Badge({ children, variant = 'default', size = 'sm' }: BadgeProps) {
+export function Badge({ children, variant = 'default', size = 'sm', className }: BadgeProps) {
   const variants = {
     default: 'bg-gray-100 text-gray-800',
     active: 'bg-status-active text-white',
@@ -31,7 +32,8 @@ export function Badge({ children, variant = 'default', size = 'sm' }: BadgeProps
       className={cn(
         'inline-flex items-center rounded-full font-medium',
         variants[variant],
-        sizes[size]
+        sizes[size],
+        className
       )}
     >
       {children}

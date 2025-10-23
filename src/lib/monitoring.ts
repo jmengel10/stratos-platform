@@ -39,8 +39,7 @@ export class MonitoringService {
             enableDebug: false,
             enableAjaxPerfTracking: true,
             enablePerfMgr: true,
-            enablePerfCounterCollection: true,
-            enableUnhandledPromiseRejectionTracking: true
+            enablePerfCounterCollection: true
           }
         });
         

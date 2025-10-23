@@ -60,7 +60,7 @@ export default function TemplatesPage() {
 
       {/* Filter Pills */}
       <div className="flex items-center space-x-2">
-        <Badge variant="primary" className="px-4 py-2">All Templates</Badge>
+        <Badge variant="active" className="px-4 py-2">All Templates</Badge>
         <Badge variant="default" className="px-4 py-2">GTM Strategy</Badge>
         <Badge variant="default" className="px-4 py-2">Operations</Badge>
         <Badge variant="default" className="px-4 py-2">Fundraising</Badge>
