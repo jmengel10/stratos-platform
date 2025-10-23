@@ -1,0 +1,72 @@
+name: Deploy to Azure Container Registry
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  AZURE_CONTAINER_REGISTRY: stratosregistry.azurecr.io
+  CONTAINER_NAME: stratos-frontend
+  RESOURCE_GROUP: stratos-rg
+  LOCATION: eastus
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Azure Container Registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.AZURE_CONTAINER_REGISTRY }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.CONTAINER_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure Container Instances
+      run: |
+        az container create \
+          --resource-group ${{ env.RESOURCE_GROUP }} \
+          --name ${{ env.CONTAINER_NAME }}-${{ github.sha }} \
+          --image ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.CONTAINER_NAME }}:latest \
+          --cpu 1 \
+          --memory 1 \
+          --registry-login-server ${{ env.AZURE_CONTAINER_REGISTRY }} \
+          --registry-username ${{ secrets.ACR_USERNAME }} \
+          --registry-password ${{ secrets.ACR_PASSWORD }} \
+          --ports 3000 \
+          --environment-variables NODE_ENV=production \
+          --dns-name-label stratos-${{ github.sha }} \
+          --location ${{ env.LOCATION }}
