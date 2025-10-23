@@ -95,7 +95,7 @@ export const mockProjects = [
     id: '1',
     title: 'GTM Strategy 2024',
     type: 'GTM Strategy',
-    status: 'active',
+    status: 'active' as const,
     progress: 60,
     conversations: 8,
     members: 3,
@@ -112,7 +112,7 @@ export const mockProjects = [
     id: '2',
     title: 'Operations Review Q1',
     type: 'Operations',
-    status: 'in-progress',
+    status: 'in-progress' as const,
     progress: 35,
     conversations: 5,
     members: 2,
@@ -129,7 +129,7 @@ export const mockProjects = [
     id: '3',
     title: 'Digital Transformation',
     type: 'Technology',
-    status: 'active',
+    status: 'active' as const,
     progress: 80,
     conversations: 12,
     members: 4,
@@ -147,7 +147,7 @@ export const mockProjects = [
 export const mockActivity = [
   {
     id: '1',
-    type: 'conversation',
+    type: 'conversation' as const,
     title: 'New conversation started in GTM Strategy 2024',
     description: 'Discussion about Q2 market positioning',
     user: 'Sarah Chen',
@@ -155,7 +155,7 @@ export const mockActivity = [
   },
   {
     id: '2',
-    type: 'document',
+    type: 'document' as const,
     title: 'Framework document generated',
     description: 'Market analysis framework completed',
     user: 'GTM Strategist',
@@ -163,7 +163,7 @@ export const mockActivity = [
   },
   {
     id: '3',
-    type: 'project',
+    type: 'project' as const,
     title: 'Operations Review Q1 marked as completed',
     description: 'Final deliverables submitted',
     user: 'Sarah Chen',
@@ -171,7 +171,7 @@ export const mockActivity = [
   },
   {
     id: '4',
-    type: 'team',
+    type: 'team' as const,
     title: 'New team member added to Digital Transformation',
     description: 'Mike Johnson joined as analyst',
     user: 'Sarah Chen',
@@ -179,7 +179,7 @@ export const mockActivity = [
   },
   {
     id: '5',
-    type: 'calendar',
+    type: 'calendar' as const,
     title: 'Board Advisory meeting scheduled',
     description: 'Series B preparation call',
     user: 'John Williams',

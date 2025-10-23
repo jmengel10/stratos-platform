@@ -199,9 +199,11 @@ export default function ProjectSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {project.tags.map((tag, index) => (
-                    <Badge key={index} variant="default" className="flex items-center space-x-1">
-                      <span>{tag}</span>
-                      <X className="w-3 h-3 cursor-pointer" />
+                    <Badge key={index} variant="default">
+                      <span className="flex items-center space-x-1">
+                        <span>{tag}</span>
+                        <X className="w-3 h-3 cursor-pointer" />
+                      </span>
                     </Badge>
                   ))}
                 </div>

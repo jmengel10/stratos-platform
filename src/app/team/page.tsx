@@ -219,7 +219,7 @@ export default function TeamPage() {
               <h4 className="font-semibold text-navy">Owner (Full Access)</h4>
               <div className="flex space-x-2">
                 <Badge variant="role-owner">Full Access</Badge>
-                <Badge variant="primary">Your Role</Badge>
+                <Badge variant="active">Your Role</Badge>
               </div>
             </div>
             <div className="space-y-2">

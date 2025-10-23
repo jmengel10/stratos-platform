@@ -60,7 +60,7 @@ export default function AdminPage() {
     };
     
     return (
-      <Badge className={statusClasses[status as keyof typeof statusClasses] || 'bg-gray-100 text-gray-800'}>
+      <Badge variant={status === 'active' ? 'active' : status === 'inactive' ? 'planning' : 'in-progress'}>
         {status.replace('_', ' ')}
       </Badge>
     );
@@ -227,10 +227,10 @@ export default function AdminPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex flex-col space-y-1">
                         {client.overrides?.pricing?.enabled && (
-                          <Badge className="bg-yellow-100 text-yellow-800">Custom Pricing</Badge>
+                          <Badge variant="planning">Custom Pricing</Badge>
                         )}
                         {client.overrides?.limits?.enabled && (
-                          <Badge className="bg-yellow-100 text-yellow-800">Custom Limits</Badge>
+                          <Badge variant="planning">Custom Limits</Badge>
                         )}
                         {!client.overrides?.pricing?.enabled && !client.overrides?.limits?.enabled && (
                           <span className="text-sm text-gray-400">None</span>

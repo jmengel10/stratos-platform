@@ -162,7 +162,7 @@ export default function MonitoringPage() {
                   </span>
                 </div>
               </div>
-              <Badge variant={healthStatus.status === 'healthy' ? 'success' : healthStatus.status === 'degraded' ? 'warning' : 'error'}>   
+              <Badge variant={healthStatus.status === 'healthy' ? 'active' : healthStatus.status === 'degraded' ? 'in-progress' : 'planning'}>   
                 {healthStatus.status}
               </Badge>
             </div>
@@ -221,7 +221,7 @@ export default function MonitoringPage() {
                   {check === 'disk' && <Server className="h-5 w-5 text-orange-600 mr-3" />}
                   <span className="font-medium capitalize">{check}</span>
                 </div>
-                <Badge className={getStatusColor(status)}>
+                <Badge variant={status === 'healthy' ? 'active' : status === 'degraded' ? 'in-progress' : 'planning'}>
                   {status}
                 </Badge>
               </div>
@@ -300,7 +300,7 @@ export default function MonitoringPage() {
                 <p className="text-sm text-gray-500">2 minutes ago</p>
               </div>
             </div>
-            <Badge className="bg-green-100 text-green-800">Success</Badge>
+            <Badge variant="active">Success</Badge>
           </div>
           
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -311,7 +311,7 @@ export default function MonitoringPage() {
                 <p className="text-sm text-gray-500">5 minutes ago</p>
               </div>
             </div>
-            <Badge className="bg-blue-100 text-blue-800">Info</Badge>
+            <Badge variant="in-progress">Info</Badge>
           </div>
           
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -322,7 +322,7 @@ export default function MonitoringPage() {
                 <p className="text-sm text-gray-500">10 minutes ago</p>
               </div>
             </div>
-            <Badge className="bg-yellow-100 text-yellow-800">Warning</Badge>
+            <Badge variant="planning">Warning</Badge>
           </div>
         </div>
       </Card>

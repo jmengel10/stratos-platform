@@ -250,28 +250,28 @@ export default function ReportsPage() {
                 <div className="w-3 h-3 bg-green-500 rounded-full" />
                 <span className="text-sm text-gray-700">Active</span>
               </div>
-              <Badge variant="primary">12</Badge>
+              <Badge variant="active">12</Badge>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-blue-500 rounded-full" />
                 <span className="text-sm text-gray-700">In Progress</span>
               </div>
-              <Badge variant="primary">4</Badge>
+              <Badge variant="in-progress">4</Badge>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-yellow-500 rounded-full" />
                 <span className="text-sm text-gray-700">On Hold</span>
               </div>
-              <Badge variant="primary">1</Badge>
+              <Badge variant="completed">1</Badge>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-gray-400 rounded-full" />
                 <span className="text-sm text-gray-700">Completed</span>
               </div>
-              <Badge variant="primary">8</Badge>
+              <Badge variant="completed">8</Badge>
             </div>
             <div className="pt-3 border-t border-gray-200">
               <div className="flex items-center justify-between">
