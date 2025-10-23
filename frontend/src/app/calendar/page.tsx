@@ -71,7 +71,7 @@ export default function CalendarPage() {
               <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
-          <div className="flex border border-border rounded-lg">
+          <div className="flex border border-[#E5E7EB] rounded-lg">
             <button 
               className={`px-3 py-1 text-sm ${viewMode === 'day' ? 'bg-primary text-white' : 'text-gray-600 hover:bg-gray-100'}`}
               onClick={() => setViewMode('day')}
@@ -235,7 +235,7 @@ export default function CalendarPage() {
           <input
             type="text"
             placeholder="Quick add: '2pm Strategy call with Acme'"
-            className="w-full px-3 py-2 border border-border rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
           />
         </div>
       </div>

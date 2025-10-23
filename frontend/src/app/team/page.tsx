@@ -76,17 +76,17 @@ export default function TeamPage() {
               <input
                 type="text"
                 placeholder="Search by name or email..."
-                className="pl-10 pr-4 py-2 border border-border rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
               />
             </div>
-            <select className="px-3 py-2 border border-border rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+            <select className="px-3 py-2 border border-[#E5E7EB] rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#33A7B5]">
               <option>All Roles</option>
               <option>Owner</option>
               <option>Admin</option>
               <option>Member</option>
               <option>Client</option>
             </select>
-            <select className="px-3 py-2 border border-border rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+            <select className="px-3 py-2 border border-[#E5E7EB] rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#33A7B5]">
               <option>All Status</option>
               <option>Active</option>
               <option>Inactive</option>
@@ -97,7 +97,7 @@ export default function TeamPage() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-[#E5E7EB]">
                 <th className="text-left py-3 px-4 font-medium text-gray-700">User</th>
                 <th className="text-left py-3 px-4 font-medium text-gray-700">Role</th>
                 <th className="text-left py-3 px-4 font-medium text-gray-700">Projects</th>
@@ -108,7 +108,7 @@ export default function TeamPage() {
             </thead>
             <tbody>
               {mockTeamMembers.map((member) => (
-                <tr key={member.id} className="border-b border-border hover:bg-gray-50">
+                <tr key={member.id} className="border-b border-[#E5E7EB] hover:bg-gray-50">
                   <td className="py-4 px-4">
                     <div className="flex items-center space-x-3">
                       <Avatar name={member.name} size="sm" />

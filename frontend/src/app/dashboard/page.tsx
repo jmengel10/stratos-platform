@@ -148,19 +148,19 @@ export default function DashboardPage() {
           <Card className="p-6">
             <h2 className="text-xl font-semibold text-navy mb-4">Quick Actions</h2>
             <div className="space-y-3">
-              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-gray-50 text-left">
+              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-[#E5E7EB] hover:bg-gray-50 text-left">
                 <Target className="w-5 h-5 text-blue-600" />
                 <span className="text-sm font-medium">Start New Conversation</span>
               </button>
-              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-gray-50 text-left">
+              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-[#E5E7EB] hover:bg-gray-50 text-left">
                 <FolderOpen className="w-5 h-5 text-green-600" />
                 <span className="text-sm font-medium">Create Project</span>
               </button>
-              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-gray-50 text-left">
+              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-[#E5E7EB] hover:bg-gray-50 text-left">
                 <Users className="w-5 h-5 text-purple-600" />
                 <span className="text-sm font-medium">Add Client</span>
               </button>
-              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-gray-50 text-left">
+              <button className="w-full flex items-center space-x-3 p-3 rounded-lg border border-[#E5E7EB] hover:bg-gray-50 text-left">
                 <BarChart3 className="w-5 h-5 text-yellow-600" />
                 <span className="text-sm font-medium">Generate Report</span>
               </button>

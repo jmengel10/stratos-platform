@@ -76,7 +76,7 @@ export default function ProfilePage() {
                 <input
                   type="text"
                   defaultValue="Sarah Chen"
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
                 />
               </div>
 
@@ -86,7 +86,7 @@ export default function ProfilePage() {
                 <input
                   type="email"
                   defaultValue="sarah@stratos.com"
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
                 />
               </div>
 
@@ -96,7 +96,7 @@ export default function ProfilePage() {
                 <input
                   type="text"
                   defaultValue="Strategy Consultant"
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
                 />
               </div>
 
@@ -106,7 +106,7 @@ export default function ProfilePage() {
                 <input
                   type="tel"
                   defaultValue="+1 (555) 123-4567"
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
                 />
               </div>
 
@@ -116,7 +116,7 @@ export default function ProfilePage() {
                 <input
                   type="text"
                   defaultValue="New York, NY"
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
                 />
               </div>
 
@@ -126,7 +126,7 @@ export default function ProfilePage() {
                 <textarea
                   rows={4}
                   placeholder="Tell us about yourself..."
-                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
                 />
               </div>
 

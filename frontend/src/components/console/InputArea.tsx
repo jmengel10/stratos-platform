@@ -153,7 +153,7 @@ export function InputArea({
               rows={1}
               className={cn(
                 'w-full resize-none rounded-lg border border-slate-300 px-4 py-3 pr-12',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+                'focus:outline-none focus:ring-2 focus:ring-[#33A7B5]-500 focus:border-transparent',
                 'disabled:bg-slate-50 disabled:cursor-not-allowed',
                 'placeholder:text-slate-400'
               )}

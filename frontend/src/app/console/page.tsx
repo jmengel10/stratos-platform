@@ -71,7 +71,7 @@ export default function ConsolePage() {
   return (
     <div className="h-screen flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-border p-4">
+      <div className="bg-white border-b border-[#E5E7EB] p-4">
         <Breadcrumb items={[
           { label: 'Home', href: '/' },
           { label: 'Console' }
@@ -85,7 +85,7 @@ export default function ConsolePage() {
             <select 
               value={selectedAgent}
               onChange={(e) => setSelectedAgent(e.target.value)}
-              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="px-3 py-2 border border-[#E5E7EB] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#33A7B5]"
             >
               {agentOptions.map(agent => (
                 <option key={agent.id} value={agent.id}>{agent.name}</option>
@@ -131,7 +131,7 @@ export default function ConsolePage() {
       </div>
 
       {/* Input Area */}
-      <div className="bg-white border-t border-border p-4">
+      <div className="bg-white border-t border-[#E5E7EB] p-4">
         <div className="flex items-center space-x-3">
           <div className="flex-1 relative">
             <input
@@ -140,7 +140,7 @@ export default function ConsolePage() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Type your message..."
-              className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
             />
           </div>
           <Button 
