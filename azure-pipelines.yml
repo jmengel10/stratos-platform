@@ -1,0 +1,96 @@
+# Azure DevOps Pipeline for StratOS Platform
+# This pipeline builds and deploys the StratOS platform to Azure
+
+trigger:
+- master
+
+variables:
+  buildConfiguration: 'Release'
+  azureSubscription: 'Azure Subscription'
+  resourceGroupName: 'stratos-rg'
+  webAppName: 'stratos-frontend'
+  functionAppName: 'stratos-backend'
+
+stages:
+- stage: Build
+  displayName: 'Build Application'
+  jobs:
+  - job: BuildFrontend
+    displayName: 'Build Frontend'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: 'Install Node.js'
+    
+    - script: |
+        cd frontend
+        npm ci
+        npm run build
+      displayName: 'Build Frontend'
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: 'frontend/.next'
+        artifactName: 'frontend-build'
+
+  - job: BuildBackend
+    displayName: 'Build Backend'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: 'Install Node.js'
+    
+    - script: |
+        cd backend
+        npm ci
+        npm run build
+      displayName: 'Build Backend'
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: 'backend/dist'
+        artifactName: 'backend-build'
+
+- stage: Deploy
+  displayName: 'Deploy to Azure'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployFrontend
+    displayName: 'Deploy Frontend to Azure Static Web Apps'
+    environment: 'production'
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureStaticWebApp@0
+            inputs:
+              app_location: 'frontend'
+              api_location: 'backend'
+              output_location: '.next'
+              azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
+
+  - deployment: DeployBackend
+    displayName: 'Deploy Backend to Azure Functions'
+    environment: 'production'
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureFunctionApp@1
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              appType: 'functionApp'
+              appName: '$(functionAppName)'
+              package: 'backend/dist'
+              deploymentMethod: 'zipDeploy'
