@@ -1,179 +1,186 @@
 'use client';
 
-import { 
-  Briefcase, 
-  FolderOpen, 
-  MessageSquare, 
-  Target,
-  TrendingUp,
-  Users,
-  Clock,
-  Calendar,
-  FileText
-} from 'lucide-react';
-import { StatsCard } from '@/components/ui/StatsCard';
-import { Card } from '@/components/ui/Card';
-import { ActivityItem } from '@/components/features/ActivityItem';
-import { mockActivity } from '@/lib/mockData';
+import { Target, FolderOpen, MessageSquare, TrendingUp, Plus } from 'lucide-react';
 
-export default function DashboardPage() {
+export default function HomePage() {
   return (
-    <div className="p-8 space-y-8">
-      {/* Welcome Header */}
+    <div className="p-8 space-y-6">
+      {/* Welcome Section */}
       <div>
-        <h1 className="text-4xl font-bold text-navy font-serif">Welcome back, Sarah</h1>
-        <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your work today</p>
+        <h1 className="text-5xl font-bold text-[#0F172A] font-serif">Welcome back, Sarah</h1>
+        <p className="text-[#6B7280] mt-2">Here&apos;s what&apos;s happening with your work today</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatsCard
-          icon={<Briefcase className="w-8 h-8" />}
-          label="Total Clients"
-          value="12"
-          subtext="↑+2"
-          trend={{ value: "+2", positive: true }}
-        />
-        <StatsCard
-          icon={<FolderOpen className="w-8 h-8" />}
-          label="Active Projects"
-          value="18"
-          subtext="↑+3"
-          trend={{ value: "+3", positive: true }}
-        />
-        <StatsCard
-          icon={<MessageSquare className="w-8 h-8" />}
-          label="Conversations"
-          value="47"
-          subtext="↑+15"
-          trend={{ value: "+15", positive: true }}
-        />
-        <StatsCard
-          icon={<Target className="w-8 h-8" />}
-          label="Completion Rate"
-          value="78%"
-          subtext="↑+5%"
-          trend={{ value: "+5%", positive: true }}
-        />
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-[#6B7280]">Total Clients</p>
+              <p className="text-4xl font-bold text-[#0F172A]">12</p>
+              <p className="text-sm text-green-600">↑+2</p>
+            </div>
+            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
+              <Target className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-[#6B7280]">Active Projects</p>
+              <p className="text-4xl font-bold text-[#0F172A]">18</p>
+              <p className="text-sm text-green-600">↑+3</p>
+            </div>
+            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
+              <FolderOpen className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-[#6B7280]">Conversations</p>
+              <p className="text-4xl font-bold text-[#0F172A]">47</p>
+              <p className="text-sm text-green-600">↑+15</p>
+            </div>
+            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
+              <MessageSquare className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-[#6B7280]">Completion Rate</p>
+              <p className="text-4xl font-bold text-[#0F172A]">78%</p>
+              <p className="text-sm text-green-600">↑+5%</p>
+            </div>
+            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center">
+              <Target className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Activity Overview Chart */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-semibold text-navy font-serif">Activity Overview</h3>
-            <p className="text-gray-600">Your activity for the past 7 days</p>
-          </div>
+      <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+        <h2 className="text-xl font-semibold text-[#0F172A] mb-4">Activity Overview</h2>
+        <p className="text-[#6B7280] mb-6">Your activity for the past 7 days</p>
+        <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+          <p className="text-[#6B7280]">Chart visualization would go here</p>
         </div>
-        
-        {/* Simple chart representation */}
-        <div className="h-64 bg-gray-50 rounded-lg flex items-end justify-between p-4">
-          {[20, 35, 25, 40, 30, 45, 50].map((height, index) => (
-            <div key={index} className="flex flex-col items-center space-y-2">
-              <div 
-                className="w-8 bg-primary rounded-t"
-                style={{ height: `${height}%` }}
-              />
-              <span className="text-xs text-gray-500">
-                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index]}
-              </span>
-            </div>
-          ))}
-        </div>
-        
-        <div className="flex items-center space-x-4 mt-4">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-primary rounded-full" />
-            <span className="text-sm text-gray-600">Conversations</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-blue-400 rounded-full" />
-            <span className="text-sm text-gray-600">Projects</span>
-          </div>
-        </div>
-      </Card>
+      </div>
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6 hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-navy">New Client</h3>
-              <p className="text-sm text-gray-600">Add a new client to organize projects</p>
-            </div>
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
+          <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center mx-auto mb-4">
+            <Target className="w-6 h-6 text-white" />
           </div>
-        </Card>
+          <h3 className="text-lg font-semibold text-[#0F172A] mb-2">New Client</h3>
+          <p className="text-[#6B7280] text-sm">Add a new client to organize projects</p>
+        </div>
 
-        <Card className="p-6 hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-              <FolderOpen className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-navy">New Project</h3>
-              <p className="text-sm text-gray-600">Start a new project for a client</p>
-            </div>
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
+          <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center mx-auto mb-4">
+            <FolderOpen className="w-6 h-6 text-white" />
           </div>
-        </Card>
+          <h3 className="text-lg font-semibold text-[#0F172A] mb-2">New Project</h3>
+          <p className="text-[#6B7280] text-sm">Start a new project for a client</p>
+        </div>
 
-        <Card className="p-6 bg-primary text-white hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-              <MessageSquare className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-white">New Chat</h3>
-              <p className="text-sm text-white/80">Start a new conversation for a project</p>
-            </div>
+        <div className="bg-[#33A7B5] text-white rounded-lg p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+            <MessageSquare className="w-6 h-6 text-[#33A7B5]" />
           </div>
-          <div className="mt-4 flex justify-center">
-            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold">+</span>
-            </div>
+          <h3 className="text-lg font-semibold mb-2">New Chat</h3>
+          <p className="text-white/80 text-sm">Start a new conversation for a project</p>
+          <div className="mt-4">
+            <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center mx-auto">
+              <Plus className="w-4 h-4 text-[#33A7B5]" />
+            </button>
           </div>
-        </Card>
+        </div>
       </div>
 
-      {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="p-6">
-          <h3 className="text-xl font-semibold text-navy font-serif mb-6">Recent Activity</h3>
+      {/* Recent Clients and Projects */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Clients */}
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-[#0F172A]">Recent Clients</h2>
+            <span className="text-sm text-[#6B7280]">8 clients</span>
+          </div>
           <div className="space-y-4">
-            {mockActivity.map((activity) => (
-              <ActivityItem key={activity.id} activity={activity} />
+            {[
+              { name: 'Acme Corporation', industry: 'Financial Services', projects: 6, lastActive: '2 days ago', avatar: 'A', color: 'bg-[#0F172A]' },
+              { name: 'TechVentures Group', industry: 'Healthcare Technology', projects: 4, lastActive: '1 week ago', avatar: 'T', color: 'bg-[#33A7B5]' },
+              { name: 'HealthFirst Systems', industry: 'Medical Devices', projects: 3, lastActive: '3 days ago', avatar: 'H', color: 'bg-[#6B7280]' },
+              { name: 'GlobalTech Solutions', industry: 'Enterprise Software', projects: 5, lastActive: '1 day ago', avatar: 'G', color: 'bg-[#6B7280]' }
+            ].map((client, index) => (
+              <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                <div className={`w-10 h-10 ${client.color} rounded-full flex items-center justify-center text-white font-semibold`}>
+                  {client.avatar}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-[#0F172A]">{client.name}</h3>
+                  <p className="text-sm text-[#6B7280]">{client.industry}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-[#0F172A]">{client.projects} Projects</p>
+                  <p className="text-xs text-[#6B7280]">Active {client.lastActive}</p>
+                </div>
+              </div>
             ))}
           </div>
-        </Card>
+        </div>
 
-        <Card className="p-6">
-          <h3 className="text-xl font-semibold text-navy font-serif mb-6">Upcoming Events</h3>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <Calendar className="w-5 h-5 text-primary" />
-              <div>
-                <p className="font-medium text-navy">GTM Strategy Call</p>
-                <p className="text-sm text-gray-600">Acme Corporation • 2:00 PM</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <Users className="w-5 h-5 text-primary" />
-              <div>
-                <p className="font-medium text-navy">Team Meeting</p>
-                <p className="text-sm text-gray-600">Tomorrow • 10:00 AM</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <FileText className="w-5 h-5 text-primary" />
-              <div>
-                <p className="font-medium text-navy">Report Review</p>
-                <p className="text-sm text-gray-600">Friday • 3:00 PM</p>
-              </div>
-            </div>
+        {/* Recent Projects */}
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-[#0F172A]">Recent Projects</h2>
+            <span className="text-sm text-[#6B7280]">10 projects</span>
           </div>
-        </Card>
+          <div className="space-y-4">
+            {[
+              { title: 'GTM Strategy 2024', client: 'Acme Corporation', status: 'Active', conversations: 8, lastActive: '2 hours ago', tags: ['GTM Strategy', 'Active'] },
+              { title: 'Market Expansion', client: 'TechVentures Group', status: 'In Progress', conversations: 5, lastActive: '1 day ago', tags: ['Fundraising', 'In Progress'] },
+              { title: 'Financial Planning', client: 'HealthFirst Systems', status: 'Active', conversations: 3, lastActive: '3 hours ago', tags: ['Market Entry', 'Active'] }
+            ].map((project, index) => (
+              <div key={index} className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-[#0F172A]">{project.title}</h3>
+                    <p className="text-sm text-[#6B7280]">@{project.client}</p>
+                    <div className="flex items-center space-x-2 mt-2">
+                      {project.tags.map((tag, tagIndex) => (
+                        <span key={tagIndex} className={`px-2 py-1 text-xs rounded-full ${
+                          tag === 'Active' ? 'bg-green-100 text-green-800' : 
+                          tag === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                          'bg-[#33A7B5]/10 text-[#33A7B5]'
+                        }`}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <div className={`w-2 h-2 rounded-full ${project.status === 'Active' ? 'bg-green-500' : 'bg-blue-500'}`}></div>
+                      <span className="text-sm font-medium text-[#0F172A]">{project.status}</span>
+                    </div>
+                    <p className="text-sm text-[#6B7280]">{project.conversations} conversations</p>
+                    <p className="text-xs text-[#6B7280]">Active {project.lastActive}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

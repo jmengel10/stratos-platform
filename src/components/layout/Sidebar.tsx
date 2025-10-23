@@ -1,24 +1,21 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  Home, 
-  Users, 
-  FolderOpen, 
-  MessageSquare, 
-  FileText, 
-  Calendar, 
-  BarChart3, 
-  Grid3X3, 
-  Settings, 
-  User,
+import {
+  Home,
+  Users,
+  FolderOpen,
+  MessageSquare,
+  FileText,
+  Calendar,
+  BarChart3,
+  Copy,
+  Settings,
   ChevronLeft,
-  Bell
+  ChevronDown
 } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
-import { Avatar } from '@/components/ui/Avatar';
 
 const navigation = [
   { name: 'Dashboard', href: '/home', icon: Home },
@@ -28,25 +25,20 @@ const navigation = [
   { name: 'Files', href: '/files', icon: FileText },
   { name: 'Calendar', href: '/calendar', icon: Calendar },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
-  { name: 'Templates', href: '/templates', icon: Grid3X3 },
+  { name: 'Templates', href: '/templates', icon: Copy },
   { name: 'Settings', href: '/settings', icon: Settings },
-  { name: 'Profile', href: '/profile', icon: User },
 ];
 
 export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 
   return (
-    <div className={`${collapsed ? 'w-16' : 'w-64'} bg-white border-r border-border transition-all duration-300 flex flex-col h-full`}>
-      {/* Logo */}
-      <div className="flex items-center justify-between p-6 border-b border-border">
-        {!collapsed && <Logo />}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded-md hover:bg-gray-100 transition-colors"
-        >
-          <ChevronLeft className={`w-4 h-4 text-gray-600 transition-transform ${collapsed ? 'rotate-180' : ''}`} />
+    <div className="fixed left-0 top-0 w-64 h-full bg-white border-r border-[#E5E7EB] flex flex-col z-50">
+      {/* Logo Section */}
+      <div className="flex items-center justify-between p-6 border-b border-[#E5E7EB]">
+        <Logo />
+        <button className="p-1 rounded-md hover:bg-gray-100 transition-colors">
+          <ChevronLeft className="w-4 h-4 text-[#6B7280]" />
         </button>
       </div>
 
@@ -60,27 +52,28 @@ export function Sidebar() {
               href={item.href}
               className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-primary text-white'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  ? 'bg-[#33A7B5] text-white'
+                  : 'text-[#6B7280] hover:bg-blue-50 hover:text-[#0F172A]'
               }`}
             >
               <item.icon className="w-5 h-5 mr-3" />
-              {!collapsed && <span>{item.name}</span>}
+              <span>{item.name}</span>
             </Link>
           );
         })}
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-[#E5E7EB]">
         <div className="flex items-center space-x-3">
-          <Avatar name="Sarah Chen" size="sm" />
-          {!collapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">Sarah Chen</p>
-              <p className="text-xs text-gray-500 truncate">sarah@stratos.com</p>
-            </div>
-          )}
+          <div className="w-8 h-8 bg-[#33A7B5] rounded-full flex items-center justify-center text-white text-sm font-medium">
+            SC
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-[#0F172A] truncate">Sarah Chen</p>
+            <p className="text-xs text-[#6B7280] truncate">sarah@stratos.com</p>
+          </div>
+          <ChevronDown className="w-4 h-4 text-[#6B7280]" />
         </div>
       </div>
     </div>

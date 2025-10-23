@@ -1,153 +1,158 @@
 'use client';
 
-import { Search, Plus, Target, TrendingUp, DollarSign, Lightbulb, BarChart3 } from 'lucide-react';
+import { useState } from 'react';
+import { Send, Bot, User, Download, Share2, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { Avatar } from '@/components/ui/Avatar';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
-const mockConversations = [
+const mockMessages = [
   {
     id: '1',
-    agent: 'GTM Strategist',
-    title: 'Market Analysis',
-    snippet: 'Based on the competitive landscape analysis...',
-    timestamp: '2h ago',
-    active: true,
-    icon: Target,
-    color: 'bg-navy'
+    type: 'ai',
+    content: 'Hello! I\'m your GTM Strategist. I can help you with market entry strategies, competitive analysis, pricing models, and go-to-market planning. What would you like to work on today?',
+    timestamp: '10:30 AM',
+    agent: 'GTM Strategist'
   },
   {
     id: '2',
-    agent: 'Operations Analyst',
-    title: 'Process Optimization',
-    snippet: 'Let me analyze your current operations...',
-    timestamp: '5h ago',
-    active: false,
-    icon: TrendingUp,
-    color: 'bg-green-600'
+    type: 'user',
+    content: 'We\'re launching a new SaaS product and need help with our pricing strategy. We\'re competing against established players like Salesforce and HubSpot.',
+    timestamp: '10:32 AM'
   },
   {
     id: '3',
-    agent: 'Fundraising Advisor',
-    title: 'Series B Preparation',
-    snippet: 'For your Series B round, we need to...',
-    timestamp: 'Yesterday',
-    active: false,
-    icon: DollarSign,
-    color: 'bg-purple-600'
-  },
-  {
-    id: '4',
-    agent: 'Product Strategist',
-    title: 'Feature Roadmap',
-    snippet: 'Based on user feedback and market trends...',
-    timestamp: '2 days ago',
-    active: false,
-    icon: Lightbulb,
-    color: 'bg-orange-600'
-  },
-  {
-    id: '5',
-    agent: 'Data Analyst',
-    title: 'Performance Metrics',
-    snippet: 'Your key metrics show significant growth...',
-    timestamp: '3 days ago',
-    active: false,
-    icon: BarChart3,
-    color: 'bg-red-600'
+    type: 'ai',
+    content: 'Great! Pricing strategy is crucial for SaaS success. Let me help you develop a competitive pricing model. First, let me understand your product better:\n\n1. What\'s your core value proposition?\n2. What features differentiate you from Salesforce/HubSpot?\n3. What\'s your target customer segment?\n4. What\'s your current pricing structure (if any)?',
+    timestamp: '10:33 AM',
+    agent: 'GTM Strategist'
   }
 ];
 
+const agentOptions = [
+  { id: 'gtm', name: 'GTM Strategist', description: 'Market entry, pricing, competitive analysis' },
+  { id: 'ops', name: 'Operations Analyst', description: 'Process optimization, workflow analysis' },
+  { id: 'fundraising', name: 'Fundraising Advisor', description: 'Investor relations, pitch preparation' },
+  { id: 'product', name: 'Product Strategist', description: 'Roadmap planning, feature prioritization' },
+  { id: 'data', name: 'Data Analyst', description: 'Analytics, insights, reporting' }
+];
+
 export default function ConsolePage() {
+  const [messages, setMessages] = useState(mockMessages);
+  const [inputValue, setInputValue] = useState('');
+  const [selectedAgent, setSelectedAgent] = useState('gtm');
+
+  const handleSendMessage = () => {
+    if (!inputValue.trim()) return;
+
+    const newMessage = {
+      id: Date.now().toString(),
+      type: 'user' as const,
+      content: inputValue,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setMessages([...messages, newMessage]);
+    setInputValue('');
+
+    // Simulate AI response
+    setTimeout(() => {
+      const aiResponse = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai' as const,
+        content: 'I understand. Let me analyze this and provide you with strategic recommendations. Based on your input, I suggest we focus on three key areas: competitive positioning, value-based pricing, and market segmentation.',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        agent: agentOptions.find(a => a.id === selectedAgent)?.name || 'AI Agent'
+      };
+      setMessages(prev => [...prev, aiResponse]);
+    }, 1000);
+  };
+
   return (
-    <div className="p-8 space-y-6">
-      {/* Breadcrumb */}
-      <Breadcrumb items={[
-        { label: 'Home', href: '/home' },
-        { label: 'Conversations' }
-      ]} />
-
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-bold text-navy font-serif">Conversations</h1>
-          <p className="text-gray-600 mt-2">Chat with AI agents to get strategic insights</p>
+    <div className="h-screen flex flex-col">
+      {/* Header */}
+      <div className="bg-white border-b border-border p-4">
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: 'Console' }
+        ]} />
+        <div className="flex items-center justify-between mt-2">
+          <div>
+            <h1 className="text-2xl font-bold text-navy">AI Console</h1>
+            <p className="text-gray-600">Chat with AI agents for strategic insights</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <select 
+              value={selectedAgent}
+              onChange={(e) => setSelectedAgent(e.target.value)}
+              className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              {agentOptions.map(agent => (
+                <option key={agent.id} value={agent.id}>{agent.name}</option>
+              ))}
+            </select>
+            <Button variant="outline" size="sm">
+              <Share2 className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
-        <Button variant="primary" className="flex items-center space-x-2">
-          <Plus className="w-4 h-4" />
-          <span>New Chat</span>
-        </Button>
       </div>
 
-      {/* Search and Filters */}
-      <div className="flex items-center space-x-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <input
-            type="text"
-            placeholder="Search conversations..."
-            className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-          />
-        </div>
-        
-        <select className="px-3 py-2 border border-border rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-          <option>All Agents</option>
-          <option>GTM Strategist</option>
-          <option>Operations Analyst</option>
-          <option>Fundraising Advisor</option>
-          <option>Product Strategist</option>
-          <option>Data Analyst</option>
-        </select>
-        
-        <select className="px-3 py-2 border border-border rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-          <option>All Status</option>
-          <option>Active</option>
-          <option>Recent</option>
-          <option>Archived</option>
-        </select>
-      </div>
-
-      {/* Conversations Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockConversations.map((conversation) => {
-          const Icon = conversation.icon;
-          return (
-            <Card key={conversation.id} className="p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-start space-x-3">
-                <div className={`w-10 h-10 ${conversation.color} rounded-full flex items-center justify-center`}>
-                  <Icon className="w-5 h-5 text-white" />
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((message) => (
+          <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`flex space-x-3 max-w-3xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                message.type === 'user' 
+                  ? 'bg-primary text-white' 
+                  : 'bg-blue-500 text-white'
+              }`}>
+                {message.type === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+              </div>
+              <div className={`flex-1 ${message.type === 'user' ? 'text-right' : ''}`}>
+                <div className={`inline-block p-4 rounded-lg ${
+                  message.type === 'user'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-900'
+                }`}>
+                  <p className="whitespace-pre-wrap">{message.content}</p>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-gray-900">{conversation.agent}</p>
-                    <p className="text-xs text-gray-500">{conversation.timestamp}</p>
-                  </div>
-                  <p className="text-sm font-medium text-navy mt-1">{conversation.title}</p>
-                  <p className="text-xs text-gray-600 mt-1 line-clamp-2">{conversation.snippet}</p>
-                  {conversation.active && (
-                    <div className="mt-2">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary text-white">
-                        Active
-                      </span>
-                    </div>
+                <div className={`text-xs text-gray-500 mt-1 ${message.type === 'user' ? 'text-right' : ''}`}>
+                  {message.timestamp}
+                  {message.agent && (
+                    <span className="ml-2 text-blue-600">• {message.agent}</span>
                   )}
                 </div>
               </div>
-            </Card>
-          );
-        })}
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-center space-x-2">
-        <span className="text-sm text-gray-600">Showing 1-5 of 12 conversations</span>
-        <div className="flex items-center space-x-1 ml-4">
-          <button className="px-3 py-1 text-sm border border-border rounded hover:bg-gray-50">‹</button>
-          <button className="px-3 py-1 text-sm bg-primary text-white rounded">1</button>
-          <button className="px-3 py-1 text-sm border border-border rounded hover:bg-gray-50">2</button>
-          <button className="px-3 py-1 text-sm border border-border rounded hover:bg-gray-50">3</button>
-          <button className="px-3 py-1 text-sm border border-border rounded hover:bg-gray-50">›</button>
+      {/* Input Area */}
+      <div className="bg-white border-t border-border p-4">
+        <div className="flex items-center space-x-3">
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              placeholder="Type your message..."
+              className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+          </div>
+          <Button 
+            onClick={handleSendMessage}
+            disabled={!inputValue.trim()}
+            className="px-6"
+          >
+            <Send className="w-4 h-4" />
+          </Button>
+        </div>
+        <div className="mt-2 text-xs text-gray-500">
+          Press Enter to send • {agentOptions.find(a => a.id === selectedAgent)?.description}
         </div>
       </div>
     </div>

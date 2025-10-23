@@ -1,12 +1,11 @@
 export function Logo() {
   return (
-    <div className="flex items-center space-x-3">
-      {/* Circle with arc */}
-      <div className="relative w-8 h-8">
-        <div className="w-8 h-8 bg-navy rounded-full"></div>
-        <div className="absolute top-0 left-0 w-8 h-8 border-2 border-primary border-t-0 border-r-0 rounded-full"></div>
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative w-12 h-12 rounded-full bg-[#0F172A] flex items-center justify-center overflow-hidden">
+        {/* Curved teal accent */}
+        <div className="absolute inset-2 border-t-2 border-[#33A7B5] rounded-full" style={{ transform: 'rotate(-45deg)' }} />
       </div>
-      <span className="text-xl font-bold text-navy">STRATOS</span>
+      <span className="text-xs font-bold tracking-wider uppercase text-[#0F172A]">STRATOS</span>
     </div>
   );
 }

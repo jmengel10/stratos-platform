@@ -1,253 +1,141 @@
-'use client';
+import { MessageSquare, Send, Plus, MoreVertical, Clock, User, FileText, Target, TrendingUp, DollarSign, Lightbulb, BarChart3 } from 'lucide-react';
 
-import { useState } from 'react';
+export async function generateStaticParams() {
+  return [
+    { id: 'gtm-strategy-chat' },
+    { id: 'operations-analysis' },
+    { id: 'fundraising-advisory' },
+    { id: 'product-strategy' },
+    { id: 'data-analysis' }
+  ];
+}
 
-import { 
-  Search, 
-  Plus, 
-  Target, 
-  TrendingUp, 
-  DollarSign, 
-  Lightbulb, 
-  BarChart3,
-  Settings,
-  MoreVertical,
-  ArrowLeft,
-  Paperclip,
-  FileText,
-  Send
-} from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { Avatar } from '@/components/ui/Avatar';
-import { Breadcrumb } from '@/components/layout/Breadcrumb';
-
-const mockConversations = [
-  {
-    id: '1',
-    agent: 'GTM Strategist',
-    title: 'Market Analysis',
-    snippet: 'Based on the competitive...',
-    timestamp: '2h ago',
-    active: true,
-    icon: Target,
-    color: 'bg-navy'
-  },
-  {
-    id: '2',
-    agent: 'Operations Analyst',
-    title: 'Process Optimization',
-    snippet: 'Let me analyze your current...',
-    timestamp: '5h ago',
-    active: false,
-    icon: TrendingUp,
-    color: 'bg-green-600'
-  },
-  {
-    id: '3',
-    agent: 'Fundraising Advisor',
-    title: 'Series B Preparation',
-    snippet: 'For your Series B round...',
-    timestamp: 'Yesterday',
-    active: false,
-    icon: DollarSign,
-    color: 'bg-purple-600'
-  },
-  {
-    id: '4',
-    agent: 'Product Strategist',
-    title: 'Feature Roadmap',
-    snippet: 'Based on user feedback...',
-    timestamp: '2 days ago',
-    active: false,
-    icon: Lightbulb,
-    color: 'bg-orange-600'
-  },
-  {
-    id: '5',
-    agent: 'Data Analyst',
-    title: 'Performance Metrics',
-    snippet: 'Your key metrics show...',
-    timestamp: '3 days ago',
-    active: false,
-    icon: BarChart3,
-    color: 'bg-red-600'
-  }
-];
-
-export default function ChatConsolePage() {
-  const [activeConversation, setActiveConversation] = useState(mockConversations[0]);
-  const [message, setMessage] = useState('');
-
+export default function ConversationPage() {
   return (
-    <div className="flex h-full">
-      {/* Conversations List */}
-      <div className="w-80 bg-white border-r border-border flex flex-col">
-        <div className="p-6 border-b border-border">
-          <h2 className="text-2xl font-bold text-navy font-serif mb-4">Conversations</h2>
-          <div className="relative mb-4">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search conversations..."
-              className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
-          </div>
-          <Button variant="primary" className="w-full flex items-center justify-center space-x-2">
-            <Plus className="w-4 h-4" />
-            <span>New Chat</span>
-          </Button>
-        </div>
+    <div className="p-8 space-y-6">
+      {/* Breadcrumb */}
+      <div className="text-sm text-[#6B7280]">
+        Home &gt; Conversations &gt; GTM Strategy Chat
+      </div>
 
-        <div className="flex-1 overflow-y-auto">
-          <div className="p-4">
-            <div className="flex space-x-1 mb-4">
-              <button className="px-3 py-1 bg-primary text-white text-sm rounded-lg">All</button>
-              <button className="px-3 py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg">Active</button>
-              <button className="px-3 py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg">Archived</button>
+      {/* Chat Header */}
+      <div className="bg-white border border-[#E5E7EB] rounded-lg p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-[#33A7B5] rounded-full flex items-center justify-center text-white">
+              <Target className="w-6 h-6" />
             </div>
-            
-            <div className="space-y-2">
-              {mockConversations.map((conversation) => {
-                const Icon = conversation.icon;
-                return (
-                  <div
-                    key={conversation.id}
-                    className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                      conversation.active 
-                        ? 'bg-primary/10 border-l-4 border-primary' 
-                        : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => setActiveConversation(conversation)}
-                  >
-                    <div className="flex items-start space-x-3">
-                      <div className={`w-8 h-8 ${conversation.color} rounded-full flex items-center justify-center`}>
-                        <Icon className="w-4 h-4 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-gray-900">{conversation.agent}</p>
-                          <p className="text-xs text-gray-500">{conversation.timestamp}</p>
-                        </div>
-                        <p className="text-sm font-medium text-navy">{conversation.title}</p>
-                        <p className="text-xs text-gray-600 truncate">{conversation.snippet}</p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div>
+              <h1 className="text-2xl font-bold text-[#0F172A] font-serif">GTM Strategy Chat</h1>
+              <p className="text-[#6B7280] mt-1">Strategic go-to-market planning and execution</p>
             </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button className="p-2 text-[#6B7280] hover:text-[#0F172A] hover:bg-gray-100 rounded-lg transition-colors">
+              <MoreVertical className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Chat Header */}
-        <div className="bg-white border-b border-border p-4">
-          <div className="flex items-center justify-between">
-            <Breadcrumb items={[
-              { label: 'Acme Corp', href: '/clients/1' },
-              { label: 'GTM Strategy 2024', href: '/projects/1' },
-              { label: 'Market Analysis' }
-            ]} />
-            <div className="flex items-center space-x-3">
-              <Button variant="primary" className="flex items-center space-x-2">
-                <Target className="w-4 h-4" />
-                <span>GTM Strategist</span>
-              </Button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <Settings className="w-4 h-4 text-gray-600" />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <MoreVertical className="w-4 h-4 text-gray-600" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* User Message */}
-          <div className="flex justify-end">
-            <div className="bg-primary text-white p-4 rounded-lg max-w-2xl">
-              <p>
-                Help me analyze the target market for our new healthcare product. I need to understand the competitive landscape and identify our ideal customer profile.
-              </p>
-            </div>
-          </div>
-
+      {/* Chat Interface */}
+      <div className="bg-white border border-[#E5E7EB] rounded-lg h-96 flex flex-col">
+        {/* Messages Area */}
+        <div className="flex-1 p-6 space-y-4 overflow-y-auto">
           {/* AI Message */}
           <div className="flex items-start space-x-3">
-            <div className="w-8 h-8 bg-navy rounded-full flex items-center justify-center">
-              <Target className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 bg-[#33A7B5] rounded-full flex items-center justify-center text-white text-sm font-medium">
+              AI
             </div>
-            <div className="bg-white border border-border p-4 rounded-lg max-w-2xl">
-              <p className="mb-4">
-                I&apos;ll help you analyze the target market. Let me break this down into key areas:
-              </p>
-              <div className="space-y-3">
-                <div>
-                  <h4 className="font-semibold text-navy font-serif">Competitive Landscape</h4>
-                  <ul className="text-sm text-gray-700 mt-1 space-y-1">
-                    <li>• Major competitors in healthcare IT</li>
-                    <li>• Their positioning and strengths</li>
-                    <li>• Market gaps and opportunities</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-navy font-serif">Ideal Customer Profile</h4>
-                  <ul className="text-sm text-gray-700 mt-1 space-y-1">
-                    <li>• Enterprise hospital systems (500+ beds)</li>
-                    <li>• Annual revenue $500M+</li>
-                    <li>• Current pain points with data management</li>
-                  </ul>
-                </div>
+            <div className="flex-1">
+              <div className="bg-[#F3F4F6] rounded-lg p-4">
+                <p className="text-[#0F172A]">Hello! I&apos;m your GTM Strategy AI assistant. I can help you with market analysis, competitive positioning, pricing strategies, and go-to-market planning. What would you like to work on today?</p>
               </div>
+              <p className="text-xs text-[#6B7280] mt-1">2 minutes ago</p>
             </div>
           </div>
 
-          {/* Artifact Card */}
-          <div className="flex items-start space-x-3">
-            <div className="w-8 h-8 bg-navy rounded-full flex items-center justify-center">
-              <Target className="w-4 h-4 text-white" />
-            </div>
-            <Card className="p-4 bg-blue-50 border-l-4 border-primary max-w-2xl">
-              <div className="flex items-center space-x-3">
-                <BarChart3 className="w-5 h-5 text-primary" />
-                <div>
-                  <h4 className="font-semibold text-navy">Market Analysis Framework</h4>
-                  <p className="text-sm text-gray-600">Generated framework for competitive analysis</p>
-                </div>
+          {/* User Message */}
+          <div className="flex items-start space-x-3 justify-end">
+            <div className="flex-1 max-w-md">
+              <div className="bg-[#33A7B5] text-white rounded-lg p-4">
+                <p>I need help developing a go-to-market strategy for our new SaaS product. We&apos;re targeting mid-market companies in the healthcare sector.</p>
               </div>
-            </Card>
+              <p className="text-xs text-[#6B7280] mt-1 text-right">1 minute ago</p>
+            </div>
+            <div className="w-8 h-8 bg-[#0F172A] rounded-full flex items-center justify-center text-white text-sm font-medium">
+              SC
+            </div>
+          </div>
+
+          {/* AI Response */}
+          <div className="flex items-start space-x-3">
+            <div className="w-8 h-8 bg-[#33A7B5] rounded-full flex items-center justify-center text-white text-sm font-medium">
+              AI
+            </div>
+            <div className="flex-1">
+              <div className="bg-[#F3F4F6] rounded-lg p-4">
+                <p className="text-[#0F172A] mb-3">Excellent! Healthcare SaaS for mid-market companies is a great opportunity. Let me help you develop a comprehensive GTM strategy. Here&apos;s what I recommend we cover:</p>
+                <ul className="list-disc list-inside text-[#0F172A] space-y-1">
+                  <li>Market segmentation and ideal customer profile</li>
+                  <li>Competitive landscape analysis</li>
+                  <li>Pricing strategy and positioning</li>
+                  <li>Sales and marketing channel strategy</li>
+                  <li>Launch timeline and milestones</li>
+                </ul>
+                <p className="text-[#0F172A] mt-3">Which area would you like to start with?</p>
+              </div>
+              <p className="text-xs text-[#6B7280] mt-1">Just now</p>
+            </div>
           </div>
         </div>
 
         {/* Input Area */}
-        <div className="bg-white border-t border-border p-4">
+        <div className="border-t border-[#E5E7EB] p-4">
           <div className="flex items-center space-x-3">
-            <button className="p-2 hover:bg-gray-100 rounded-lg">
-              <Paperclip className="w-4 h-4 text-gray-600" />
-            </button>
-            <button className="p-2 hover:bg-gray-100 rounded-lg">
-              <FileText className="w-4 h-4 text-gray-600" />
-            </button>
-            <div className="flex-1">
+            <div className="flex-1 relative">
               <input
                 type="text"
-                placeholder="Ask anything about your strategy..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Type your message..."
+                className="w-full pl-4 pr-12 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A7B5] focus:border-transparent"
               />
+              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#6B7280] hover:text-[#0F172A]">
+                <Plus className="w-5 h-5" />
+              </button>
             </div>
-            <Button variant="primary" className="p-2">
+            <button className="bg-[#33A7B5] text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-[#33A7B5]/90 transition-colors">
               <Send className="w-4 h-4" />
-            </Button>
+              <span>Send</span>
+            </button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">Press Enter to send, Shift+Enter for new line</p>
         </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button className="bg-white border border-[#E5E7EB] rounded-lg p-4 text-left hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-3">
+            <Target className="w-5 h-5 text-[#33A7B5]" />
+            <span className="text-[#0F172A] font-medium">Market Analysis</span>
+          </div>
+          <p className="text-sm text-[#6B7280] mt-1">Analyze market size and opportunities</p>
+        </button>
+
+        <button className="bg-white border border-[#E5E7EB] rounded-lg p-4 text-left hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-3">
+            <TrendingUp className="w-5 h-5 text-[#33A7B5]" />
+            <span className="text-[#0F172A] font-medium">Competitive Analysis</span>
+          </div>
+          <p className="text-sm text-[#6B7280] mt-1">Research competitors and positioning</p>
+        </button>
+
+        <button className="bg-white border border-[#E5E7EB] rounded-lg p-4 text-left hover:shadow-md transition-shadow">
+          <div className="flex items-center space-x-3">
+            <DollarSign className="w-5 h-5 text-[#33A7B5]" />
+            <span className="text-[#0F172A] font-medium">Pricing Strategy</span>
+          </div>
+          <p className="text-sm text-[#6B7280] mt-1">Develop pricing models and tiers</p>
+        </button>
       </div>
     </div>
   );
