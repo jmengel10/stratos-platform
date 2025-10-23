@@ -9,67 +9,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Dynamic tenant colors via CSS variables
-        'tenant-primary': 'var(--color-primary)',
-        'tenant-secondary': 'var(--color-secondary)',
-        'tenant-accent': 'var(--color-accent)',
-        'tenant-text': 'var(--color-text)',
-        'tenant-bg': 'var(--color-background)',
+        // Brand colors from Figma designs
+        primary: '#33A7B5',
+        navy: '#0F172A',
+        background: '#F9FAFB',
+        border: '#E5E7EB',
         
-        // Shadcn UI colors (preserved)
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+        // Status colors
+        'status-active': '#10B981',
+        'status-in-progress': '#3B82F6',
+        'status-planning': '#F59E0B',
+        'status-completed': '#6B7280',
+        
+        // Role colors
+        'role-owner': '#8B5CF6',
+        'role-admin': '#33A7B5',
+        'role-member': '#10B981',
+        'role-client': '#F97316',
+        'role-viewer': '#6B7280',
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: '8px',
+        md: '6px',
+        sm: '4px',
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        'tenant-heading': 'var(--font-heading)',
-        'tenant-body': 'var(--font-body)',
+        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        serif: ['var(--font-playfair)', 'Playfair Display', 'serif'],
       },
       keyframes: {
         'accordion-down': {
