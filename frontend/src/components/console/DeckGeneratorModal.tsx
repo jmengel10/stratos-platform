@@ -8,8 +8,8 @@
 
 import { useState } from 'react'
 import { Presentation, Download, Loader2, X, FileText } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 import toast from 'react-hot-toast'
 
 interface DeckGeneratorModalProps {

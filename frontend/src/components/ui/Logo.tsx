@@ -1,51 +1,12 @@
-/**
- * Logo Component
- * Displays tenant-specific logo (temporary text-based until real logos are designed)
- */
-
-'use client';
-
-import { useTenant } from '@/hooks/useTenant';
-
-export function Logo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
-  const tenant = useTenant();
-  
-  const sizeClasses = {
-    sm: 'h-8',
-    md: 'h-10',
-    lg: 'h-12'
-  };
-
-  const textSizes = {
-    sm: 'text-xl',
-    md: 'text-2xl',
-    lg: 'text-3xl'
-  };
-
+export function Logo() {
   return (
-    <div className="flex items-center gap-2">
-      {/* Temporary text logo until actual logos are designed */}
-      <span 
-        className={`${textSizes[size]} font-bold tracking-wide transition-colors`}
-        style={{ 
-          color: tenant.colors.primary,
-          fontFamily: tenant.id === 'stratos' 
-            ? '"Inter", sans-serif' 
-            : '"Poppins", sans-serif',
-          textTransform: tenant.id === 'stratos' ? 'uppercase' : 'capitalize',
-          letterSpacing: tenant.id === 'stratos' ? '0.1em' : 'normal',
-          fontWeight: tenant.id === 'stratos' ? '700' : '700'
-        }}
-      >
-        {tenant.name}
-      </span>
-      {/* Fun emoji for Sparkworks */}
-      {tenant.id === 'sparkworks' && (
-        <span className={`${textSizes[size]}`} role="img" aria-label="spark">
-          ✨
-        </span>
-      )}
+    <div className="flex items-center space-x-3">
+      {/* Circle with arc */}
+      <div className="relative w-8 h-8">
+        <div className="w-8 h-8 bg-navy rounded-full"></div>
+        <div className="absolute top-0 left-0 w-8 h-8 border-2 border-primary border-t-0 border-r-0 rounded-full"></div>
+      </div>
+      <span className="text-xl font-bold text-navy">STRATOS</span>
     </div>
   );
 }
-

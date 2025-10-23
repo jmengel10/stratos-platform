@@ -3,25 +3,39 @@ import { cn } from '@/lib/utils';
 
 interface BadgeProps {
   children: ReactNode;
+  variant?: 'default' | 'active' | 'in-progress' | 'planning' | 'completed' | 'role-owner' | 'role-admin' | 'role-member' | 'role-client' | 'role-viewer';
+  size?: 'sm' | 'md';
   className?: string;
-  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info';
 }
 
-export function Badge({ children, className, variant = 'default' }: BadgeProps) {
+export function Badge({ children, variant = 'default', size = 'sm', className }: BadgeProps) {
   const variants = {
     default: 'bg-gray-100 text-gray-800',
-    success: 'bg-green-100 text-green-800',
-    warning: 'bg-yellow-100 text-yellow-800',
-    danger: 'bg-red-100 text-red-800',
-    info: 'bg-blue-100 text-blue-800'
+    active: 'bg-status-active text-white',
+    'in-progress': 'bg-status-in-progress text-white',
+    planning: 'bg-status-planning text-white',
+    completed: 'bg-status-completed text-white',
+    'role-owner': 'bg-role-owner text-white',
+    'role-admin': 'bg-role-admin text-white',
+    'role-member': 'bg-role-member text-white',
+    'role-client': 'bg-role-client text-white',
+    'role-viewer': 'bg-role-viewer text-white',
+  };
+
+  const sizes = {
+    sm: 'px-2 py-1 text-xs',
+    md: 'px-3 py-1 text-sm'
   };
 
   return (
-    <span className={cn(
-      'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-      variants[variant],
-      className
-    )}>
+    <span 
+      className={cn(
+        'inline-flex items-center rounded-full font-medium',
+        variants[variant],
+        sizes[size],
+        className
+      )}
+    >
       {children}
     </span>
   );
