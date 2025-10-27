@@ -9,6 +9,7 @@ import { TopBar } from '@/components/layout/TopBar'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { initializeStorage } from '@/lib/storage'
+import { initializeAdminStorage } from '@/lib/admin-storage'
 // import { setupGlobalErrorHandling, trackPerformance } from '@/lib/monitoring'
 import './globals.css'
 
@@ -29,17 +30,18 @@ export default function RootLayout({
 }) {
   const { refreshToken } = useAuthStore();
 
-  useEffect(() => {
-    // Initialize storage system
-    initializeStorage();
-    
-    // Initialize authentication on mount
-    refreshToken();
-    
-    // Setup production monitoring
-    // setupGlobalErrorHandling();
-    // trackPerformance();
-  }, [refreshToken]);
+      useEffect(() => {
+        // Initialize storage systems
+        initializeStorage();
+        initializeAdminStorage();
+        
+        // Initialize authentication on mount
+        refreshToken();
+        
+        // Setup production monitoring
+        // setupGlobalErrorHandling();
+        // trackPerformance();
+      }, [refreshToken]);
 
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
