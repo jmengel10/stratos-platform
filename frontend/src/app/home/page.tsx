@@ -86,7 +86,10 @@ export default function DashboardPage() {
 
   const renderQuickActions = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/clients/new')}>
+      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
+        console.log('Navigating to /clients/new');
+        router.push('/clients/new');
+      }}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
             <Users className="w-6 h-6 text-blue-600" />
@@ -98,7 +101,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/projects/new')}>
+      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
+        console.log('Navigating to /projects/new');
+        router.push('/projects/new');
+      }}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
             <FolderOpen className="w-6 h-6 text-green-600" />
@@ -110,7 +116,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/conversations/new')}>
+      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
+        console.log('Navigating to /conversations/new');
+        router.push('/conversations/new');
+      }}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
             <MessageSquare className="w-6 h-6 text-purple-600" />
