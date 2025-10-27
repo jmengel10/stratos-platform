@@ -46,7 +46,7 @@ export default function ConversationsPage() {
           e.preventDefault();
           e.stopPropagation();
           addDebugInfo('ConversationsPage: Direct DOM event listener triggered');
-          handleNewChatDirect();
+          handleNewChat();
         };
         
         button.addEventListener('click', directHandler);
@@ -59,22 +59,20 @@ export default function ConversationsPage() {
     }
   }, [isMounted]);
 
-  const handleNewChatDirect = () => {
-    addDebugInfo('handleNewChatDirect: Direct handler called');
+  const handleNewChat = () => {
+    addDebugInfo('handleNewChat: Button clicked - attempting navigation');
+    console.log('New Chat button clicked - attempting navigation');
     try {
       if (typeof window !== 'undefined') {
-        addDebugInfo('handleNewChatDirect: Navigating to /conversations/new');
+        addDebugInfo('handleNewChat: Navigating to /conversations/new');
+        console.log('Navigating to /conversations/new');
         window.location.href = '/conversations/new';
       }
     } catch (error) {
-      addDebugInfo(`handleNewChatDirect: Error - ${error}`);
+      addDebugInfo(`handleNewChat: Error - ${error}`);
+      console.error('Navigation error:', error);
       alert('Navigation failed. Please try refreshing the page.');
     }
-  };
-
-  const handleNewChat = () => {
-    addDebugInfo('handleNewChat: React onClick handler called');
-    handleNewChatDirect();
   };
 
   const handleConversationClick = (conversationId: string) => {
@@ -186,7 +184,7 @@ export default function ConversationsPage() {
         <h3 className="text-sm font-semibold text-red-800 mb-2">Pure HTML Test:</h3>
         <button 
           onClick={() => {
-            console.log('Pure HTML onclick triggered');
+            console.log('Pure HTML test button clicked');
             window.location.href = '/conversations/new';
           }}
           className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
