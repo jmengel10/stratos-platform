@@ -179,19 +179,18 @@ export default function ConversationsPage() {
         </button>
       </div>
 
-      {/* Pure HTML Test Button */}
-      <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-        <h3 className="text-sm font-semibold text-red-800 mb-2">Pure HTML Test:</h3>
+      <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+        <h3 className="text-sm font-semibold text-green-800 mb-2">🚨 DEPLOYMENT TEST - THIS SHOULD BE VISIBLE 🚨</h3>
+        <p className="text-xs text-green-700">If you can see this green box, the deployment is working!</p>
         <button 
           onClick={() => {
-            console.log('Pure HTML test button clicked');
-            window.location.href = '/conversations/new';
+            console.log('DEPLOYMENT TEST BUTTON CLICKED');
+            alert('Deployment test button works!');
           }}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
         >
-          Test Navigation (Pure HTML)
+          DEPLOYMENT TEST BUTTON
         </button>
-        <p className="text-xs text-red-700 mt-2">This button uses pure HTML onclick - no React involved</p>
       </div>
 
       {/* Search */}
