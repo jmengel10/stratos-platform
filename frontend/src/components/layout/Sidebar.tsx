@@ -44,8 +44,18 @@ const supportNavigation = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { navigate } = useNavigation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const handleNavigation = (path: string) => {
+    console.log(`Sidebar navigation: ${path}`);
+    try {
+      if (typeof window !== 'undefined') {
+        window.location.href = path;
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  };
 
   return (
     <div className={`fixed left-0 top-0 h-screen bg-white border-r border-border flex flex-col z-50 transition-all duration-300 ${
@@ -73,10 +83,7 @@ export function Sidebar() {
               return (
                 <button
                   key={item.name}
-                  onClick={() => {
-                    console.log(`Sidebar navigation: ${item.name} -> ${item.href}`);
-                    navigate(item.href);
-                  }}
+                  onClick={() => handleNavigation(item.href)}
                   className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors w-full text-left ${
                     isActive
                       ? 'bg-primary text-white'
@@ -99,10 +106,7 @@ export function Sidebar() {
               return (
                 <button
                   key={item.name}
-                  onClick={() => {
-                    console.log(`Support navigation: ${item.name} -> ${item.href}`);
-                    navigate(item.href);
-                  }}
+                  onClick={() => handleNavigation(item.href)}
                   className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors w-full text-left ${
                     isActive
                       ? 'bg-primary text-white'
@@ -125,10 +129,7 @@ export function Sidebar() {
               return (
                 <button
                   key={item.name}
-                  onClick={() => {
-                    console.log(`Collapsed support navigation: ${item.name} -> ${item.href}`);
-                    navigate(item.href);
-                  }}
+                  onClick={() => handleNavigation(item.href)}
                   className={`flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-primary text-white'

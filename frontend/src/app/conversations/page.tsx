@@ -1,11 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { getAllConversations, type Conversation } from '@/lib/storage';
 import { Plus, MessageSquare, Search } from 'lucide-react';
 
 export default function ConversationsPage() {
-  const router = useRouter();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -14,6 +12,29 @@ export default function ConversationsPage() {
     const loadedConversations = getAllConversations();
     setConversations(loadedConversations);
   }, []);
+
+  const handleNewChat = () => {
+    console.log('New Chat button clicked - attempting navigation');
+    try {
+      // Try multiple navigation methods
+      if (typeof window !== 'undefined') {
+        window.location.href = '/conversations/new';
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  };
+
+  const handleConversationClick = (conversationId: string) => {
+    console.log('Conversation clicked:', conversationId);
+    try {
+      if (typeof window !== 'undefined') {
+        window.location.href = `/conversations/${conversationId}`;
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  };
 
   const filteredConversations = conversations.filter(conversation =>
     conversation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -30,10 +51,7 @@ export default function ConversationsPage() {
           <p className="text-gray-text mt-2">View all your AI-powered conversations</p>
         </div>
         <button 
-          onClick={() => {
-            console.log('New Chat button clicked');
-            router.push('/conversations/new');
-          }}
+          onClick={handleNewChat}
           className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
@@ -62,7 +80,7 @@ export default function ConversationsPage() {
           <h3 className="text-xl font-serif font-semibold text-navy mb-2">No conversations yet</h3>
           <p className="text-gray-text mb-6">Start your first AI-powered conversation</p>
           <button 
-            onClick={() => router.push('/conversations/new')}
+            onClick={handleNewChat}
             className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
           >
             Start Your First Chat
@@ -73,7 +91,7 @@ export default function ConversationsPage() {
           {filteredConversations.map((conversation) => (
             <div
               key={conversation.id}
-              onClick={() => router.push(`/conversations/${conversation.id}`)}
+              onClick={() => handleConversationClick(conversation.id)}
               className="bg-white border border-border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
             >
               <div className="flex items-start gap-4">
