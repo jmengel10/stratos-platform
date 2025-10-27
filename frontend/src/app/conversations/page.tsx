@@ -166,7 +166,7 @@ export default function ConversationsPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-serif font-bold text-navy">Conversations</h1>
+          <h1 className="text-4xl font-serif font-bold text-navy">🔥🔥🔥 CONVERSATIONS - DEPLOYMENT TEST 🔥🔥🔥</h1>
           <p className="text-gray-text mt-2">View all your AI-powered conversations</p>
         </div>
         <button 
@@ -179,17 +179,17 @@ export default function ConversationsPage() {
         </button>
       </div>
 
-      <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-        <h3 className="text-sm font-semibold text-green-800 mb-2">🚨 DEPLOYMENT TEST - THIS SHOULD BE VISIBLE 🚨</h3>
-        <p className="text-xs text-green-700">If you can see this green box, the deployment is working!</p>
+      <div className="mb-6 p-8 bg-red-500 border-4 border-yellow-400 rounded-lg text-center">
+        <h3 className="text-2xl font-bold text-white mb-4">🚨🚨🚨 DEPLOYMENT TEST - THIS SHOULD BE IMPOSSIBLE TO MISS 🚨🚨🚨</h3>
+        <p className="text-lg text-white mb-4">If you can see this HUGE RED BOX, the deployment is working!</p>
         <button 
           onClick={() => {
             console.log('DEPLOYMENT TEST BUTTON CLICKED');
             alert('Deployment test button works!');
           }}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+          className="px-8 py-4 bg-yellow-400 text-black text-xl font-bold rounded hover:bg-yellow-300 transition-colors"
         >
-          DEPLOYMENT TEST BUTTON
+          🔥 DEPLOYMENT TEST BUTTON 🔥
         </button>
       </div>
 
