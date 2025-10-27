@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigation } from '@/hooks/useNavigation';
 import { 
   Briefcase, 
   FolderOpen, 
@@ -21,7 +21,7 @@ import { Card } from '@/components/ui/Card';
 import { getAllClients, getAllProjects, getAllConversations } from '@/lib/storage';
 
 export default function DashboardPage() {
-  const router = useRouter();
+  const { navigate } = useNavigation();
   const [stats, setStats] = useState({
     totalClients: 0,
     activeProjects: 0,
@@ -66,7 +66,7 @@ export default function DashboardPage() {
       
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <button
-          onClick={() => router.push('/clients/new')}
+          onClick={() => navigate('/clients/new')}
           className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
@@ -74,7 +74,7 @@ export default function DashboardPage() {
         </button>
         
         <button
-          onClick={() => router.push('/help')}
+          onClick={() => navigate('/help')}
           className="flex items-center gap-2 px-6 py-3 border border-border text-navy rounded-lg hover:border-primary transition-colors"
         >
           <Play className="w-5 h-5" />
@@ -88,7 +88,7 @@ export default function DashboardPage() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
       <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
         console.log('Navigating to /clients/new');
-        router.push('/clients/new');
+        navigate('/clients/new');
       }}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -103,7 +103,7 @@ export default function DashboardPage() {
 
       <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
         console.log('Navigating to /projects/new');
-        router.push('/projects/new');
+        navigate('/projects/new');
       }}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -118,7 +118,7 @@ export default function DashboardPage() {
 
       <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
         console.log('Navigating to /conversations/new');
-        router.push('/conversations/new');
+        navigate('/conversations/new');
       }}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -192,7 +192,7 @@ export default function DashboardPage() {
               <p className="text-gray-text">Your latest updates and progress</p>
             </div>
             <button 
-              onClick={() => router.push('/dashboard')}
+              onClick={() => navigate('/dashboard')}
               className="text-primary hover:text-primary/80 text-sm font-medium flex items-center gap-1"
             >
               View All
@@ -244,7 +244,7 @@ export default function DashboardPage() {
               <p className="text-gray-text">Things to focus on this week</p>
             </div>
             <button 
-              onClick={() => router.push('/calendar')}
+              onClick={() => navigate('/calendar')}
               className="text-primary hover:text-primary/80 text-sm font-medium flex items-center gap-1"
             >
               View Calendar

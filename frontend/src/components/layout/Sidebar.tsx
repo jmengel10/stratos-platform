@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useNavigation } from '@/hooks/useNavigation';
 import {
   Home,
   Users,
@@ -43,6 +44,7 @@ const supportNavigation = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { navigate } = useNavigation();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
@@ -69,11 +71,13 @@ export function Sidebar() {
             {navigation.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
               return (
-                <Link
+                <button
                   key={item.name}
-                  href={item.href}
-                  onClick={() => console.log(`Sidebar navigation: ${item.name} -> ${item.href}`)}
-                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  onClick={() => {
+                    console.log(`Sidebar navigation: ${item.name} -> ${item.href}`);
+                    navigate(item.href);
+                  }}
+                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors w-full text-left ${
                     isActive
                       ? 'bg-primary text-white'
                       : 'text-gray-text hover:bg-blue-50 hover:text-navy'
@@ -82,7 +86,7 @@ export function Sidebar() {
                 >
                   <item.icon className="w-5 h-5 mr-3 flex-shrink-0" />
                   {!isCollapsed && <span>{item.name}</span>}
-                </Link>
+                </button>
               );
             })}
         
@@ -93,10 +97,13 @@ export function Sidebar() {
             {supportNavigation.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
               return (
-                <Link
+                <button
                   key={item.name}
-                  href={item.href}
-                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  onClick={() => {
+                    console.log(`Support navigation: ${item.name} -> ${item.href}`);
+                    navigate(item.href);
+                  }}
+                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors w-full text-left ${
                     isActive
                       ? 'bg-primary text-white'
                       : 'text-gray-text hover:bg-blue-50 hover:text-navy'
@@ -104,7 +111,7 @@ export function Sidebar() {
                 >
                   <item.icon className="w-5 h-5 mr-3 flex-shrink-0" />
                   <span>{item.name}</span>
-                </Link>
+                </button>
               );
             })}
           </div>
@@ -116,9 +123,12 @@ export function Sidebar() {
             {supportNavigation.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
               return (
-                <Link
+                <button
                   key={item.name}
-                  href={item.href}
+                  onClick={() => {
+                    console.log(`Collapsed support navigation: ${item.name} -> ${item.href}`);
+                    navigate(item.href);
+                  }}
                   className={`flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-primary text-white'
@@ -127,7 +137,7 @@ export function Sidebar() {
                   title={item.name}
                 >
                   <item.icon className="w-5 h-5 flex-shrink-0" />
-                </Link>
+                </button>
               );
             })}
           </div>
