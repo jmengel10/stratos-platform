@@ -1,9 +1,3 @@
-/**
- * Root Layout
- * 
- * Main layout with authentication provider, error boundary, tenant provider, and global styles
- */
-
 'use client';
 
 import { Inter, Playfair_Display } from 'next/font/google'
@@ -14,6 +8,7 @@ import { Sidebar } from '@/components/layout/Sidebar'
 import { TopBar } from '@/components/layout/TopBar'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
+import { initializeStorage } from '@/lib/storage'
 // import { setupGlobalErrorHandling, trackPerformance } from '@/lib/monitoring'
 import './globals.css'
 
@@ -35,6 +30,9 @@ export default function RootLayout({
   const { refreshToken } = useAuthStore();
 
   useEffect(() => {
+    // Initialize storage system
+    initializeStorage();
+    
     // Initialize authentication on mount
     refreshToken();
     
@@ -49,14 +47,20 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.className} bg-background`}>
+      <body className={`${inter.className} bg-background overflow-hidden`}>
         <TenantProvider>
           <ProductionErrorBoundary>
-            <div className="flex h-screen overflow-hidden bg-background">
+            <div className="flex h-screen w-screen">
+              {/* Sidebar - Fixed Left */}
               <Sidebar />
-              <div className="flex-1 flex flex-col overflow-hidden">
+              
+              {/* Main Content Area */}
+              <div className="flex-1 flex flex-col ml-64 overflow-hidden">
+                {/* TopBar - Sticky */}
                 <TopBar />
-                <main className="flex-1 overflow-y-auto bg-background">
+                
+                {/* Page Content - Scrollable */}
+                <main className="flex-1 overflow-y-auto overflow-x-hidden">
                   {children}
                 </main>
               </div>

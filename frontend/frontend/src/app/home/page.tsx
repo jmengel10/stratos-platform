@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { 
   Briefcase, 
   FolderOpen, 
@@ -13,52 +14,77 @@ import {
 } from 'lucide-react';
 import { StatsCard } from '@/components/ui/StatsCard';
 import { Card } from '@/components/ui/Card';
-import { ActivityItem } from '@/components/features/ActivityItem';
-import { mockActivity } from '@/lib/mockData';
+import { getAllClients, getAllProjects, getAllConversations } from '@/lib/storage';
 
 export default function DashboardPage() {
+  const [stats, setStats] = useState({
+    totalClients: 0,
+    activeProjects: 0,
+    totalConversations: 0,
+    completionRate: 0
+  });
+
+  useEffect(() => {
+    // Load data from storage
+    const clients = getAllClients();
+    const projects = getAllProjects();
+    const conversations = getAllConversations();
+    
+    const activeProjects = projects.filter(p => p.status === 'active' || p.status === 'in-progress').length;
+    const completedProjects = projects.filter(p => p.status === 'completed').length;
+    const completionRate = projects.length > 0 ? Math.round((completedProjects / projects.length) * 100) : 0;
+
+    setStats({
+      totalClients: clients.length,
+      activeProjects,
+      totalConversations: conversations.length,
+      completionRate
+    });
+  }, []);
   return (
-    <div className="p-8 space-y-8">
-      {/* Welcome Header */}
-      <div>
-        <h1 className="text-4xl font-bold text-navy font-serif">Welcome back, Sarah</h1>
-        <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your work today</p>
+    <div className="p-8 max-w-7xl mx-auto w-full">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-5xl font-serif font-bold text-navy mb-2">
+          Welcome back, Sarah
+        </h1>
+        <p className="text-gray-text">Here&apos;s what&apos;s happening with your work today</p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         <StatsCard
           icon={<Briefcase className="w-8 h-8" />}
           label="Total Clients"
-          value="12"
-          subtext="↑+2"
-          trend={{ value: "+2", positive: true }}
+          value={stats.totalClients.toString()}
+          subtext={`↑+${stats.totalClients}`}
+          trend={{ value: `+${stats.totalClients}`, positive: true }}
         />
         <StatsCard
           icon={<FolderOpen className="w-8 h-8" />}
           label="Active Projects"
-          value="18"
-          subtext="↑+3"
-          trend={{ value: "+3", positive: true }}
+          value={stats.activeProjects.toString()}
+          subtext={`↑+${stats.activeProjects}`}
+          trend={{ value: `+${stats.activeProjects}`, positive: true }}
         />
         <StatsCard
           icon={<MessageSquare className="w-8 h-8" />}
           label="Conversations"
-          value="47"
-          subtext="↑+15"
-          trend={{ value: "+15", positive: true }}
+          value={stats.totalConversations.toString()}
+          subtext={`↑+${stats.totalConversations}`}
+          trend={{ value: `+${stats.totalConversations}`, positive: true }}
         />
         <StatsCard
           icon={<Target className="w-8 h-8" />}
           label="Completion Rate"
-          value="78%"
-          subtext="↑+5%"
-          trend={{ value: "+5%", positive: true }}
+          value={`${stats.completionRate}%`}
+          subtext={`↑+${stats.completionRate}%`}
+          trend={{ value: `+${stats.completionRate}%`, positive: true }}
         />
       </div>
 
-      {/* Activity Overview Chart */}
-      <Card className="p-6">
+      {/* Activity Overview Section */}
+      <div className="bg-white border border-border rounded-lg p-8 mb-12">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl font-semibold text-navy font-serif">Activity Overview</h3>
@@ -91,10 +117,10 @@ export default function DashboardPage() {
             <span className="text-sm text-gray-600">Projects</span>
           </div>
         </div>
-      </Card>
+      </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Action Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <Card className="p-6 hover:shadow-md transition-shadow">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -137,14 +163,14 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Recent Activity */}
+      {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card className="p-6">
           <h3 className="text-xl font-semibold text-navy font-serif mb-6">Recent Activity</h3>
           <div className="space-y-4">
-            {mockActivity.map((activity) => (
-              <ActivityItem key={activity.id} activity={activity} />
-            ))}
+            <div className="text-center py-8 text-gray-text">
+              <p>Activity feed coming soon...</p>
+            </div>
           </div>
         </Card>
 
