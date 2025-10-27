@@ -1,45 +1,80 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getAllConversations, type Conversation } from '@/lib/storage';
 import { Plus, MessageSquare, Search } from 'lucide-react';
 
 export default function ConversationsPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string[]>([]);
+  const newChatButtonRef = useRef<HTMLButtonElement>(null);
+
+  const addDebugInfo = (message: string) => {
+    const timestamp = new Date().toLocaleTimeString();
+    const debugMessage = `[${timestamp}] ${message}`;
+    setDebugInfo(prev => [...prev, debugMessage]);
+    console.log(debugMessage);
+  };
 
   useEffect(() => {
+    addDebugInfo('ConversationsPage: Component mounting');
+    setIsMounted(true);
+    
     // Load conversations from storage
     const loadedConversations = getAllConversations();
     setConversations(loadedConversations);
+    addDebugInfo(`ConversationsPage: Loaded ${loadedConversations.length} conversations`);
+    
+    // Test if React is working
+    addDebugInfo('ConversationsPage: React useEffect executed');
+    
+    return () => {
+      addDebugInfo('ConversationsPage: Component unmounting');
+    };
   }, []);
 
-  const handleNewChat = () => {
-    console.log('New Chat button clicked - attempting navigation');
-    console.log('Current URL:', window.location.href);
-    console.log('Target URL:', '/conversations/new');
-    
+  useEffect(() => {
+    if (isMounted) {
+      addDebugInfo('ConversationsPage: Component mounted, setting up event listeners');
+      
+      // Add direct DOM event listener as fallback
+      const button = newChatButtonRef.current;
+      if (button) {
+        addDebugInfo('ConversationsPage: Adding direct DOM event listener to button');
+        const directHandler = (e: Event) => {
+          e.preventDefault();
+          e.stopPropagation();
+          addDebugInfo('ConversationsPage: Direct DOM event listener triggered');
+          handleNewChatDirect();
+        };
+        
+        button.addEventListener('click', directHandler);
+        
+        return () => {
+          button.removeEventListener('click', directHandler);
+          addDebugInfo('ConversationsPage: Removed direct DOM event listener');
+        };
+      }
+    }
+  }, [isMounted]);
+
+  const handleNewChatDirect = () => {
+    addDebugInfo('handleNewChatDirect: Direct handler called');
     try {
       if (typeof window !== 'undefined') {
-        // Try multiple navigation methods
-        console.log('Method 1: window.location.href');
+        addDebugInfo('handleNewChatDirect: Navigating to /conversations/new');
         window.location.href = '/conversations/new';
-        
-        // Fallback after 1 second if first method doesn't work
-        setTimeout(() => {
-          console.log('Method 2: window.location.assign');
-          window.location.assign('/conversations/new');
-        }, 1000);
-        
-        // Final fallback after 2 seconds
-        setTimeout(() => {
-          console.log('Method 3: window.location.replace');
-          window.location.replace('/conversations/new');
-        }, 2000);
       }
     } catch (error) {
-      console.error('Navigation error:', error);
+      addDebugInfo(`handleNewChatDirect: Error - ${error}`);
       alert('Navigation failed. Please try refreshing the page.');
     }
+  };
+
+  const handleNewChat = () => {
+    addDebugInfo('handleNewChat: React onClick handler called');
+    handleNewChatDirect();
   };
 
   const handleConversationClick = (conversationId: string) => {
@@ -61,6 +96,22 @@ export default function ConversationsPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto w-full">
+      {/* Debug Panel */}
+      <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <h3 className="text-sm font-semibold text-yellow-800 mb-2">Debug Information:</h3>
+        <div className="text-xs text-yellow-700 space-y-1 max-h-32 overflow-y-auto">
+          {debugInfo.map((info, index) => (
+            <div key={index}>{info}</div>
+          ))}
+        </div>
+        <button 
+          onClick={() => setDebugInfo([])}
+          className="mt-2 px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded hover:bg-yellow-300"
+        >
+          Clear Debug
+        </button>
+      </div>
+
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -68,6 +119,7 @@ export default function ConversationsPage() {
           <p className="text-gray-text mt-2">View all your AI-powered conversations</p>
         </div>
         <button 
+          ref={newChatButtonRef}
           onClick={handleNewChat}
           className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
         >
