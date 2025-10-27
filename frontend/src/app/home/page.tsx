@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useNavigation } from '@/hooks/useNavigation';
 import { 
   Briefcase, 
   FolderOpen, 
@@ -30,12 +29,30 @@ export default function DashboardPage() {
 
   const handleNavigation = (path: string) => {
     console.log(`Navigating to ${path}`);
+    console.log('Current URL:', window.location.href);
+    console.log('Target URL:', path);
+    
     try {
       if (typeof window !== 'undefined') {
+        // Try multiple navigation methods
+        console.log('Method 1: window.location.href');
         window.location.href = path;
+        
+        // Fallback after 1 second if first method doesn't work
+        setTimeout(() => {
+          console.log('Method 2: window.location.assign');
+          window.location.assign(path);
+        }, 1000);
+        
+        // Final fallback after 2 seconds
+        setTimeout(() => {
+          console.log('Method 3: window.location.replace');
+          window.location.replace(path);
+        }, 2000);
       }
     } catch (error) {
       console.error('Navigation error:', error);
+      alert(`Navigation to ${path} failed. Please try refreshing the page.`);
     }
   };
 
@@ -90,16 +107,21 @@ export default function DashboardPage() {
           <Play className="w-5 h-5" />
           Take a Tour
         </button>
+        
+        <button
+          onClick={() => handleNavigation('/navigation-test')}
+          className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        >
+          <Play className="w-5 h-5" />
+          Test Navigation
+        </button>
       </div>
     </div>
   );
 
   const renderQuickActions = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
-        console.log('Navigating to /clients/new');
-        handleNavigation('/clients/new');
-      }}>
+      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleNavigation('/clients/new')}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
             <Users className="w-6 h-6 text-blue-600" />
@@ -111,10 +133,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
-        console.log('Navigating to /projects/new');
-        handleNavigation('/projects/new');
-      }}>
+      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleNavigation('/projects/new')}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
             <FolderOpen className="w-6 h-6 text-green-600" />
@@ -126,10 +145,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => {
-        console.log('Navigating to /conversations/new');
-        handleNavigation('/conversations/new');
-      }}>
+      <div className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleNavigation('/conversations/new')}>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
             <MessageSquare className="w-6 h-6 text-purple-600" />

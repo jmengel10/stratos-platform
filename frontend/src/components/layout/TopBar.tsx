@@ -2,12 +2,18 @@
 
 import { Search, Bell, Settings, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { isAdmin } from '@/lib/admin-storage';
 
 export function TopBar() {
-  const router = useRouter();
   const [showUserMenu, setShowUserMenu] = useState(false);
+
+  const handleNavigation = (path: string) => {
+    console.log(`TopBar navigation: ${path}`);
+    if (typeof window !== 'undefined') {
+      window.location.href = path;
+    }
+    setShowUserMenu(false);
+  };
 
   return (
     <div className="h-16 bg-white border-b border-border px-8 flex items-center justify-between sticky top-0 z-40 w-full">
@@ -47,46 +53,31 @@ export function TopBar() {
             <div className="absolute right-0 mt-2 w-56 bg-white border border-border rounded-lg shadow-lg z-50">
               <div className="py-2">
                 <button
-                  onClick={() => {
-                    router.push('/profile');
-                    setShowUserMenu(false);
-                  }}
+                  onClick={() => handleNavigation('/profile')}
                   className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
                 >
                   Profile
                 </button>
                 <button
-                  onClick={() => {
-                    router.push('/settings');
-                    setShowUserMenu(false);
-                  }}
+                  onClick={() => handleNavigation('/settings')}
                   className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
                 >
                   Settings
                 </button>
                 <button
-                  onClick={() => {
-                    router.push('/subscription');
-                    setShowUserMenu(false);
-                  }}
+                  onClick={() => handleNavigation('/subscription')}
                   className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
                 >
                   Subscription
                 </button>
                 <button
-                  onClick={() => {
-                    router.push('/billing');
-                    setShowUserMenu(false);
-                  }}
+                  onClick={() => handleNavigation('/billing')}
                   className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
                 >
                   Billing
                 </button>
                 <button
-                  onClick={() => {
-                    router.push('/help');
-                    setShowUserMenu(false);
-                  }}
+                  onClick={() => handleNavigation('/help')}
                   className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
                 >
                   Help Center
@@ -95,10 +86,7 @@ export function TopBar() {
                   <>
                     <div className="border-t border-border my-1"></div>
                     <button
-                      onClick={() => {
-                        router.push('/admin');
-                        setShowUserMenu(false);
-                      }}
+                      onClick={() => handleNavigation('/admin')}
                       className="w-full px-4 py-2 text-left text-sm text-primary hover:bg-blue-50 transition-colors flex items-center gap-2"
                     >
                       <Settings className="w-4 h-4" />

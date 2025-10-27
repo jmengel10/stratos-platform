@@ -1,14 +1,13 @@
 'use client';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function RootPage() {
-  const router = useRouter();
-  
   useEffect(() => {
     console.log('Root page: Redirecting to /home');
-    router.push('/home');
-  }, [router]);
+    if (typeof window !== 'undefined') {
+      window.location.href = '/home';
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

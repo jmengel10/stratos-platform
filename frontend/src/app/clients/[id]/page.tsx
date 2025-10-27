@@ -3,6 +3,8 @@
 import { ArrowLeft, Users, FolderOpen, MessageSquare, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getAllClients } from '@/lib/storage';
+
 
 export default function ClientDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();

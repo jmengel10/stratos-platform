@@ -15,13 +15,30 @@ export default function ConversationsPage() {
 
   const handleNewChat = () => {
     console.log('New Chat button clicked - attempting navigation');
+    console.log('Current URL:', window.location.href);
+    console.log('Target URL:', '/conversations/new');
+    
     try {
-      // Try multiple navigation methods
       if (typeof window !== 'undefined') {
+        // Try multiple navigation methods
+        console.log('Method 1: window.location.href');
         window.location.href = '/conversations/new';
+        
+        // Fallback after 1 second if first method doesn't work
+        setTimeout(() => {
+          console.log('Method 2: window.location.assign');
+          window.location.assign('/conversations/new');
+        }, 1000);
+        
+        // Final fallback after 2 seconds
+        setTimeout(() => {
+          console.log('Method 3: window.location.replace');
+          window.location.replace('/conversations/new');
+        }, 2000);
       }
     } catch (error) {
       console.error('Navigation error:', error);
+      alert('Navigation failed. Please try refreshing the page.');
     }
   };
 

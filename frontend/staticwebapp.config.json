@@ -9,15 +9,11 @@
       "headers": {
         "cache-control": "public, max-age=31536000, immutable"
       }
-    },
-    {
-      "route": "/*",
-      "rewrite": "/index.html"
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,jpeg}", "/css/*", "/_next/*", "/*.html", "/api/*"]
+    "exclude": ["/images/*.{png,jpg,jpeg}", "/css/*", "/_next/*", "/*.html", "/api/*", "/static/*", "/favicon.ico"]
   },
   "mimeTypes": {
     ".json": "application/json"
