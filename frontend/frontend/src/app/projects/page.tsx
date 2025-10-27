@@ -40,8 +40,11 @@ export default function ProjectsPage() {
           <p className="text-gray-text mt-2">View and manage all your projects</p>
         </div>
         <button 
-          onClick={() => router.push('/projects/new')}
-          className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors"
+          onClick={() => {
+            console.log('New Project button clicked');
+            router.push('/projects/new');
+          }}
+          className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
           New Project
@@ -70,7 +73,7 @@ export default function ProjectsPage() {
           <p className="text-gray-text mb-6">Start by creating your first project</p>
           <button 
             onClick={() => router.push('/projects/new')}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
           >
             Create Your First Project
           </button>

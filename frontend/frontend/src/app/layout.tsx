@@ -6,9 +6,11 @@ import { ProductionErrorBoundary } from '@/components/shared/ProductionErrorBoun
 import { TenantProvider } from '@/components/providers/TenantProvider'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { TopBar } from '@/components/layout/TopBar'
+import { Footer } from '@/components/layout/Footer'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { initializeStorage } from '@/lib/storage'
+import { initializeAdminStorage } from '@/lib/admin-storage'
 // import { setupGlobalErrorHandling, trackPerformance } from '@/lib/monitoring'
 import './globals.css'
 
@@ -29,17 +31,18 @@ export default function RootLayout({
 }) {
   const { refreshToken } = useAuthStore();
 
-  useEffect(() => {
-    // Initialize storage system
-    initializeStorage();
-    
-    // Initialize authentication on mount
-    refreshToken();
-    
-    // Setup production monitoring
-    // setupGlobalErrorHandling();
-    // trackPerformance();
-  }, [refreshToken]);
+      useEffect(() => {
+        // Initialize storage systems
+        initializeStorage();
+        initializeAdminStorage();
+        
+        // Initialize authentication on mount
+        refreshToken();
+        
+        // Setup production monitoring
+        // setupGlobalErrorHandling();
+        // trackPerformance();
+      }, [refreshToken]);
 
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
@@ -59,10 +62,13 @@ export default function RootLayout({
                 {/* TopBar - Sticky */}
                 <TopBar />
                 
-                {/* Page Content - Scrollable */}
-                <main className="flex-1 overflow-y-auto overflow-x-hidden">
-                  {children}
-                </main>
+                    {/* Page Content - Scrollable */}
+                    <main className="flex-1 overflow-y-auto overflow-x-hidden">
+                      {children}
+                    </main>
+                    
+                    {/* Footer */}
+                    <Footer />
               </div>
             </div>
             <Toaster 

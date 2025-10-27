@@ -9,16 +9,8 @@ import {
   type Client,
   type Project 
 } from '@/lib/storage';
+import { getActiveAgents, incrementAgentUsage } from '@/lib/admin-storage';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
-
-const AGENTS = [
-  { name: 'GTM Strategist', avatar: '🎯', color: '#3B82F6' },
-  { name: 'Operations Analyst', avatar: '⚙️', color: '#10B981' },
-  { name: 'Fundraising Advisor', avatar: '💰', color: '#8B5CF6' },
-  { name: 'Product Strategist', avatar: '💡', color: '#F59E0B' },
-  { name: 'Data Analyst', avatar: '📊', color: '#EC4899' },
-  { name: 'Growth Strategist', avatar: '📈', color: '#8B5CF6' },
-];
 
 export default function NewConversationPage() {
   const router = useRouter();
@@ -27,9 +19,10 @@ export default function NewConversationPage() {
   
   const [clients, setClients] = useState<Client[]>([]);
   const [allProjects, setAllProjects] = useState<Project[]>([]);
+  const [agents, setAgents] = useState(getActiveAgents());
   const [selectedClientId, setSelectedClientId] = useState('');
   const [selectedProjectId, setSelectedProjectId] = useState(preselectedProjectId || '');
-  const [selectedAgent, setSelectedAgent] = useState(AGENTS[0]);
+  const [selectedAgent, setSelectedAgent] = useState(agents[0] || null);
   const [conversationTitle, setConversationTitle] = useState('');
   const [showClientDropdown, setShowClientDropdown] = useState(false);
   const [showProjectDropdown, setShowProjectDropdown] = useState(false);
@@ -37,8 +30,15 @@ export default function NewConversationPage() {
   useEffect(() => {
     const loadedClients = getAllClients();
     const loadedProjects = getAllProjects();
+    const loadedAgents = getActiveAgents();
     setClients(loadedClients);
     setAllProjects(loadedProjects);
+    setAgents(loadedAgents);
+    
+    // Set default agent if available
+    if (loadedAgents.length > 0 && !selectedAgent) {
+      setSelectedAgent(loadedAgents[0]);
+    }
     
     // If project is preselected, select its client too
     if (preselectedProjectId) {
@@ -48,7 +48,7 @@ export default function NewConversationPage() {
         setSelectedProjectId(project.id);
       }
     }
-  }, [preselectedProjectId]);
+  }, [preselectedProjectId, selectedAgent]);
 
   const clientProjects = selectedClientId 
     ? getProjectsByClientId(selectedClientId)
@@ -58,7 +58,7 @@ export default function NewConversationPage() {
   const selectedProject = allProjects.find(p => p.id === selectedProjectId);
 
   const handleCreate = () => {
-    if (!selectedClientId || !selectedProjectId || !conversationTitle.trim()) {
+    if (!selectedClientId || !selectedProjectId || !conversationTitle.trim() || !selectedAgent) {
       alert('Please fill in all fields');
       return;
     }
@@ -66,13 +66,14 @@ export default function NewConversationPage() {
     const project = allProjects.find(p => p.id === selectedProjectId);
     const client = clients.find(c => c.id === selectedClientId);
     
-    if (!project || !client) return;
+    if (!project || !client || !selectedAgent) return;
 
     const newConversation = createConversation({
       projectId: selectedProjectId,
       projectName: project.name,
       clientId: selectedClientId,
       clientName: client.name,
+      agentId: selectedAgent.id,
       agent: selectedAgent.name,
       agentAvatar: selectedAgent.avatar,
       agentColor: selectedAgent.color,
@@ -81,6 +82,9 @@ export default function NewConversationPage() {
       timestamp: 'Just now',
       messages: []
     });
+
+    // Increment agent usage count
+    incrementAgentUsage(selectedAgent.id);
 
     router.push(`/conversations/${newConversation.id}`);
   };
@@ -217,34 +221,34 @@ export default function NewConversationPage() {
             )}
           </div>
 
-          {/* Agent Selector */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-navy mb-3">
-              AI Agent *
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              {AGENTS.map((agent) => (
-                <button
-                  key={agent.name}
-                  type="button"
-                  onClick={() => setSelectedAgent(agent)}
-                  className={`flex items-center gap-3 p-4 border-2 rounded-lg transition-all ${
-                    selectedAgent.name === agent.name
-                      ? 'border-primary bg-blue-50'
-                      : 'border-border hover:border-primary'
-                  }`}
-                >
-                  <div 
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-2xl"
-                    style={{ backgroundColor: agent.color }}
+            {/* Agent Selector */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-navy mb-3">
+                AI Agent *
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {agents.map((agent) => (
+                  <button
+                    key={agent.id}
+                    type="button"
+                    onClick={() => setSelectedAgent(agent)}
+                    className={`flex items-center gap-3 p-4 border-2 rounded-lg transition-all ${
+                      selectedAgent?.id === agent.id
+                        ? 'border-[#33A7B5] bg-[#EFF6FF]'
+                        : 'border-[#E5E7EB] hover:border-[#33A7B5]'
+                    }`}
                   >
-                    {agent.avatar}
-                  </div>
-                  <span className="text-sm font-medium text-navy">{agent.name}</span>
-                </button>
-              ))}
+                    <div 
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-2xl"
+                      style={{ backgroundColor: agent.color }}
+                    >
+                      {agent.avatar}
+                    </div>
+                    <span className="text-sm font-medium text-navy">{agent.name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
           {/* Conversation Title */}
           <div className="mb-8">
@@ -272,7 +276,7 @@ export default function NewConversationPage() {
             <button
               type="button"
               onClick={handleCreate}
-              disabled={!selectedClientId || !selectedProjectId || !conversationTitle.trim()}
+              disabled={!selectedClientId || !selectedProjectId || !conversationTitle.trim() || !selectedAgent}
               className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Start Conversation
