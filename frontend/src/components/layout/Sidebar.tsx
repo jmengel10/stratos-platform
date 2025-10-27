@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -13,6 +14,7 @@ import {
   Copy,
   Settings,
   ChevronLeft,
+  ChevronRight,
   ChevronDown
 } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
@@ -21,7 +23,7 @@ const navigation = [
   { name: 'Dashboard', href: '/home', icon: Home },
   { name: 'Clients', href: '/clients', icon: Users },
   { name: 'Projects', href: '/projects', icon: FolderOpen },
-  { name: 'Conversations', href: '/console', icon: MessageSquare },
+  { name: 'Conversations', href: '/conversations', icon: MessageSquare },
   { name: 'Files', href: '/files', icon: FileText },
   { name: 'Calendar', href: '/calendar', icon: Calendar },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
@@ -31,14 +33,24 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="fixed left-0 top-0 w-64 h-full bg-white border-r border-border flex flex-col z-50">
+    <div className={`fixed left-0 top-0 h-screen bg-white border-r border-border flex flex-col z-50 transition-all duration-300 ${
+      isCollapsed ? 'w-20' : 'w-64'
+    }`}>
       {/* Logo Section */}
       <div className="flex items-center justify-between p-6 border-b border-border">
-        <Logo />
-        <button className="p-1 rounded-md hover:bg-gray-100 transition-colors">
-          <ChevronLeft className="w-4 h-4 text-gray-text" />
+        {!isCollapsed && <Logo />}
+        <button 
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          {isCollapsed ? (
+            <ChevronRight className="w-5 h-5 text-gray-text" />
+          ) : (
+            <ChevronLeft className="w-5 h-5 text-gray-text" />
+          )}
         </button>
       </div>
 
@@ -55,27 +67,38 @@ export function Sidebar() {
                   ? 'bg-primary text-white'
                   : 'text-gray-text hover:bg-blue-50 hover:text-navy'
               }`}
+              title={isCollapsed ? item.name : ''}
             >
-              <item.icon className="w-5 h-5 mr-3" />
-              <span>{item.name}</span>
+              <item.icon className="w-5 h-5 mr-3 flex-shrink-0" />
+              {!isCollapsed && <span>{item.name}</span>}
             </Link>
           );
         })}
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-border">
-        <div className="flex items-center space-x-3">
+      {!isCollapsed && (
+        <div className="p-4 border-t border-border">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+              SC
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-navy truncate">Sarah Chen</p>
+              <p className="text-xs text-gray-text truncate">sarah@stratos.com</p>
+            </div>
+            <ChevronDown className="w-4 h-4 text-gray-text" />
+          </div>
+        </div>
+      )}
+
+      {isCollapsed && (
+        <div className="p-4 border-t border-border flex justify-center">
           <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
             SC
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-navy truncate">Sarah Chen</p>
-            <p className="text-xs text-gray-text truncate">sarah@stratos.com</p>
-          </div>
-          <ChevronDown className="w-4 h-4 text-gray-text" />
         </div>
-      </div>
+      )}
     </div>
   );
 }

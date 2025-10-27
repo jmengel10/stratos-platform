@@ -4,7 +4,7 @@ import { Search, Bell } from 'lucide-react';
 
 export function TopBar() {
   return (
-    <div className="bg-white border-b border-border h-16 flex items-center justify-between px-6">
+    <div className="h-16 bg-white border-b border-border px-8 flex items-center justify-between sticky top-0 z-40 w-full">
       {/* Left side - Search */}
       <div className="flex items-center space-x-4">
         <div className="relative">
