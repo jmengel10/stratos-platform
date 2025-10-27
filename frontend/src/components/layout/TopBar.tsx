@@ -44,7 +44,7 @@ export function TopBar() {
 
           {/* User Menu Dropdown */}
           {showUserMenu && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-border rounded-lg shadow-lg z-50">
+            <div className="absolute right-0 mt-2 w-56 bg-white border border-border rounded-lg shadow-lg z-50">
               <div className="py-2">
                 <button
                   onClick={() => {
@@ -63,6 +63,33 @@ export function TopBar() {
                   className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
                 >
                   Settings
+                </button>
+                <button
+                  onClick={() => {
+                    router.push('/subscription');
+                    setShowUserMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
+                >
+                  Subscription
+                </button>
+                <button
+                  onClick={() => {
+                    router.push('/billing');
+                    setShowUserMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
+                >
+                  Billing
+                </button>
+                <button
+                  onClick={() => {
+                    router.push('/help');
+                    setShowUserMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-navy hover:bg-bg-gray transition-colors"
+                >
+                  Help Center
                 </button>
                 {isAdmin() && (
                   <>
