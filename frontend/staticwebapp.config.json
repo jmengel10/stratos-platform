@@ -13,7 +13,7 @@
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,jpeg}", "/css/*", "/_next/*", "/*.html", "/api/*", "/static/*", "/favicon.ico"]
+    "exclude": ["/images/*.{png,jpg,jpeg}", "/css/*", "/_next/*", "/api/*", "/static/*", "/favicon.ico"]
   },
   "mimeTypes": {
     ".json": "application/json"
