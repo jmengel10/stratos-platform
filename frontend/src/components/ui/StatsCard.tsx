@@ -21,7 +21,7 @@ export function StatsCard({ icon, label, value, subtext, trend }: StatsCardProps
             {icon}
           </div>
           <div>
-            <p className="text-sm text-gray-600">{label}</p>
+            <p className="text-sm text-gray-text">{label}</p>
             <p className="text-3xl font-bold text-navy">{value}</p>
             {subtext && <p className="text-xs text-gray-500">{subtext}</p>}
           </div>

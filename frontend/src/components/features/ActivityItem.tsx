@@ -28,9 +28,9 @@ export function ActivityItem({ activity }: ActivityItemProps) {
         <Icon className="w-4 h-4 text-primary" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm text-gray-900">
+        <p className="text-sm text-navy">
           <span className="font-medium">{activity.title}</span>
-          <span className="text-gray-600"> {activity.description}</span>
+          <span className="text-gray-text"> {activity.description}</span>
           <span className="text-gray-500"> by {activity.user}</span>
         </p>
         <p className="text-xs text-gray-500 mt-1">{activity.timestamp}</p>

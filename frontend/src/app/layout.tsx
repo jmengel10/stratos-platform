@@ -49,14 +49,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-background`}>
         <TenantProvider>
           <ProductionErrorBoundary>
             <div className="flex h-screen overflow-hidden bg-background">
               <Sidebar />
               <div className="flex-1 flex flex-col overflow-hidden">
                 <TopBar />
-                <main className="flex-1 overflow-y-auto">
+                <main className="flex-1 overflow-y-auto bg-background">
                   {children}
                 </main>
               </div>

@@ -9,7 +9,7 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div>
         <h1 className="text-4xl font-bold text-navy font-serif">Welcome back, Sarah</h1>
-        <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your work today</p>
+        <p className="text-gray-text mt-2">Here&apos;s what&apos;s happening with your work today</p>
       </div>
 
       {/* Stats Cards */}
@@ -17,7 +17,7 @@ export default function DashboardPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Clients</p>
+              <p className="text-sm text-gray-text">Total Clients</p>
               <p className="text-3xl font-bold text-navy">12</p>
               <p className="text-sm text-green-600">↑+2</p>
             </div>
@@ -30,7 +30,7 @@ export default function DashboardPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Active Projects</p>
+              <p className="text-sm text-gray-text">Active Projects</p>
               <p className="text-3xl font-bold text-navy">18</p>
               <p className="text-sm text-green-600">↑+3</p>
             </div>
@@ -43,7 +43,7 @@ export default function DashboardPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Conversations</p>
+              <p className="text-sm text-gray-text">Conversations</p>
               <p className="text-3xl font-bold text-navy">47</p>
               <p className="text-sm text-green-600">↑+15</p>
             </div>
@@ -56,7 +56,7 @@ export default function DashboardPage() {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Completion Rate</p>
+              <p className="text-sm text-gray-text">Completion Rate</p>
               <p className="text-3xl font-bold text-navy">78%</p>
               <p className="text-sm text-green-600">↑+5%</p>
             </div>
@@ -70,8 +70,8 @@ export default function DashboardPage() {
       {/* Activity Overview Chart */}
       <Card className="p-6">
         <h2 className="text-xl font-semibold text-navy mb-4">Activity Overview</h2>
-        <p className="text-gray-600 mb-6">Your activity for the past 7 days</p>
-        <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+        <p className="text-gray-text mb-6">Your activity for the past 7 days</p>
+        <div className="h-64 bg-bg-gray rounded-lg flex items-center justify-center">
           <p className="text-gray-500">Chart visualization would go here</p>
         </div>
       </Card>
@@ -83,7 +83,7 @@ export default function DashboardPage() {
             <Target className="w-6 h-6 text-white" />
           </div>
           <h3 className="text-lg font-semibold text-navy mb-2">New Client</h3>
-          <p className="text-gray-600 text-sm">Add a new client to organize projects</p>
+          <p className="text-gray-text text-sm">Add a new client to organize projects</p>
         </Card>
 
         <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
@@ -91,7 +91,7 @@ export default function DashboardPage() {
             <TrendingUp className="w-6 h-6 text-white" />
           </div>
           <h3 className="text-lg font-semibold text-navy mb-2">New Project</h3>
-          <p className="text-gray-600 text-sm">Start a new project for a client</p>
+          <p className="text-gray-text text-sm">Start a new project for a client</p>
         </Card>
 
         <Card className="p-6 text-center bg-primary text-white hover:shadow-md transition-shadow cursor-pointer">
@@ -116,13 +116,13 @@ export default function DashboardPage() {
             { name: 'HealthFirst Systems', industry: 'Medical Devices', projects: 3, lastActive: '3 days ago', avatar: 'H' },
             { name: 'GlobalTech Solutions', industry: 'Enterprise Software', projects: 5, lastActive: '1 day ago', avatar: 'G' }
           ].map((client, index) => (
-            <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+            <div key={index} className="flex items-center space-x-4 p-4 bg-bg-gray rounded-lg">
               <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
                 {client.avatar}
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-navy">{client.name}</h3>
-                <p className="text-sm text-gray-600">{client.industry}</p>
+                <p className="text-sm text-gray-text">{client.industry}</p>
               </div>
               <div className="text-right">
                 <p className="text-sm font-medium text-navy">{client.projects} Projects</p>
@@ -145,11 +145,11 @@ export default function DashboardPage() {
             { title: 'Market Expansion', client: 'TechVentures Group', status: 'In Progress', conversations: 5, lastActive: '1 day ago', tags: ['Fundraising', 'Operations'] },
             { title: 'Financial Planning', client: 'HealthFirst Systems', status: 'Active', conversations: 3, lastActive: '3 hours ago', tags: ['Market Entry', 'Operations'] }
           ].map((project, index) => (
-            <div key={index} className="p-4 bg-gray-50 rounded-lg">
+            <div key={index} className="p-4 bg-bg-gray rounded-lg">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <h3 className="font-semibold text-navy">{project.title}</h3>
-                  <p className="text-sm text-gray-600">@{project.client}</p>
+                  <p className="text-sm text-gray-text">@{project.client}</p>
                   <div className="flex items-center space-x-2 mt-2">
                     {project.tags.map((tag, tagIndex) => (
                       <span key={tagIndex} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
@@ -163,7 +163,7 @@ export default function DashboardPage() {
                     <div className={`w-2 h-2 rounded-full ${project.status === 'Active' ? 'bg-green-500' : 'bg-blue-500'}`}></div>
                     <span className="text-sm font-medium text-navy">{project.status}</span>
                   </div>
-                  <p className="text-sm text-gray-600">{project.conversations} conversations</p>
+                  <p className="text-sm text-gray-text">{project.conversations} conversations</p>
                   <p className="text-xs text-gray-500">Active {project.lastActive}</p>
                 </div>
               </div>
