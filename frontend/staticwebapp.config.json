@@ -5,13 +5,19 @@
       "allowedRoles": ["anonymous"]
     },
     {
+      "route": "/_next/*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
       "route": "/*",
       "rewrite": "/index.html"
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,jpeg}", "/css/*", "/_next/*"]
+    "exclude": ["/images/*.{png,jpg,jpeg}", "/css/*", "/_next/*", "/*.html"]
   },
   "mimeTypes": {
     ".json": "application/json"

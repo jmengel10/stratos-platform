@@ -7,6 +7,7 @@ import {
   addMessageToConversation,
   getProjectById,
   getClientById,
+  getAllConversations,
   type Conversation 
 } from '@/lib/storage';
 import { Send, Paperclip, ArrowLeft } from 'lucide-react';
