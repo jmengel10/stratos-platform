@@ -136,7 +136,7 @@ export function Sidebar() {
       {/* User Section */}
       {!isCollapsed && (
         <div className="p-4 border-t border-border">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 mb-3">
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
               SC
             </div>
@@ -145,6 +145,23 @@ export function Sidebar() {
               <p className="text-xs text-gray-text truncate">sarah@stratos.com</p>
             </div>
             <ChevronDown className="w-4 h-4 text-gray-text" />
+          </div>
+          
+          {/* Plan Badge */}
+          <div className="bg-gradient-to-r from-primary to-teal-500 rounded-lg p-3 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-medium opacity-90">Current Plan</p>
+                <p className="text-sm font-semibold">Professional</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs opacity-90">$299/mo</p>
+                <p className="text-xs opacity-75">Renews Nov 1</p>
+              </div>
+            </div>
+            <button className="w-full mt-2 text-xs bg-white/20 hover:bg-white/30 rounded px-2 py-1 transition-colors">
+              Manage Plan
+            </button>
           </div>
         </div>
       )}

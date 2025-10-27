@@ -6,6 +6,7 @@ import { ProductionErrorBoundary } from '@/components/shared/ProductionErrorBoun
 import { TenantProvider } from '@/components/providers/TenantProvider'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { TopBar } from '@/components/layout/TopBar'
+import { Footer } from '@/components/layout/Footer'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { initializeStorage } from '@/lib/storage'
@@ -61,10 +62,13 @@ export default function RootLayout({
                 {/* TopBar - Sticky */}
                 <TopBar />
                 
-                {/* Page Content - Scrollable */}
-                <main className="flex-1 overflow-y-auto overflow-x-hidden">
-                  {children}
-                </main>
+                    {/* Page Content - Scrollable */}
+                    <main className="flex-1 overflow-y-auto overflow-x-hidden">
+                      {children}
+                    </main>
+                    
+                    {/* Footer */}
+                    <Footer />
               </div>
             </div>
             <Toaster 

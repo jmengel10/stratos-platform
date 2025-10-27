@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Eye, EyeOff, Check } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { signup, type SignupData } from '@/lib/auth';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -43,17 +45,25 @@ export default function SignupPage() {
     setIsLoading(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const signupData: SignupData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        company: formData.companyName,
+        agreeToTerms: formData.terms
+      };
       
-      // Create user account (simulated)
-      console.log('Creating user account:', formData);
+      const result = await signup(signupData);
       
-      // Redirect to onboarding
-      router.push('/onboarding');
+      if (result.success) {
+        toast.success('Account created successfully!');
+        router.push('/onboarding');
+      } else {
+        toast.error(result.error || 'Failed to create account. Please try again.');
+      }
     } catch (error) {
       console.error('Signup error:', error);
-      setErrors({ general: 'Something went wrong. Please try again.' });
+      toast.error('Failed to create account. Please try again.');
     } finally {
       setIsLoading(false);
     }

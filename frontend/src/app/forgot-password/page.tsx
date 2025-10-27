@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Mail, CheckCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { requestPasswordReset } from '@/lib/auth';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -30,11 +32,14 @@ export default function ForgotPasswordPage() {
     setError('');
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const result = await requestPasswordReset(email);
       
-      // Simulate success
-      setIsSubmitted(true);
+      if (result.success) {
+        setIsSubmitted(true);
+        toast.success('Password reset email sent!');
+      } else {
+        setError(result.error || 'Failed to send reset email. Please try again.');
+      }
     } catch (error) {
       setError('Something went wrong. Please try again.');
     } finally {
