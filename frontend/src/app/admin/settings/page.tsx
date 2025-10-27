@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   getPlatformSettings, 
-  updatePlatformSettings,
+  updatePlatformSettings, 
   isAdmin,
   type PlatformSettings 
 } from '@/lib/admin-storage';
+import { testAzureConnection } from '@/lib/azure-ai-service';
+import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { 
   Save, 
   Settings,
@@ -35,6 +37,8 @@ export default function AdminSettingsPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState('');
+  const [testingConnection, setTestingConnection] = useState(false);
+  const [connectionResult, setConnectionResult] = useState<{ success: boolean; message: string } | null>(null);
 
   useEffect(() => {
     if (!isAdmin()) {
@@ -86,6 +90,15 @@ export default function AdminSettingsPage() {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleTestConnection = async () => {
+    setTestingConnection(true);
+    setConnectionResult(null);
+    
+    const result = await testAzureConnection();
+    setConnectionResult(result);
+    setTestingConnection(false);
   };
 
   const addFileType = () => {
@@ -273,6 +286,71 @@ export default function AdminSettingsPage() {
             <p className="text-xs text-gray-text ml-7">
               When enabled, the site will show a maintenance message to all users except admins.
             </p>
+          </div>
+        </div>
+
+        {/* Azure OpenAI Connection */}
+        <div className="bg-white border border-border rounded-lg p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <Settings className="w-6 h-6 text-primary" />
+            <h2 className="text-xl font-serif font-semibold text-navy">Azure OpenAI Connection</h2>
+          </div>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Endpoint</label>
+              <input
+                type="text"
+                value="https://ai-core-openai-5605.openai.azure.com"
+                disabled
+                className="w-full px-4 py-2 border border-border rounded-lg bg-bg-gray text-gray-text"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Model</label>
+              <input
+                type="text"
+                value="gpt-4"
+                disabled
+                className="w-full px-4 py-2 border border-border rounded-lg bg-bg-gray text-gray-text"
+              />
+            </div>
+            
+            <button
+              type="button"
+              onClick={handleTestConnection}
+              disabled={testingConnection}
+              className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50"
+            >
+              {testingConnection ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Testing Connection...
+                </>
+              ) : (
+                'Test Connection'
+              )}
+            </button>
+            
+            {connectionResult && (
+              <div className={`p-4 rounded-lg flex items-start gap-3 ${
+                connectionResult.success 
+                  ? 'bg-green-50 border border-green-200' 
+                  : 'bg-red-50 border border-red-200'
+              }`}>
+                {connectionResult.success ? (
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                ) : (
+                  <XCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+                )}
+                <p className={`text-sm ${
+                  connectionResult.success ? 'text-green-800' : 'text-red-800'
+                }`}>
+                  {connectionResult.message}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

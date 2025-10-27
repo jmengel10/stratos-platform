@@ -73,6 +73,7 @@ export default function NewConversationPage() {
       projectName: project.name,
       clientId: selectedClientId,
       clientName: client.name,
+      agentId: selectedAgent.id,
       agent: selectedAgent.name,
       agentAvatar: selectedAgent.avatar,
       agentColor: selectedAgent.color,
@@ -233,8 +234,8 @@ export default function NewConversationPage() {
                     onClick={() => setSelectedAgent(agent)}
                     className={`flex items-center gap-3 p-4 border-2 rounded-lg transition-all ${
                       selectedAgent?.id === agent.id
-                        ? 'border-primary bg-blue-50'
-                        : 'border-border hover:border-primary'
+                        ? 'border-[#33A7B5] bg-[#EFF6FF]'
+                        : 'border-[#E5E7EB] hover:border-[#33A7B5]'
                     }`}
                   >
                     <div 

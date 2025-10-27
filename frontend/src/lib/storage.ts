@@ -39,6 +39,7 @@ export interface Conversation {
   projectName: string;
   clientId: string;
   clientName: string;
+  agentId: string;
   agent: string;
   agentAvatar: string;
   agentColor: string;
@@ -135,6 +136,7 @@ const SEED_CONVERSATIONS: Conversation[] = [
     projectName: 'GTM Strategy 2024',
     clientId: 'client_1',
     clientName: 'Acme Corporation',
+    agentId: 'agent_gtm',
     agent: 'GTM Strategist',
     agentAvatar: '🎯',
     agentColor: '#3B82F6',
@@ -349,7 +351,8 @@ export function addMessageToConversation(conversationId: string, message: Omit<M
   return updateConversation(conversationId, {
     messages: updatedMessages,
     preview,
-    timestamp: 'Just now'
+    timestamp: 'Just now',
+    updatedAt: new Date().toISOString()
   });
 }
 
