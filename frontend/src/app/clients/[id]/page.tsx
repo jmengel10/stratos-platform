@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getAllClients } from '@/lib/storage';
 
-
 export default function ClientDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   

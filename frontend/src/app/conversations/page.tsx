@@ -96,6 +96,59 @@ export default function ConversationsPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto w-full">
+      {/* Pure JavaScript Fallback Script */}
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          console.log('Pure JavaScript fallback script executing...');
+          
+          function setupDirectEventHandlers() {
+            console.log('Setting up direct event handlers...');
+            
+            // Find all buttons with "New Chat" text
+            const buttons = document.querySelectorAll('button');
+            console.log('Found', buttons.length, 'buttons');
+            
+            buttons.forEach((button, index) => {
+              console.log('Button', index, ':', button.textContent?.trim());
+              
+              if (button.textContent?.includes('New Chat') || button.textContent?.includes('Start Your First Chat')) {
+                console.log('Found New Chat button, adding direct event listener');
+                
+                // Remove any existing event listeners
+                const newButton = button.cloneNode(true);
+                button.parentNode?.replaceChild(newButton, button);
+                
+                // Add direct event listener
+                newButton.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Direct event listener triggered for New Chat button');
+                  console.log('Navigating to /conversations/new');
+                  
+                  try {
+                    window.location.href = '/conversations/new';
+                  } catch (error) {
+                    console.error('Navigation error:', error);
+                    alert('Navigation failed. Please try refreshing the page.');
+                  }
+                });
+                
+                console.log('Direct event listener added to New Chat button');
+              }
+            });
+          }
+          
+          // Run immediately
+          setupDirectEventHandlers();
+          
+          // Also run after a delay to catch dynamically loaded content
+          setTimeout(setupDirectEventHandlers, 1000);
+          setTimeout(setupDirectEventHandlers, 3000);
+          
+          console.log('Pure JavaScript fallback script completed');
+        `
+      }} />
+
       {/* Debug Panel */}
       <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
         <h3 className="text-sm font-semibold text-yellow-800 mb-2">Debug Information:</h3>
@@ -126,6 +179,21 @@ export default function ConversationsPage() {
           <Plus className="w-5 h-5" />
           New Chat
         </button>
+      </div>
+
+      {/* Pure HTML Test Button */}
+      <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <h3 className="text-sm font-semibold text-red-800 mb-2">Pure HTML Test:</h3>
+        <button 
+          onClick={() => {
+            console.log('Pure HTML onclick triggered');
+            window.location.href = '/conversations/new';
+          }}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+        >
+          Test Navigation (Pure HTML)
+        </button>
+        <p className="text-xs text-red-700 mt-2">This button uses pure HTML onclick - no React involved</p>
       </div>
 
       {/* Search */}
