@@ -5,9 +5,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Standalone mode for Azure Static Web Apps with Next.js support
-  output: 'standalone',
+  // Static export for Azure Static Web Apps
+  output: 'export',
   images: {
+    unoptimized: true, // Required for static export
     domains: ['avatars.githubusercontent.com', 'lh3.googleusercontent.com'],
     formats: ['image/avif', 'image/webp'],
   },

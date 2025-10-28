@@ -5,6 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getAllClients } from '@/lib/storage';
 
+// Generate static params for all clients
+export function generateStaticParams() {
+  const clients = getAllClients();
+  return clients.map((client) => ({
+    id: client.id,
+  }));
+}
+
 export default function ClientDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   
