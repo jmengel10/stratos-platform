@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Test Page</h1>
+        <p>This is a basic HTML page to test if Azure Static Web Apps is serving files correctly.</p>
+        
+        <button onclick="testClick()">Test Button</button>
+        <button onclick="testNavigation()">Test Navigation</button>
+        
+        <div class="log" id="log">
+            <div>Test Results:</div>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        let results = [];
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('log');
+            const resultsDiv = document.getElementById('results');
+            
+            const logEntry = `[${timestamp}] ${message}`;
+            results.push(logEntry);
+            
+            resultsDiv.innerHTML = results.join('<br>');
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            console.log(logEntry);
+        }
+        
+        function testClick() {
+            log('Button clicked successfully!');
+            alert('Button works!');
+        }
+        
+        function testNavigation() {
+            log('Testing navigation to /home...');
+            window.location.href = '/home';
+        }
+        
+        // Auto-run test on page load
+        window.addEventListener('load', function() {
+            log('Page loaded successfully');
+            log('Current URL: ' + window.location.href);
+            log('User Agent: ' + navigator.userAgent);
+        });
+    </script>
+</body>
+</html>
