@@ -2,12 +2,13 @@ import { ArrowLeft, Users, FolderOpen, MessageSquare, Calendar } from 'lucide-re
 import Link from 'next/link';
 import { getAllClients } from '@/lib/storage';
 
-// Generate static paths for all clients
+// Generate static paths for sample clients
 export async function generateStaticParams() {
-  const clients = getAllClients();
-  return clients.map((client) => ({
-    id: client.id,
-  }));
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ];
 }
 
 export default function ClientDetailPage({ params }: { params: { id: string } }) {
