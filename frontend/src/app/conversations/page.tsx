@@ -1,75 +1,24 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getAllConversations, type Conversation } from '@/lib/storage';
 import { Plus, MessageSquare, Search } from 'lucide-react';
 
 export default function ConversationsPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isMounted, setIsMounted] = useState(false);
-  const [debugInfo, setDebugInfo] = useState<string[]>([]);
-  const newChatButtonRef = useRef<HTMLButtonElement>(null);
-
-  const addDebugInfo = (message: string) => {
-    const timestamp = new Date().toLocaleTimeString();
-    const debugMessage = `[${timestamp}] ${message}`;
-    setDebugInfo(prev => [...prev, debugMessage]);
-    console.log(debugMessage);
-  };
+  const [activeTab, setActiveTab] = useState<'support' | 'info'>('support');
 
   useEffect(() => {
-    addDebugInfo('ConversationsPage: Component mounting');
-    setIsMounted(true);
-    
-    // Load conversations from storage
     const loadedConversations = getAllConversations();
     setConversations(loadedConversations);
-    addDebugInfo(`ConversationsPage: Loaded ${loadedConversations.length} conversations`);
-    
-    // Test if React is working
-    addDebugInfo('ConversationsPage: React useEffect executed');
-    
-    return () => {
-      addDebugInfo('ConversationsPage: Component unmounting');
-    };
   }, []);
 
-  useEffect(() => {
-    if (isMounted) {
-      addDebugInfo('ConversationsPage: Component mounted, setting up event listeners');
-      
-      // Add direct DOM event listener as fallback
-      const button = newChatButtonRef.current;
-      if (button) {
-        addDebugInfo('ConversationsPage: Adding direct DOM event listener to button');
-        const directHandler = (e: Event) => {
-          e.preventDefault();
-          e.stopPropagation();
-          addDebugInfo('ConversationsPage: Direct DOM event listener triggered');
-          handleNewChat();
-        };
-        
-        button.addEventListener('click', directHandler);
-        
-        return () => {
-          button.removeEventListener('click', directHandler);
-          addDebugInfo('ConversationsPage: Removed direct DOM event listener');
-        };
-      }
-    }
-  }, [isMounted]);
-
   const handleNewChat = () => {
-    addDebugInfo('handleNewChat: Button clicked - attempting navigation');
-    console.log('New Chat button clicked - attempting navigation');
     try {
       if (typeof window !== 'undefined') {
-        addDebugInfo('handleNewChat: Navigating to /conversations/new');
-        console.log('Navigating to /conversations/new');
         window.location.href = '/conversations/new';
       }
     } catch (error) {
-      addDebugInfo(`handleNewChat: Error - ${error}`);
       console.error('Navigation error:', error);
       alert('Navigation failed. Please try refreshing the page.');
     }
@@ -94,102 +43,18 @@ export default function ConversationsPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto w-full">
-      {/* Pure JavaScript Fallback Script */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          console.log('Pure JavaScript fallback script executing...');
-          
-          function setupDirectEventHandlers() {
-            console.log('Setting up direct event handlers...');
-            
-            // Find all buttons with "New Chat" text
-            const buttons = document.querySelectorAll('button');
-            console.log('Found', buttons.length, 'buttons');
-            
-            buttons.forEach((button, index) => {
-              console.log('Button', index, ':', button.textContent?.trim());
-              
-              if (button.textContent?.includes('New Chat') || button.textContent?.includes('Start Your First Chat')) {
-                console.log('Found New Chat button, adding direct event listener');
-                
-                // Remove any existing event listeners
-                const newButton = button.cloneNode(true);
-                button.parentNode?.replaceChild(newButton, button);
-                
-                // Add direct event listener
-                newButton.addEventListener('click', function(e) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Direct event listener triggered for New Chat button');
-                  console.log('Navigating to /conversations/new');
-                  
-                  try {
-                    window.location.href = '/conversations/new';
-                  } catch (error) {
-                    console.error('Navigation error:', error);
-                    alert('Navigation failed. Please try refreshing the page.');
-                  }
-                });
-                
-                console.log('Direct event listener added to New Chat button');
-              }
-            });
-          }
-          
-          // Run immediately
-          setupDirectEventHandlers();
-          
-          // Also run after a delay to catch dynamically loaded content
-          setTimeout(setupDirectEventHandlers, 1000);
-          setTimeout(setupDirectEventHandlers, 3000);
-          
-          console.log('Pure JavaScript fallback script completed');
-        `
-      }} />
-
-      {/* Debug Panel */}
-      <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-        <h3 className="text-sm font-semibold text-yellow-800 mb-2">Debug Information:</h3>
-        <div className="text-xs text-yellow-700 space-y-1 max-h-32 overflow-y-auto">
-          {debugInfo.map((info, index) => (
-            <div key={index}>{info}</div>
-          ))}
-        </div>
-        <button 
-          onClick={() => setDebugInfo([])}
-          className="mt-2 px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded hover:bg-yellow-300"
-        >
-          Clear Debug
-        </button>
-      </div>
-
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-serif font-bold text-navy">🔥🔥🔥 CONVERSATIONS - DEPLOYMENT TEST 🔥🔥🔥</h1>
+          <h1 className="text-4xl font-serif font-bold text-navy">Conversations</h1>
           <p className="text-gray-text mt-2">View all your AI-powered conversations</p>
         </div>
         <button 
-          ref={newChatButtonRef}
           onClick={handleNewChat}
           className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
           New Chat
-        </button>
-      </div>
-
-      <div className="mb-6 p-8 bg-red-500 border-4 border-yellow-400 rounded-lg text-center">
-        <h3 className="text-2xl font-bold text-white mb-4">🚨🚨🚨 DEPLOYMENT TEST - THIS SHOULD BE IMPOSSIBLE TO MISS 🚨🚨🚨</h3>
-        <p className="text-lg text-white mb-4">If you can see this HUGE RED BOX, the deployment is working!</p>
-        <button 
-          onClick={() => {
-            console.log('DEPLOYMENT TEST BUTTON CLICKED');
-            alert('Deployment test button works!');
-          }}
-          className="px-8 py-4 bg-yellow-400 text-black text-xl font-bold rounded hover:bg-yellow-300 transition-colors"
-        >
-          🔥 DEPLOYMENT TEST BUTTON 🔥
         </button>
       </div>
 
@@ -254,6 +119,42 @@ export default function ConversationsPage() {
           ))}
         </div>
       )}
+
+      {/* Compact Support/Info Tabs */}
+      <div className="mt-10">
+        <div className="bg-white border border-border rounded-lg">
+          <div className="flex border-b border-border text-sm">
+            <button
+              className={`px-4 py-2 ${activeTab === 'support' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
+              onClick={() => setActiveTab('support')}
+            >
+              Support
+            </button>
+            <button
+              className={`px-4 py-2 ${activeTab === 'info' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
+              onClick={() => setActiveTab('info')}
+            >
+              Info
+            </button>
+          </div>
+          <div className="p-4 text-sm text-gray-700">
+            {activeTab === 'support' ? (
+              <div className="space-y-2">
+                <p>Need help? Visit the Help Center or open a support ticket.</p>
+                <div className="flex gap-2">
+                  <a href="/help" className="px-3 py-2 border border-border rounded hover:bg-gray-50">Help Center</a>
+                  <a href="/support" className="px-3 py-2 border border-border rounded hover:bg-gray-50">Contact Support</a>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-1">
+                <p className="text-gray-600">Tips: Use search to filter conversations. Click any row to open.</p>
+                <p className="text-gray-600">New: Quick actions are available on the dashboard.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
