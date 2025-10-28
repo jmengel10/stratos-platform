@@ -1,13 +1,7 @@
+'use client';
+
 import { ArrowLeft, FolderOpen, MessageSquare, Calendar, Users, Edit } from 'lucide-react';
 import Link from 'next/link';
-
-export async function generateStaticParams() {
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-  ];
-}
 
 export default function ProjectDetailPage({ params }: { params: { id: string } }) {
   return (

@@ -1,15 +1,8 @@
+'use client';
+
 import { ArrowLeft, Users, FolderOpen, MessageSquare, Calendar, Edit } from 'lucide-react';
 import Link from 'next/link';
 import { getAllClients } from '@/lib/storage';
-
-// Generate static paths for sample clients
-export async function generateStaticParams() {
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-  ];
-}
 
 export default function ClientDetailPage({ params }: { params: { id: string } }) {
   
