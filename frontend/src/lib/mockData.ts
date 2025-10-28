@@ -1,282 +1,311 @@
-export interface Client {
-  id: string;
-  name: string;
-  industry: string;
-  avatar: string;
-  avatarColor: string;
-  projects: number;
-  conversations: number;
-  lastActive: string;
-}
+// Mock data for all pages
 
-export interface Project {
-  id: string;
-  clientId: string;
-  clientName: string;
-  name: string;
-  type: string;
-  status: 'active' | 'in-progress' | 'planning' | 'completed';
-  progress: number;
-  conversations: number;
-  members: number;
-  startDate: string;
-  dueDate: string;
-  lastActive: string;
-}
-
-export interface Conversation {
-  id: string;
-  projectId: string;
-  projectName: string;
-  clientId: string;
-  clientName: string;
-  agent: string;
-  agentAvatar: string;
-  agentColor: string;
-  title: string;
-  preview: string;
-  timestamp: string;
-}
-
-export const mockClients: Client[] = [
+export const mockClients = [
   {
-    id: 'client_1',
+    id: '1',
     name: 'Acme Corporation',
     industry: 'Financial Services',
-    avatar: 'A',
-    avatarColor: '#0F172A',
     projects: 6,
     conversations: 18,
-    lastActive: '2 days ago'
+    lastActive: '2 days ago',
+    clientSince: 'March 2022',
+    primaryContact: 'John Williams, CFO',
+    location: 'New York, NY',
+    phone: '(555) 123-4567',
+    email: 'contact@acme.com',
+    website: 'acmecorp.com',
+    companySize: '500-1000 employees',
+    annualRevenue: '$500M - $1B',
+    founded: '1995',
+    type: 'Public Company',
+    stockSymbol: 'ACME',
+    taxId: 'XX-XXXXXXX',
+    parentCompany: 'None',
+    employeeCount: 850,
+    status: 'Active',
+    contractRenewal: 'March 2025',
+    billingContact: 'Jane Smith, AP Manager',
+    accountManager: 'Sarah Chen',
+    contractValue: '$450,000 annual',
+    paymentTerms: 'Net 30',
+    lastReviewDate: 'January 2024'
   },
   {
-    id: 'client_2',
+    id: '2',
     name: 'TechVentures Group',
     industry: 'Healthcare Technology',
-    avatar: 'T',
-    avatarColor: '#33A7B5',
     projects: 8,
     conversations: 24,
-    lastActive: '1 week ago'
+    lastActive: '1 week ago',
+    clientSince: 'January 2023',
+    primaryContact: 'Mike Johnson, CEO',
+    location: 'San Francisco, CA',
+    phone: '(555) 234-5678',
+    email: 'contact@techventures.com',
+    website: 'techventures.com',
+    companySize: '100-500 employees',
+    annualRevenue: '$100M - $500M',
+    founded: '2018',
+    type: 'Private Company',
+    stockSymbol: 'N/A',
+    taxId: 'XX-XXXXXXX',
+    parentCompany: 'None',
+    employeeCount: 250,
+    status: 'Active',
+    contractRenewal: 'January 2025',
+    billingContact: 'Lisa Chen, CFO',
+    accountManager: 'Sarah Chen',
+    contractValue: '$300,000 annual',
+    paymentTerms: 'Net 30',
+    lastReviewDate: 'December 2023'
   },
   {
-    id: 'client_3',
+    id: '3',
     name: 'HealthFirst Systems',
     industry: 'Medical Devices',
-    avatar: 'H',
-    avatarColor: '#6B7280',
     projects: 12,
     conversations: 32,
-    lastActive: '3 days ago'
-  },
-  {
-    id: 'client_4',
-    name: 'GlobalTech Partners',
-    industry: 'Enterprise Software',
-    avatar: 'G',
-    avatarColor: '#6B7280',
-    projects: 10,
-    conversations: 28,
-    lastActive: 'Yesterday'
-  },
-  {
-    id: 'client_5',
-    name: 'MedCore Solutions',
-    industry: 'Healthcare IT',
-    avatar: 'M',
-    avatarColor: '#0F172A',
-    projects: 14,
-    conversations: 40,
-    lastActive: '4 days ago'
-  },
-  {
-    id: 'client_6',
-    name: 'InnovateCo',
-    industry: 'SaaS Platform',
-    avatar: 'I',
-    avatarColor: '#33A7B5',
-    projects: 7,
-    conversations: 22,
-    lastActive: 'Today'
-  },
+    lastActive: '3 days ago',
+    clientSince: 'June 2022',
+    primaryContact: 'Dr. Sarah Wilson, CMO',
+    location: 'Boston, MA',
+    phone: '(555) 345-6789',
+    email: 'contact@healthfirst.com',
+    website: 'healthfirst.com',
+    companySize: '1000+ employees',
+    annualRevenue: '$1B+',
+    founded: '2010',
+    type: 'Public Company',
+    stockSymbol: 'HFS',
+    taxId: 'XX-XXXXXXX',
+    parentCompany: 'None',
+    employeeCount: 1200,
+    status: 'Active',
+    contractRenewal: 'June 2025',
+    billingContact: 'Robert Davis, Finance Director',
+    accountManager: 'Sarah Chen',
+    contractValue: '$750,000 annual',
+    paymentTerms: 'Net 30',
+    lastReviewDate: 'November 2023'
+  }
 ];
 
-export const mockProjects: Project[] = [
-  // Acme Corporation projects
+export const mockProjects = [
   {
-    id: 'proj_1',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    name: 'GTM Strategy 2024',
+    id: '1',
+    title: 'GTM Strategy 2024',
     type: 'GTM Strategy',
-    status: 'active',
+    status: 'active' as const,
     progress: 60,
     conversations: 8,
     members: 3,
     startDate: 'Jan 2024',
     dueDate: 'Mar 2024',
-    lastActive: '3 hours ago'
+    lastActive: '3 hours ago',
+    clientId: '1',
+    description: 'Comprehensive go-to-market strategy for new product launch',
+    priority: 'High',
+    budget: '$45,000',
+    tags: ['Q1', 'Enterprise', 'Healthcare']
   },
   {
-    id: 'proj_2',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    name: 'Operations Review Q1',
+    id: '2',
+    title: 'Operations Review Q1',
     type: 'Operations',
-    status: 'in-progress',
+    status: 'in-progress' as const,
     progress: 35,
     conversations: 5,
     members: 2,
     startDate: 'Feb 2024',
     dueDate: 'Apr 2024',
-    lastActive: '2 days ago'
+    lastActive: '2 days ago',
+    clientId: '1',
+    description: 'Quarterly operations review and optimization',
+    priority: 'Medium',
+    budget: '$25,000',
+    tags: ['Q1', 'Operations', 'Review']
   },
   {
-    id: 'proj_3',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    name: 'Digital Transformation',
+    id: '3',
+    title: 'Digital Transformation',
     type: 'Technology',
-    status: 'active',
+    status: 'active' as const,
     progress: 80,
     conversations: 12,
     members: 4,
     startDate: 'Dec 2023',
     dueDate: 'Feb 2024',
-    lastActive: 'Yesterday'
-  },
-  // TechVentures projects
-  {
-    id: 'proj_4',
-    clientId: 'client_2',
-    clientName: 'TechVentures Group',
-    name: 'Market Expansion',
-    type: 'Growth Strategy',
-    status: 'active',
-    progress: 45,
-    conversations: 6,
-    members: 3,
-    startDate: 'Jan 2024',
-    dueDate: 'May 2024',
-    lastActive: '1 day ago'
-  },
-  {
-    id: 'proj_5',
-    clientId: 'client_2',
-    clientName: 'TechVentures Group',
-    name: 'Product Launch Q2',
-    type: 'Product Strategy',
-    status: 'planning',
-    progress: 20,
-    conversations: 4,
-    members: 2,
-    startDate: 'Mar 2024',
-    dueDate: 'Jun 2024',
-    lastActive: '3 days ago'
-  },
+    lastActive: 'Yesterday',
+    clientId: '1',
+    description: 'Digital transformation initiative for modern operations',
+    priority: 'High',
+    budget: '$80,000',
+    tags: ['Digital', 'Transformation', 'Technology']
+  }
 ];
 
-export const mockConversations: Conversation[] = [
-  // GTM Strategy 2024 conversations
+export const mockActivity = [
   {
-    id: 'conv_1',
-    projectId: 'proj_1',
-    projectName: 'GTM Strategy 2024',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    agent: 'GTM Strategist',
-    agentAvatar: '🎯',
-    agentColor: '#3B82F6',
-    title: 'Market Analysis',
-    preview: 'Based on the competitive landscape analysis...',
-    timestamp: '2h ago'
+    id: '1',
+    type: 'conversation' as const,
+    title: 'New conversation started in GTM Strategy 2024',
+    description: 'Discussion about Q2 market positioning',
+    user: 'Sarah Chen',
+    timestamp: '2 hours ago'
   },
   {
-    id: 'conv_2',
-    projectId: 'proj_1',
-    projectName: 'GTM Strategy 2024',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    agent: 'GTM Strategist',
-    agentAvatar: '🎯',
-    agentColor: '#3B82F6',
-    title: 'Competitor Analysis',
-    preview: 'Top competitors in the healthcare IT space include...',
-    timestamp: '1 week ago'
+    id: '2',
+    type: 'document' as const,
+    title: 'Framework document generated',
+    description: 'Market analysis framework completed',
+    user: 'GTM Strategist',
+    timestamp: '5 hours ago'
   },
   {
-    id: 'conv_3',
-    projectId: 'proj_1',
-    projectName: 'GTM Strategy 2024',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    agent: 'Data Analyst',
-    agentAvatar: '📊',
-    agentColor: '#EC4899',
-    title: 'Market Sizing',
-    preview: 'TAM analysis shows a $12B addressable market...',
-    timestamp: '3 days ago'
-  },
-  // Operations Review conversations
-  {
-    id: 'conv_4',
-    projectId: 'proj_2',
-    projectName: 'Operations Review Q1',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    agent: 'Operations Analyst',
-    agentAvatar: '⚙️',
-    agentColor: '#10B981',
-    title: 'Process Optimization',
-    preview: 'We can optimize the workflow by eliminating...',
-    timestamp: '5h ago'
+    id: '3',
+    type: 'project' as const,
+    title: 'Operations Review Q1 marked as completed',
+    description: 'Final deliverables submitted',
+    user: 'Sarah Chen',
+    timestamp: 'Yesterday'
   },
   {
-    id: 'conv_5',
-    projectId: 'proj_2',
-    projectName: 'Operations Review Q1',
-    clientId: 'client_1',
-    clientName: 'Acme Corporation',
-    agent: 'Operations Analyst',
-    agentAvatar: '⚙️',
-    agentColor: '#10B981',
-    title: 'Cost Reduction Strategy',
-    preview: 'Three key areas for cost reduction identified...',
+    id: '4',
+    type: 'team' as const,
+    title: 'New team member added to Digital Transformation',
+    description: 'Mike Johnson joined as analyst',
+    user: 'Sarah Chen',
     timestamp: '2 days ago'
   },
-  // Market Expansion conversations
   {
-    id: 'conv_6',
-    projectId: 'proj_4',
-    projectName: 'Market Expansion',
-    clientId: 'client_2',
-    clientName: 'TechVentures Group',
-    agent: 'Growth Strategist',
-    agentAvatar: '📈',
-    agentColor: '#8B5CF6',
-    title: 'Regional Analysis',
-    preview: 'Southeast Asia presents the strongest opportunity...',
-    timestamp: '1 day ago'
-  },
+    id: '5',
+    type: 'calendar' as const,
+    title: 'Board Advisory meeting scheduled',
+    description: 'Series B preparation call',
+    user: 'John Williams',
+    timestamp: '3 days ago'
+  }
 ];
 
-// Helper functions
-export function getClientById(id: string): Client | undefined {
-  return mockClients.find(c => c.id === id);
-}
+export const mockFiles = [
+  {
+    id: '1',
+    name: 'Market_Analysis_Framework.pdf',
+    size: '2.4 MB',
+    date: 'Feb 10, 2024',
+    client: 'Acme Corp',
+    type: 'PDF'
+  },
+  {
+    id: '2',
+    name: 'GTM_Strategy_Template.docx',
+    size: '156 KB',
+    date: 'Feb 9, 2024',
+    client: 'TechVentures',
+    type: 'DOCX'
+  },
+  {
+    id: '3',
+    name: 'Org_Chart.png',
+    size: '1.2 MB',
+    date: 'Feb 8, 2024',
+    client: 'HealthFirst',
+    type: 'PNG'
+  }
+];
 
-export function getProjectsByClientId(clientId: string): Project[] {
-  return mockProjects.filter(p => p.clientId === clientId);
-}
+export const mockTemplates = [
+  {
+    id: '1',
+    title: 'Go-to-Market Strategy Framework',
+    description: 'Comprehensive framework for planning and executing market entry strategies',
+    category: 'GTM Strategy',
+    rating: 4.8,
+    uses: 234,
+    author: 'Sarah Chen',
+    featured: true,
+    previewColor: '#8B5CF6'
+  },
+  {
+    id: '2',
+    title: 'Operations Review Template',
+    description: 'Structured approach to quarterly operations review and optimization',
+    category: 'Operations',
+    rating: 4.6,
+    uses: 189,
+    author: 'Mike Johnson',
+    featured: true,
+    previewColor: '#F97316'
+  },
+  {
+    id: '3',
+    title: 'GTM Strategy Framework',
+    description: 'Step-by-step guide for developing go-to-market strategies',
+    category: 'GTM Strategy',
+    rating: 4.7,
+    uses: 156,
+    author: 'Sarah Chen',
+    featured: false,
+    previewColor: '#3B82F6'
+  }
+];
 
-export function getProjectById(id: string): Project | undefined {
-  return mockProjects.find(p => p.id === id);
-}
+export const mockTeamMembers = [
+  {
+    id: '1',
+    name: 'Sarah Chen',
+    email: 'sarah@stratos.com',
+    role: 'Owner',
+    projects: ['Project Alpha', 'Project Beta', '+1 more'],
+    status: 'Active',
+    lastActive: 'Just now',
+    avatar: 'SC'
+  },
+  {
+    id: '2',
+    name: 'John Williams',
+    email: 'john@stratos.com',
+    role: 'Admin',
+    projects: ['Project Alpha', 'Project Beta'],
+    status: 'Active',
+    lastActive: '2 hours ago',
+    avatar: 'JW'
+  },
+  {
+    id: '3',
+    name: 'Mike Johnson',
+    email: 'mike@stratos.com',
+    role: 'Member',
+    projects: ['Project Gamma'],
+    status: 'Active',
+    lastActive: '1 day ago',
+    avatar: 'MJ'
+  }
+];
 
-export function getConversationsByProjectId(projectId: string): Conversation[] {
-  return mockConversations.filter(c => c.projectId === projectId);
-}
-
-export function getConversationById(id: string): Conversation | undefined {
-  return mockConversations.find(c => c.id === id);
-}
+export const mockCalendarEvents = [
+  {
+    id: '1',
+    title: 'GTM Strategy Call',
+    time: '2:00 PM',
+    client: 'Acme Corporation',
+    date: '2024-02-13',
+    type: 'meeting'
+  },
+  {
+    id: '2',
+    title: 'Operations Review',
+    time: '4:00 PM',
+    client: 'TechVentures Group',
+    date: '2024-02-13',
+    type: 'meeting'
+  },
+  {
+    id: '3',
+    title: 'Fundraising Prep',
+    time: '10:00 AM',
+    client: 'HealthFirst Systems',
+    date: '2024-02-14',
+    type: 'meeting'
+  }
+];
