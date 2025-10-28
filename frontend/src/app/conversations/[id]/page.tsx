@@ -13,14 +13,6 @@ import {
 import { sendMessageToAI, type AIStreamChunk } from '@/lib/azure-ai-service';
 import { Send, Paperclip, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 
-// Generate static params for all conversations
-export function generateStaticParams() {
-  const conversations = getAllConversations();
-  return conversations.map((conversation) => ({
-    id: conversation.id,
-  }));
-}
-
 export default function ConversationPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [conversation, setConversation] = useState<Conversation | null>(null);
