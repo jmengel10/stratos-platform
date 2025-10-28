@@ -165,6 +165,11 @@ export default function DashboardPage() {
             : 'Here\'s what\'s happening with your strategic consulting practice'
           }
         </p>
+        <div className="mt-4 p-3 bg-blue-100 border border-blue-300 rounded-lg">
+          <p className="text-blue-800 text-sm">
+            🔄 <strong>Preview Environment:</strong> This is a preview deployment for testing
+          </p>
+        </div>
       </div>
 
       {/* Stats Cards Grid */}
