@@ -108,13 +108,6 @@ export default function DashboardPage() {
           Take a Tour
         </button>
         
-        <button
-          onClick={() => handleNavigation('/navigation-test')}
-          className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-        >
-          <Play className="w-5 h-5" />
-          Test Navigation
-        </button>
       </div>
     </div>
   );
