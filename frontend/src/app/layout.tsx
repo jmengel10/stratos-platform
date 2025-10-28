@@ -67,8 +67,7 @@ export default function RootLayout({
                       {children}
                     </main>
                     
-                    {/* Footer */}
-                    <Footer />
+                    {/* Footer removed to maximize usable space */}
               </div>
             </div>
             <Toaster 
