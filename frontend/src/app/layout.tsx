@@ -1,14 +1,5 @@
 'use client';
 
-<<<<<<< HEAD
-import { Inter, Playfair_Display } from 'next/font/google';
-import './globals.css';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { TopBar } from '@/components/layout/TopBar';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
-=======
 import { Inter, Playfair_Display } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { ProductionErrorBoundary } from '@/components/shared/ProductionErrorBoundary'
@@ -52,23 +43,9 @@ export default function RootLayout({
         // setupGlobalErrorHandling();
         // trackPerformance();
       }, [refreshToken]);
->>>>>>> 8153a21137d1aeba7c97ed95965a430c8439521c
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-<<<<<<< HEAD
-      <body className="font-sans antialiased bg-[#F9FAFB]">
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <div className="flex-1 flex flex-col ml-64">
-            <TopBar />
-            <main className="flex-1 overflow-y-auto">
-              {children}
-            </main>
-          </div>
-        </div>
-=======
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -121,9 +98,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
           </ProductionErrorBoundary>
         </TenantProvider>
->>>>>>> 8153a21137d1aeba7c97ed95965a430c8439521c
       </body>
     </html>
-  );
+  )
 }
 

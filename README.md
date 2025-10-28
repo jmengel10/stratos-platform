@@ -1,58 +1,121 @@
 # StratOS Platform
 
-Enterprise AI Strategy Consulting Platform with Multi-Agent System, Data Analysis, and PowerPoint Generation.
+Enterprise AI Strategy Consulting Platform - Helping businesses make data-driven decisions and achieve sustainable growth.
 
-## Architecture
+## 🏗️ Project Structure
 
-- **Frontend**: Next.js 14 with TypeScript
-- **Backend**: Azure Functions with TypeScript
+```
+stratos-platform/
+├── frontend/                    # Next.js frontend application
+│   ├── src/
+│   │   ├── app/                # Next.js App Router pages
+│   │   ├── components/         # React components
+│   │   ├── lib/               # Utility functions
+│   │   ├── store/             # Zustand state management
+│   │   └── types/             # TypeScript type definitions
+│   ├── public/                # Static assets
+│   ├── package.json           # Frontend dependencies
+│   ├── next.config.js         # Next.js configuration
+│   ├── tailwind.config.js     # Tailwind CSS configuration
+│   └── .nvmrc                 # Node version specification
+├── backend/                   # Azure Functions backend
+│   ├── src/
+│   │   ├── functions/         # Azure Function endpoints
+│   │   ├── services/          # Business logic services
+│   │   ├── models/            # Data models
+│   │   └── agents/            # AI agent implementations
+│   ├── host.json              # Azure Functions host configuration
+│   └── package.json           # Backend dependencies
+├── infrastructure/            # Azure resource configurations
+└── .github/
+    └── workflows/             # GitHub Actions CI/CD pipelines
+```
+
+## 🚀 Quick Start
+
+### Frontend Development
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Visit `http://localhost:3000`
+
+### Backend Development
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+API available at `http://localhost:7071/api`
+
+## 📦 Deployment
+
+### Production (Azure Static Web Apps)
+- **URL**: https://thankful-dune-0bc99f70f-production.eastus2.3.azurestaticapps.net
+- **Deployment**: Automatic on push to `master` branch via GitHub Actions
+
+### Preview
+- Automatic deployment for pull requests
+- Preview URL generated for each PR
+
+## 🛠️ Technology Stack
+
+- **Frontend**: Next.js 14, React 18, TypeScript, Tailwind CSS
+- **Backend**: Azure Functions, Node.js, TypeScript
 - **Database**: Azure Cosmos DB
-- **Deployment**: Azure Static Web Apps
+- **AI**: Azure OpenAI Service
+- **Hosting**: Azure Static Web Apps
+- **CI/CD**: GitHub Actions
 
-## Quick Start
+## 📝 Key Features
 
-### Prerequisites
-- Node.js 18+
-- Azure CLI
-- Azure subscription
+- 🤖 AI-powered strategic consulting
+- 👥 Multi-tenant architecture
+- 📊 Data analytics and insights
+- 📈 Project management
+- 💬 AI conversation interface
+- 📄 Document processing
+- 🎨 Modern, responsive UI
 
-### Development
+## 🔐 Environment Variables
 
-1. **Frontend Development**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-2. **Backend Development**
-   ```bash
-   cd backend
-   npm install
-   npm run dev
-   ```
-
-### Deployment
-
-The application is configured for Azure deployment using GitHub Actions. The deployment is triggered automatically on push to the master branch.
-
-## Project Structure
-
-```
-├── frontend/          # Next.js frontend application
-│   ├── src/           # Source code
-│   ├── public/        # Static assets
-│   └── package.json   # Dependencies
-├── backend/           # Azure Functions backend
-│   ├── src/           # Source code
-│   └── package.json   # Dependencies
-└── .github/           # GitHub Actions workflows
+### Frontend
+Create `frontend/.env.local`:
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:7071/api
 ```
 
-## Environment Variables
+### Backend
+Create `backend/local.settings.json`:
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AZURE_OPENAI_ENDPOINT": "your-endpoint",
+    "AZURE_OPENAI_API_KEY": "your-key",
+    "COSMOS_DB_ENDPOINT": "your-endpoint",
+    "COSMOS_DB_KEY": "your-key"
+  }
+}
+```
 
-See `frontend/.env.example` and `backend/local.settings.json.template` for required environment variables.
+## 📚 Documentation
 
-## License
+- [Deployment Guide](frontend/AZURE_DEPLOYMENT_GUIDE.md)
+- [Environment Setup](ENVIRONMENT_SETUP.md)
+- [API Documentation](backend/README.md)
 
-Private - All rights reserved.
+## 👥 Team
+
+Built with ❤️ for strategic consultants
+
+## 📄 License
+
+All rights reserved © 2025 Stratos Platform
