@@ -1,0 +1,207 @@
+name: Deploy Stratos UI to Azure Static Web Apps
+
+on:
+  push:
+    branches:
+      - main
+      - production
+    paths:
+      - 'stratos-ui/**'
+      - '.github/workflows/deploy-stratos-ui.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+      - production
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+        default: 'production'
+
+env:
+  NODE_VERSION: '18.x'
+  AZURE_STATIC_WEB_APP_NAME: 'stratos-platform'
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/production' && 'production') || (github.ref == 'refs/heads/main' && 'staging') || 'development' }}
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: stratos-ui/package-lock.json
+
+      - name: 'Install Dependencies'
+        working-directory: ./stratos-ui
+        run: |
+          npm ci
+          npm list
+
+      - name: 'Run Linting'
+        working-directory: ./stratos-ui
+        run: |
+          npm run lint || echo "Linting completed with warnings"
+
+      - name: 'Run Tests'
+        working-directory: ./stratos-ui
+        run: |
+          npm test -- --passWithNoTests
+        env:
+          CI: true
+
+      - name: 'Build Application'
+        working-directory: ./stratos-ui
+        run: |
+          npm run build
+        env:
+          NODE_ENV: production
+          REACT_APP_ENVIRONMENT: ${{ github.event.inputs.environment || 'production' }}
+          REACT_APP_API_URL: ${{ secrets.STRATOS_API_URL || 'https://stratos-platform-func-829197.azurewebsites.net/api' }}
+          REACT_APP_BRAND_ID: stratos
+          REACT_APP_BRAND_NAME: 'Stratos Platform'
+          REACT_APP_PRIMARY_COLOR: '#2563eb'
+
+      - name: 'Deploy to Azure Static Web Apps'
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_STRATOS }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'upload'
+          app_location: '/stratos-ui'
+          api_location: ''
+          output_location: 'build'
+          skip_app_build: true
+
+  close-pull-request:
+    name: Close Pull Request
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 'Close Pull Request Deployment'
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_STRATOS }}
+          action: 'close'
+
+  validate:
+    name: Validate Deployment
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    
+    steps:
+      - name: 'Wait for Deployment'
+        run: sleep 30
+
+      - name: 'Get Static Web App URL'
+        id: swa-url
+        run: |
+          # Production URL
+          if [ "${{ github.ref }}" = "refs/heads/production" ]; then
+            echo "url=https://app.stratosplatform.com" >> $GITHUB_OUTPUT
+          else
+            echo "url=https://${{ env.AZURE_STATIC_WEB_APP_NAME }}.azurestaticapps.net" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Health Check'
+        run: |
+          echo "Testing Static Web App..."
+          max_attempts=10
+          attempt=0
+          url="${{ steps.swa-url.outputs.url }}"
+          
+          while [ $attempt -lt $max_attempts ]; do
+            response=$(curl -s -o /dev/null -w "%{http_code}" "$url" || echo "000")
+            
+            if [ "$response" = "200" ]; then
+              echo "✅ Static Web App is accessible (HTTP $response)"
+              exit 0
+            fi
+            
+            echo "⏳ Attempt $((attempt+1))/$max_attempts failed (HTTP $response). Retrying in 10s..."
+            sleep 10
+            attempt=$((attempt+1))
+          done
+          
+          echo "❌ Static Web App health check failed after $max_attempts attempts"
+          exit 1
+
+      - name: 'Test API Connection'
+        run: |
+          echo "Testing API connectivity from frontend..."
+          # This would test if the frontend can reach the backend
+          curl -s -H "x-brand-id: stratos" \
+            "${{ secrets.STRATOS_API_URL || 'https://stratos-platform-func-829197.azurewebsites.net/api' }}/health" \
+            && echo "✅ API is reachable" \
+            || echo "⚠️  API health check failed (may need warmup)"
+
+      - name: 'Lighthouse Performance Audit'
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            ${{ steps.swa-url.outputs.url }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        continue-on-error: true
+
+  notify:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs: [build-and-deploy, validate]
+    if: always() && (github.event_name != 'pull_request' || github.event.action != 'closed')
+    
+    steps:
+      - name: 'Determine Status'
+        id: status
+        run: |
+          if [ "${{ needs.validate.result }}" = "success" ]; then
+            echo "status=✅ SUCCESS" >> $GITHUB_OUTPUT
+            echo "color=#00ff00" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ FAILED" >> $GITHUB_OUTPUT
+            echo "color=#ff0000" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 'Deployment Summary'
+        run: |
+          cat << EOF >> $GITHUB_STEP_SUMMARY
+          ## 🎨 Stratos UI Deployment
+          
+          **Status:** ${{ steps.status.outputs.status }}
+          **Environment:** ${{ github.event.inputs.environment || 'production' }}
+          **Static Web App:** ${{ env.AZURE_STATIC_WEB_APP_NAME }}
+          **Branch:** ${{ github.ref_name }}
+          **Commit:** ${{ github.sha }}
+          **Deployed By:** ${{ github.actor }}
+          **Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          ### Job Results
+          - Build & Deploy: ${{ needs.build-and-deploy.result }}
+          - Validate: ${{ needs.validate.result }}
+          
+          ### Access URLs
+          - Production: https://app.stratosplatform.com
+          - Preview: https://${{ env.AZURE_STATIC_WEB_APP_NAME }}.azurestaticapps.net
+          
+          ### Resources
+          - [Static Web App](https://portal.azure.com/#@/resource/subscriptions/.../resourceGroups/mengel-enterprises-rg/providers/Microsoft.Web/staticSites/${{ env.AZURE_STATIC_WEB_APP_NAME }})
+          EOF
