@@ -141,7 +141,12 @@ export default function ResourcesPage() {
         const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             resource.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-        const matchesType = selectedType === 'all' || resource.type === selectedType;
+        const matchesType = selectedType === 'all' || 
+          (selectedType === 'documents' && resource.type === 'document') ||
+          (selectedType === 'templates' && resource.type === 'template') ||
+          (selectedType === 'guides' && resource.type === 'guide') ||
+          (selectedType === 'videos' && resource.type === 'video') ||
+          (selectedType === 'images' && resource.type === 'image');
         const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
         return matchesSearch && matchesType && matchesCategory;
       })
