@@ -6,7 +6,6 @@ import { Plus, MessageSquare, Search } from 'lucide-react';
 export default function ConversationsPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState<'support' | 'info'>('support');
 
   useEffect(() => {
     const loadedConversations = getAllConversations();
@@ -120,41 +119,6 @@ export default function ConversationsPage() {
         </div>
       )}
 
-      {/* Compact Support/Info Tabs */}
-      <div className="mt-10">
-        <div className="bg-white border border-border rounded-lg">
-          <div className="flex border-b border-border text-sm">
-            <button
-              className={`px-4 py-2 ${activeTab === 'support' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
-              onClick={() => setActiveTab('support')}
-            >
-              Support
-            </button>
-            <button
-              className={`px-4 py-2 ${activeTab === 'info' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
-              onClick={() => setActiveTab('info')}
-            >
-              Info
-            </button>
-          </div>
-          <div className="p-4 text-sm text-gray-700">
-            {activeTab === 'support' ? (
-              <div className="space-y-2">
-                <p>Need help? Visit the Help Center or open a support ticket.</p>
-                <div className="flex gap-2">
-                  <a href="/help" className="px-3 py-2 border border-border rounded hover:bg-gray-50">Help Center</a>
-                  <a href="/support" className="px-3 py-2 border border-border rounded hover:bg-gray-50">Contact Support</a>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-1">
-                <p className="text-gray-600">Tips: Use search to filter conversations. Click any row to open.</p>
-                <p className="text-gray-600">New: Quick actions are available on the dashboard.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

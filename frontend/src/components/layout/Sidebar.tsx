@@ -19,7 +19,9 @@ import {
   ChevronDown,
   HelpCircle,
   CreditCard,
-  DollarSign
+  DollarSign,
+  LifeBuoy,
+  Info
 } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
 
@@ -32,6 +34,8 @@ const navigation = [
   { name: 'Calendar', href: '/calendar', icon: Calendar },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
   { name: 'Templates', href: '/templates', icon: Copy },
+  { name: 'Support', href: '/support', icon: LifeBuoy },
+  { name: 'Info', href: '/info', icon: Info },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
