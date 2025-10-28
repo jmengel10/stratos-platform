@@ -7,7 +7,6 @@ const nextConfig = {
   },
   // Standalone mode for Azure Static Web Apps with Next.js support
   output: 'standalone',
-  trailingSlash: true,
   images: {
     domains: ['avatars.githubusercontent.com', 'lh3.googleusercontent.com'],
     formats: ['image/avif', 'image/webp'],
