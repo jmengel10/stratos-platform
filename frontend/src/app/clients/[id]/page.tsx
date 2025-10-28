@@ -1,4 +1,4 @@
-import { ArrowLeft, Users, FolderOpen, MessageSquare, Calendar } from 'lucide-react';
+import { ArrowLeft, Users, FolderOpen, MessageSquare, Calendar, Edit } from 'lucide-react';
 import Link from 'next/link';
 import { getAllClients } from '@/lib/storage';
 
@@ -35,6 +35,13 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
             <p className="text-gray-text mt-2">Client ID: {params.id}</p>
           </div>
         </div>
+        <button 
+          onClick={() => console.log('Edit client:', params.id)}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-text hover:text-navy"
+          title="Edit Client"
+        >
+          <Edit className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Client Info */}

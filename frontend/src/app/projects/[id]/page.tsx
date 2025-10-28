@@ -1,4 +1,4 @@
-import { ArrowLeft, FolderOpen, MessageSquare, Calendar, Users } from 'lucide-react';
+import { ArrowLeft, FolderOpen, MessageSquare, Calendar, Users, Edit } from 'lucide-react';
 import Link from 'next/link';
 
 export async function generateStaticParams() {
@@ -34,6 +34,13 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
             <p className="text-gray-text mt-2">Project ID: {params.id}</p>
           </div>
         </div>
+        <button 
+          onClick={() => console.log('Edit project:', params.id)}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-text hover:text-navy"
+          title="Edit Project"
+        >
+          <Edit className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Project Info */}
