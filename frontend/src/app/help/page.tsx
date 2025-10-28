@@ -1,290 +1,320 @@
 'use client';
+
 import { useState } from 'react';
-import { Search, ChevronDown, ChevronUp, Play, FileText, Mail, Phone } from 'lucide-react';
-
-const FAQ_CATEGORIES = [
-  {
-    id: 'getting-started',
-    title: 'Getting Started',
-    icon: '🚀',
-    questions: [
-      {
-        question: 'How do I create my first client?',
-        answer: 'To create your first client, go to the Clients page and click the "New Client" button. Fill in the client information including name, industry, and contact details.'
-      },
-      {
-        question: 'What is the difference between projects and conversations?',
-        answer: 'Projects are strategic engagements with clients, while conversations are AI-powered chat sessions that help you work on specific aspects of those projects.'
-      },
-      {
-        question: 'How do I invite team members?',
-        answer: 'Team members can be invited through the Settings page under the "Team" tab. You can send invitations via email and assign different permission levels.'
-      }
-    ]
-  },
-  {
-    id: 'billing',
-    title: 'Billing & Subscription',
-    icon: '💳',
-    questions: [
-      {
-        question: 'How do I upgrade my plan?',
-        answer: 'You can upgrade your plan by going to Settings > Billing or visiting the Subscription page. Choose your new plan and follow the checkout process.'
-      },
-      {
-        question: 'Can I cancel my subscription anytime?',
-        answer: 'Yes, you can cancel your subscription at any time. You\'ll continue to have access to premium features until the end of your billing period.'
-      },
-      {
-        question: 'What payment methods do you accept?',
-        answer: 'We accept all major credit cards (Visa, MasterCard, American Express) and process payments securely through Stripe.'
-      }
-    ]
-  },
-  {
-    id: 'features',
-    title: 'Features & Usage',
-    icon: '⚡',
-    questions: [
-      {
-        question: 'How do AI agents work?',
-        answer: 'AI agents are specialized assistants that help with different aspects of strategic consulting. Each agent has unique capabilities and can be used in conversations.'
-      },
-      {
-        question: 'Can I customize templates?',
-        answer: 'Yes, you can create custom templates for projects and conversations. Go to the Templates section to create and manage your custom templates.'
-      },
-      {
-        question: 'Is my data secure?',
-        answer: 'Yes, we use enterprise-grade security measures including encryption, secure data centers, and regular security audits to protect your data.'
-      }
-    ]
-  }
-];
-
-const TOPICS = [
-  {
-    title: 'Getting Started',
-    description: 'Learn the basics of using our platform',
-    icon: '🚀',
-    articles: 12
-  },
-  {
-    title: 'Billing & Plans',
-    description: 'Manage your subscription and billing',
-    icon: '💳',
-    articles: 8
-  },
-  {
-    title: 'Features',
-    description: 'Explore all platform features',
-    icon: '⚡',
-    articles: 15
-  },
-  {
-    title: 'Troubleshooting',
-    description: 'Common issues and solutions',
-    icon: '🔧',
-    articles: 6
-  }
-];
-
-const VIDEO_TUTORIALS = [
-  {
-    title: 'Platform Overview',
-    duration: '5:30',
-    thumbnail: '📹'
-  },
-  {
-    title: 'Creating Your First Project',
-    duration: '3:45',
-    thumbnail: '📹'
-  },
-  {
-    title: 'Using AI Agents',
-    duration: '7:20',
-    thumbnail: '📹'
-  },
-  {
-    title: 'Team Collaboration',
-    duration: '4:15',
-    thumbnail: '📹'
-  }
-];
+import { Search, Home, BookOpen, CreditCard, HelpCircle, Mail, ChevronRight, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 export default function HelpPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState('getting-started');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [expandedArticle, setExpandedArticle] = useState<string | null>('article-1');
 
-  const handleFAQToggle = (questionId: string) => {
-    setExpandedFAQ(expandedFAQ === questionId ? null : questionId);
-  };
+  const sidebarItems = [
+    { id: 'getting-started', label: 'Getting Started', icon: Home },
+    { id: 'features', label: 'Features', icon: BookOpen },
+    { id: 'billing', label: 'Billing', icon: CreditCard },
+    { id: 'faqs', label: 'FAQs', icon: HelpCircle },
+    { id: 'contact', label: 'Contact', icon: Mail },
+  ];
 
-  const filteredFAQs = FAQ_CATEGORIES.filter(category => 
-    selectedCategory === null || category.id === selectedCategory
+  const articles = [
+    {
+      id: 'article-1',
+      title: 'Getting Started with Stratos',
+      section: 'getting-started',
+      content: `Welcome to Stratos! This guide will help you get started with our AI-powered strategic consulting platform.
+
+**Step 1: Set Up Your Profile**
+Complete your profile information to personalize your experience. Navigate to Settings > Profile to add your details.
+
+**Step 2: Create Your First Project**
+Click the "New Project" button from your dashboard. Fill in the project details including name, client, and objectives.
+
+**Step 3: Start a Conversation**
+Use the AI Console to start strategic conversations. Our AI agents will help you with market analysis, strategy development, and more.
+
+**Step 4: Invite Your Team**
+Collaborate with colleagues by inviting them to your workspace. Go to Settings > Team to send invitations.
+
+**Next Steps:**
+- Explore different AI agents and their capabilities
+- Upload documents for analysis
+- Generate strategic reports and presentations`,
+    },
+    {
+      id: 'article-2',
+      title: 'Creating Your First Project',
+      section: 'getting-started',
+      content: `Projects are the foundation of your work in Stratos. Here's how to create one:
+
+**What You'll Need:**
+- Project name
+- Client selection (or create a new client)
+- Project type and timeline
+- Key objectives
+
+**Creating a Project:**
+1. Click "New Project" from the dashboard or Projects page
+2. Fill in the required information
+3. Set project goals and success metrics
+4. Assign team members (optional)
+5. Click "Create Project"
+
+**Project Types:**
+- Market Analysis
+- Strategy Development
+- Go-to-Market Planning
+- Competitive Analysis
+- Fundraising Support
+
+**Best Practices:**
+- Use descriptive project names
+- Define clear objectives upfront
+- Set realistic timelines
+- Document key milestones`,
+    },
+    {
+      id: 'article-3',
+      title: 'Understanding AI Agents',
+      section: 'features',
+      content: `Stratos uses specialized AI agents to help with different aspects of strategic consulting.
+
+**Available Agents:**
+
+**Data Analyst Agent**
+- Analyzes quantitative data
+- Creates charts and visualizations
+- Identifies trends and patterns
+
+**GTM Strategist Agent**
+- Develops go-to-market strategies
+- Analyzes market positioning
+- Creates launch plans
+
+**Product Strategist Agent**
+- Evaluates product roadmaps
+- Analyzes competitive landscape
+- Recommends feature prioritization
+
+**Fundraising Advisor Agent**
+- Prepares investor materials
+- Creates financial models
+- Analyzes market opportunities
+
+**How to Use Agents:**
+1. Start a new conversation
+2. Select the appropriate agent for your task
+3. Provide context and ask questions
+4. Review and refine the agent's recommendations`,
+    },
+    {
+      id: 'article-4',
+      title: 'Managing Your Subscription',
+      section: 'billing',
+      content: `Learn how to manage your Stratos subscription and billing.
+
+**Available Plans:**
+- Starter: $49/month - Individual use
+- Professional: $299/month - Teams up to 10
+- Enterprise: Custom pricing - Unlimited users
+
+**Upgrading Your Plan:**
+1. Go to Settings > Billing
+2. Click "Upgrade Plan"
+3. Select your desired plan
+4. Enter payment information
+5. Confirm upgrade
+
+**Payment Methods:**
+We accept all major credit cards and ACH transfers for Enterprise plans.
+
+**Billing Cycle:**
+Subscriptions are billed monthly or annually (20% discount for annual).
+
+**Cancellation Policy:**
+Cancel anytime from Settings > Billing. Access continues until the end of your billing period.
+
+**Refund Policy:**
+30-day money-back guarantee for all new subscriptions.`,
+    },
+    {
+      id: 'article-5',
+      title: 'Inviting Team Members',
+      section: 'features',
+      content: `Collaborate with your team by inviting members to your workspace.
+
+**Who Can Invite:**
+Admins and Owners can invite team members.
+
+**How to Invite:**
+1. Navigate to Settings > Team
+2. Click "Invite Team Member"
+3. Enter email address
+4. Select role (Admin, Member, or Viewer)
+5. Add a personal message (optional)
+6. Click "Send Invitation"
+
+**User Roles:**
+
+**Owner**
+- Full access to all features
+- Manage billing and subscription
+- Remove team members
+
+**Admin**
+- Manage projects and clients
+- Invite and remove members
+- Access all content
+
+**Member**
+- Create and edit projects
+- Use AI agents
+- Collaborate on content
+
+**Viewer**
+- Read-only access
+- View projects and reports
+- Cannot edit content
+
+**Managing Invitations:**
+Track pending invitations from the Team page. Resend or cancel invitations as needed.`,
+    },
+  ];
+
+  const filteredArticles = articles.filter(
+    (article) =>
+      article.section === activeSection &&
+      (searchQuery === '' ||
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.content.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
-    <div className="p-8 max-w-6xl mx-auto w-full">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-serif font-bold text-navy">Help Center</h1>
-        <p className="text-gray-text mt-2">Find answers to common questions and learn how to use our platform</p>
-      </div>
-
-      {/* Search Bar */}
-      <div className="mb-8">
-        <div className="relative max-w-2xl mx-auto">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-text" />
-          <input
-            type="text"
-            placeholder="Search for help articles, FAQs, or topics..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
-          />
-        </div>
-      </div>
-
-      {/* Quick Topics */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-serif font-semibold text-navy mb-6">Popular Topics</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {TOPICS.map((topic, index) => (
-            <div
-              key={index}
-              className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer"
-            >
-              <div className="text-3xl mb-3">{topic.icon}</div>
-              <h3 className="font-semibold text-navy mb-2">{topic.title}</h3>
-              <p className="text-sm text-gray-text mb-3">{topic.description}</p>
-              <p className="text-xs text-primary">{topic.articles} articles</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* FAQ Categories */}
-      <div className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-serif font-semibold text-navy">Frequently Asked Questions</h2>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedCategory === null
-                  ? 'bg-primary text-white'
-                  : 'bg-bg-gray text-gray-text hover:text-navy'
-              }`}
-            >
-              All Categories
-            </button>
-            {FAQ_CATEGORIES.map((category) => (
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar */}
+      <div className="w-64 bg-white border-r border-gray-200 p-6 flex-shrink-0">
+        <h2 className="text-xl font-bold text-navy mb-6">Help Center</h2>
+        <nav className="space-y-2">
+          {sidebarItems.map((item) => {
+            const Icon = item.icon;
+            return (
               <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedCategory === category.id
-                    ? 'bg-primary text-white'
-                    : 'bg-bg-gray text-gray-text hover:text-navy'
+                key={item.id}
+                onClick={() => setActiveSection(item.id)}
+                className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                  activeSection === item.id
+                    ? 'bg-teal/10 text-teal'
+                    : 'text-gray-text hover:bg-gray-50'
                 }`}
               >
-                {category.icon} {category.title}
+                <Icon className="w-5 h-5" />
+                <span className="font-medium">{item.label}</span>
               </button>
-            ))}
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 p-8">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm text-gray-text mb-6">
+          <a href="/home" className="hover:text-navy">Home</a>
+          <ChevronRight className="w-4 h-4" />
+          <span className="text-navy font-medium">Help Center</span>
+        </div>
+
+        {/* Search */}
+        <div className="mb-8 max-w-2xl">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search help articles..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal"
+            />
           </div>
         </div>
 
-        <div className="space-y-4">
-          {filteredFAQs.map((category) => (
-            <div key={category.id} className="bg-white border border-border rounded-lg overflow-hidden">
-              <div className="px-6 py-4 bg-bg-gray border-b border-border">
-                <h3 className="font-semibold text-navy flex items-center gap-2">
-                  <span>{category.icon}</span>
-                  {category.title}
-                </h3>
-              </div>
-              
-              <div className="divide-y divide-border">
-                {category.questions.map((faq, index) => {
-                  const questionId = `${category.id}-${index}`;
-                  const isExpanded = expandedFAQ === questionId;
-                  
-                  return (
-                    <div key={index}>
-                      <button
-                        onClick={() => handleFAQToggle(questionId)}
-                        className="w-full px-6 py-4 text-left hover:bg-bg-gray transition-colors flex items-center justify-between"
-                      >
-                        <span className="font-medium text-navy">{faq.question}</span>
-                        {isExpanded ? (
-                          <ChevronUp className="w-5 h-5 text-gray-text" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5 text-gray-text" />
-                        )}
-                      </button>
-                      
-                      {isExpanded && (
-                        <div className="px-6 pb-4">
-                          <p className="text-gray-text">{faq.answer}</p>
-                        </div>
-                      )}
+        {/* Articles */}
+        <div className="max-w-4xl">
+          <h1 className="text-4xl font-serif font-bold text-navy mb-8 capitalize">
+            {activeSection.replace('-', ' ')}
+          </h1>
+
+          <div className="space-y-6">
+            {filteredArticles.map((article) => (
+              <div key={article.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <button
+                  onClick={() =>
+                    setExpandedArticle(expandedArticle === article.id ? null : article.id)
+                  }
+                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                >
+                  <h3 className="text-xl font-bold text-navy">{article.title}</h3>
+                  <ChevronRight
+                    className={`w-5 h-5 text-gray-400 transition-transform ${
+                      expandedArticle === article.id ? 'rotate-90' : ''
+                    }`}
+                  />
+                </button>
+
+                {expandedArticle === article.id && (
+                  <div className="px-6 pb-6 border-t border-gray-100">
+                    <div className="prose prose-sm max-w-none py-4">
+                      {article.content.split('\n\n').map((paragraph, idx) => (
+                        <p key={idx} className="mb-4 text-gray-text whitespace-pre-line">
+                          {paragraph}
+                        </p>
+                      ))}
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Video Tutorials */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-serif font-semibold text-navy mb-6">Video Tutorials</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {VIDEO_TUTORIALS.map((video, index) => (
-            <div key={index} className="bg-white border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="aspect-video bg-bg-gray flex items-center justify-center text-4xl">
-                {video.thumbnail}
+                    {/* Helpful Buttons */}
+                    <div className="pt-4 border-t border-gray-100">
+                      <p className="text-sm text-gray-text mb-3">Was this helpful?</p>
+                      <div className="flex gap-3">
+                        <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                          <ThumbsUp className="w-4 h-4" />
+                          <span className="text-sm font-medium">Yes</span>
+                        </button>
+                        <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                          <ThumbsDown className="w-4 h-4" />
+                          <span className="text-sm font-medium">No</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-navy mb-1">{video.title}</h3>
-                <p className="text-sm text-gray-text">{video.duration}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
 
-      {/* Contact Support */}
-      <div className="bg-primary rounded-lg p-8 text-white text-center">
-        <h2 className="text-2xl font-serif font-semibold mb-4">Still need help?</h2>
-        <p className="mb-6 opacity-90">
-          Our support team is here to help you succeed. Get in touch and we'll respond within 24 hours.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors"
-          >
-            <Mail className="w-5 h-5" />
-            Contact Support
-          </a>
-          
-          <a
-            href="mailto:support@stratos.com"
-            className="inline-flex items-center gap-2 px-6 py-3 border border-white/30 text-white rounded-lg hover:bg-white/10 transition-colors"
-          >
-            <Phone className="w-5 h-5" />
-            Email Us
-          </a>
-        </div>
-        
-        <div className="mt-6 text-sm opacity-75">
-          <p>Average response time: 2-4 hours</p>
-          <p>Available Monday - Friday, 9 AM - 6 PM PST</p>
+            {filteredArticles.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-text mb-4">No articles found matching your search.</p>
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="text-teal hover:text-teal/80 font-medium"
+                >
+                  Clear search
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Contact Support CTA */}
+          <div className="mt-12 bg-gradient-to-br from-teal to-navy rounded-lg p-8 text-white text-center">
+            <h3 className="text-2xl font-bold mb-2">Still need help?</h3>
+            <p className="text-white/90 mb-6">
+              Our support team is here to assist you
+            </p>
+            <a
+              href="/support"
+              className="inline-block px-6 py-3 bg-white text-teal rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            >
+              Contact Support
+            </a>
+          </div>
         </div>
       </div>
     </div>
