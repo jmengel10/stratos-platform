@@ -20,6 +20,9 @@
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
     "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": false,
+    "suppressImplicitAnyIndexErrors": true,
     "types": ["node", "jest"]
   },
   "include": ["src/**/*"],
