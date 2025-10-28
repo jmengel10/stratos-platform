@@ -11,7 +11,14 @@ import {
   Eye, 
   EyeOff,
   Trash2,
-  AlertTriangle
+  AlertTriangle,
+  Settings as SettingsIcon,
+  Plug,
+  Lock,
+  Globe,
+  Palette,
+  Clock,
+  Download
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -46,11 +53,30 @@ export default function SettingsPage() {
     frequency: 'immediate'
   });
 
+  const [preferences, setPreferences] = useState({
+    theme: 'light',
+    language: 'en',
+    timezone: 'America/New_York',
+    dateFormat: 'MM/DD/YYYY',
+    timeFormat: '12h',
+    itemsPerPage: 25
+  });
+
+  const [integrations, setIntegrations] = useState({
+    slack: { enabled: false, webhook: '' },
+    teams: { enabled: false, webhook: '' },
+    googleDrive: { enabled: false, folderId: '' },
+    dropbox: { enabled: false, token: '' }
+  });
+
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User },
     { id: 'account', label: 'Account', icon: Shield },
     { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'billing', label: 'Billing', icon: CreditCard }
+    { id: 'billing', label: 'Billing', icon: CreditCard },
+    { id: 'preferences', label: 'Preferences', icon: SettingsIcon },
+    { id: 'integrations', label: 'Integrations', icon: Plug },
+    { id: 'security', label: 'Security', icon: Lock }
   ];
 
   const handleSaveProfile = async () => {
@@ -495,6 +521,409 @@ export default function SettingsPage() {
     </div>
   );
 
+  const renderPreferencesTab = () => (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-serif font-semibold text-navy mb-6">Preferences</h2>
+        
+        {/* Appearance */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-navy mb-4">Appearance</h3>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Theme</label>
+              <select
+                value={preferences.theme}
+                onChange={(e) => setPreferences({ ...preferences, theme: e.target.value })}
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              >
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="auto">Auto (System)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Localization */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-navy mb-4">Localization</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Language</label>
+              <select
+                value={preferences.language}
+                onChange={(e) => setPreferences({ ...preferences, language: e.target.value })}
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              >
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Timezone</label>
+              <select
+                value={preferences.timezone}
+                onChange={(e) => setPreferences({ ...preferences, timezone: e.target.value })}
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              >
+                <option value="America/New_York">Eastern Time</option>
+                <option value="America/Chicago">Central Time</option>
+                <option value="America/Denver">Mountain Time</option>
+                <option value="America/Los_Angeles">Pacific Time</option>
+                <option value="Europe/London">London</option>
+                <option value="Europe/Paris">Paris</option>
+                <option value="Asia/Tokyo">Tokyo</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Date Format</label>
+              <select
+                value={preferences.dateFormat}
+                onChange={(e) => setPreferences({ ...preferences, dateFormat: e.target.value })}
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              >
+                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Time Format</label>
+              <select
+                value={preferences.timeFormat}
+                onChange={(e) => setPreferences({ ...preferences, timeFormat: e.target.value })}
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              >
+                <option value="12h">12-hour (AM/PM)</option>
+                <option value="24h">24-hour</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Display Settings */}
+        <div className="bg-white border border-border rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-navy mb-4">Display Settings</h3>
+          
+          <div>
+            <label className="block text-sm font-medium text-navy mb-2">Items per page</label>
+            <select
+              value={preferences.itemsPerPage}
+              onChange={(e) => setPreferences({ ...preferences, itemsPerPage: parseInt(e.target.value) })}
+              className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderIntegrationsTab = () => (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-serif font-semibold text-navy mb-6">Integrations</h2>
+        
+        {/* Slack Integration */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center text-white text-sm font-bold">
+                S
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-navy">Slack</h3>
+                <p className="text-sm text-gray-text">Get notifications in your Slack workspace</p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={integrations.slack.enabled}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  slack: { ...integrations.slack, enabled: e.target.checked } 
+                })}
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+          {integrations.slack.enabled && (
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Webhook URL</label>
+              <input
+                type="url"
+                value={integrations.slack.webhook}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  slack: { ...integrations.slack, webhook: e.target.value } 
+                })}
+                placeholder="https://hooks.slack.com/services/..."
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Microsoft Teams Integration */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-sm font-bold">
+                T
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-navy">Microsoft Teams</h3>
+                <p className="text-sm text-gray-text">Send updates to your Teams channels</p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={integrations.teams.enabled}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  teams: { ...integrations.teams, enabled: e.target.checked } 
+                })}
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+          {integrations.teams.enabled && (
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Webhook URL</label>
+              <input
+                type="url"
+                value={integrations.teams.webhook}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  teams: { ...integrations.teams, webhook: e.target.value } 
+                })}
+                placeholder="https://outlook.office.com/webhook/..."
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Google Drive Integration */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-white text-sm font-bold">
+                G
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-navy">Google Drive</h3>
+                <p className="text-sm text-gray-text">Sync files with your Google Drive</p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={integrations.googleDrive.enabled}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  googleDrive: { ...integrations.googleDrive, enabled: e.target.checked } 
+                })}
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+          {integrations.googleDrive.enabled && (
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Folder ID</label>
+              <input
+                type="text"
+                value={integrations.googleDrive.folderId}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  googleDrive: { ...integrations.googleDrive, folderId: e.target.value } 
+                })}
+                placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Dropbox Integration */}
+        <div className="bg-white border border-border rounded-lg p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center text-white text-sm font-bold">
+                D
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-navy">Dropbox</h3>
+                <p className="text-sm text-gray-text">Backup files to your Dropbox account</p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={integrations.dropbox.enabled}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  dropbox: { ...integrations.dropbox, enabled: e.target.checked } 
+                })}
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+          {integrations.dropbox.enabled && (
+            <div>
+              <label className="block text-sm font-medium text-navy mb-2">Access Token</label>
+              <input
+                type="password"
+                value={integrations.dropbox.token}
+                onChange={(e) => setIntegrations({ 
+                  ...integrations, 
+                  dropbox: { ...integrations.dropbox, token: e.target.value } 
+                })}
+                placeholder="Enter your Dropbox access token"
+                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderSecurityTab = () => (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-serif font-semibold text-navy mb-6">Security Settings</h2>
+        
+        {/* Two-Factor Authentication */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-navy mb-4">Two-Factor Authentication</h3>
+          
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="font-medium text-navy">Authenticator App</p>
+              <p className="text-sm text-gray-text">Use an authenticator app for additional security</p>
+            </div>
+            <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+              Enable
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-navy">SMS Backup</p>
+              <p className="text-sm text-gray-text">Receive backup codes via SMS</p>
+            </div>
+            <button className="px-4 py-2 border border-border text-navy rounded-lg hover:border-primary transition-colors">
+              Setup
+            </button>
+          </div>
+        </div>
+
+        {/* Active Sessions */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-navy mb-4">Active Sessions</h3>
+          
+          <div className="space-y-3">
+            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <Globe className="w-4 h-4 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-navy">Current Session</p>
+                  <p className="text-sm text-gray-text">Chrome on Windows • San Francisco, CA</p>
+                  <p className="text-xs text-gray-500">Last active: Now</p>
+                </div>
+              </div>
+              <Badge className="bg-green-100 text-green-800">Current</Badge>
+            </div>
+
+            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Globe className="w-4 h-4 text-gray-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-navy">Mobile App</p>
+                  <p className="text-sm text-gray-text">iOS App • New York, NY</p>
+                  <p className="text-xs text-gray-500">Last active: 2 hours ago</p>
+                </div>
+              </div>
+              <button className="px-3 py-1 text-red-600 hover:bg-red-50 rounded text-sm">
+                Revoke
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Security Log */}
+        <div className="bg-white border border-border rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-navy mb-4">Recent Security Activity</h3>
+          
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 py-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-navy">Password changed</p>
+                <p className="text-xs text-gray-500">2 days ago</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 py-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-navy">Login from new device</p>
+                <p className="text-xs text-gray-500">1 week ago</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 py-2">
+              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-navy">Failed login attempt</p>
+                <p className="text-xs text-gray-500">2 weeks ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Data Export */}
+        <div className="bg-white border border-border rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-navy mb-4">Data Export</h3>
+          
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-navy">Download Your Data</p>
+              <p className="text-sm text-gray-text">Export all your data in a portable format</p>
+            </div>
+            <button className="px-4 py-2 border border-border text-navy rounded-lg hover:border-primary transition-colors flex items-center gap-2">
+              <Download className="w-4 h-4" />
+              Export Data
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="p-8 max-w-4xl mx-auto w-full">
       {/* Header */}
@@ -533,6 +962,9 @@ export default function SettingsPage() {
           {activeTab === 'account' && renderAccountTab()}
           {activeTab === 'notifications' && renderNotificationsTab()}
           {activeTab === 'billing' && renderBillingTab()}
+          {activeTab === 'preferences' && renderPreferencesTab()}
+          {activeTab === 'integrations' && renderIntegrationsTab()}
+          {activeTab === 'security' && renderSecurityTab()}
         </div>
       </div>
     </div>
