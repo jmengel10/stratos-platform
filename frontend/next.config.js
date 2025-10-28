@@ -5,13 +5,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Static HTML export - the ONLY mode that works reliably on Azure Static Web Apps
-  output: 'export',
-  distDir: '.next',
-  trailingSlash: true, // Required for Azure Static Web Apps routing
+  // Use Azure Static Web Apps managed Next.js (no output mode)
   images: {
-    unoptimized: true, // Required for static export
     domains: ['avatars.githubusercontent.com', 'lh3.googleusercontent.com'],
+    formats: ['image/avif', 'image/webp'],
   },
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:7071/api',
