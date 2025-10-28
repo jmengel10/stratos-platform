@@ -68,20 +68,20 @@ export default function ConversationClient({ params }: { params: { id: string } 
       const project = conversation?.projectId ? getProjectById(conversation.projectId) : null;
       const client = project?.clientId ? getClientById(project.clientId) : null;
 
-      const stream = await sendMessageToAI({
-        message: input,
-        conversationHistory: updatedConversation.messages,
-        projectContext: project,
-        clientContext: client,
-      });
-
       let aiResponse = '';
-      for await (const chunk of stream) {
-        if (chunk.type === 'content') {
-          aiResponse += chunk.content;
-          setStreamingContent(aiResponse);
+      const stream = await sendMessageToAI(
+        'default-agent',
+        updatedConversation.messages.map(msg => ({
+          role: msg.role,
+          content: msg.content
+        })),
+        (chunk) => {
+          if (chunk.type === 'content') {
+            aiResponse += chunk.content;
+            setStreamingContent(aiResponse);
+          }
         }
-      }
+      );
 
       // Add AI response
       const aiMessage = {
