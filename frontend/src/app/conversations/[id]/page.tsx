@@ -1,17 +1,4 @@
-'use client';
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-
-import { 
-  getConversationById, 
-  addMessageToConversation,
-  getProjectById,
-  getClientById,
-  getAllConversations,
-  type Conversation
-} from '@/lib/storage';
-import { sendMessageToAI, type AIStreamChunk } from '@/lib/azure-ai-service';
-import { Send, Paperclip, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
+import { getAllConversations } from '@/lib/storage';
 
 // Generate static paths for sample conversations
 export async function generateStaticParams() {
@@ -26,7 +13,27 @@ export async function generateStaticParams() {
 // This page needs to be client-rendered for real-time chat
 export const dynamicParams = true; // Allow runtime params not in generateStaticParams
 
+// Server component wrapper
 export default function ConversationPage({ params }: { params: { id: string } }) {
+  return <ConversationClient params={params} />;
+}
+
+// Client component for interactivity
+'use client';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { 
+  getConversationById, 
+  addMessageToConversation,
+  getProjectById,
+  getClientById,
+  type Conversation
+} from '@/lib/storage';
+import { sendMessageToAI, type AIStreamChunk } from '@/lib/azure-ai-service';
+import { Send, Paperclip, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
+
+function ConversationClient({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [input, setInput] = useState('');
@@ -43,10 +50,16 @@ export default function ConversationPage({ params }: { params: { id: string } })
     scrollToBottom();
   }, [conversation?.messages, streamingContent]);
 
-  const loadConversation = () => {
-    const conv = getConversationById(params.id);
-    if (conv) {
-      setConversation(conv);
+  const loadConversation = async () => {
+    try {
+      const conv = getConversationById(params.id);
+      if (conv) {
+        setConversation(conv);
+      } else {
+        setError('Conversation not found');
+      }
+    } catch (err) {
+      setError('Failed to load conversation');
     }
   };
 
@@ -55,63 +68,55 @@ export default function ConversationPage({ params }: { params: { id: string } })
   };
 
   const handleSendMessage = async () => {
-    if (!input.trim() || !conversation || isLoading) return;
+    if (!input.trim() || isLoading) return;
 
-    const userMessage = input.trim();
+    const userMessage = {
+      id: Date.now().toString(),
+      content: input,
+      role: 'user' as const,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Add user message immediately
+    const updatedConversation = addMessageToConversation(params.id, userMessage);
+    setConversation(updatedConversation);
     setInput('');
-    setError('');
     setIsLoading(true);
     setStreamingContent('');
 
-    // Add user message immediately
-    let updatedConv = addMessageToConversation(conversation.id, {
-      role: 'user',
-      content: userMessage
-    });
-
-    if (updatedConv) {
-      setConversation(updatedConv);
-    }
-
     try {
-      // Get conversation history for context
-      const conversationHistory = updatedConv?.messages.map(msg => ({
-        role: msg.role as 'user' | 'assistant',
-        content: msg.content
-      })) || [];
+      // Get project and client context
+      const project = conversation?.projectId ? getProjectById(conversation.projectId) : null;
+      const client = project?.clientId ? getClientById(project.clientId) : null;
 
-      // Get agent ID from conversation (fallback to default if not set)
-      const agentId = (conversation as any).agentId || 'agent_gtm';
-
-      let fullResponse = '';
-
-      // Call AI with streaming
-      fullResponse = await sendMessageToAI(
-        agentId,
-        conversationHistory,
-        (chunk: AIStreamChunk) => {
-          if (chunk.type === 'content' && chunk.content) {
-            setStreamingContent(prev => prev + chunk.content);
-          } else if (chunk.type === 'error') {
-            setError(chunk.error || 'An error occurred');
-          }
-        }
-      );
-
-      // Add AI response to conversation
-      const finalConv = addMessageToConversation(conversation.id, {
-        role: 'assistant',
-        content: fullResponse
+      const stream = await sendMessageToAI({
+        message: input,
+        conversationHistory: updatedConversation.messages,
+        projectContext: project,
+        clientContext: client,
       });
 
-      if (finalConv) {
-        setConversation(finalConv);
+      let aiResponse = '';
+      for await (const chunk of stream) {
+        if (chunk.type === 'content') {
+          aiResponse += chunk.content;
+          setStreamingContent(aiResponse);
+        }
       }
 
+      // Add AI response
+      const aiMessage = {
+        id: (Date.now() + 1).toString(),
+        content: aiResponse,
+        role: 'assistant' as const,
+        timestamp: new Date().toISOString(),
+      };
+
+      const finalConversation = addMessageToConversation(params.id, aiMessage);
+      setConversation(finalConversation);
       setStreamingContent('');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get AI response');
-      console.error('AI Error:', err);
+      setError('Failed to send message');
     } finally {
       setIsLoading(false);
     }
@@ -124,122 +129,103 @@ export default function ConversationPage({ params }: { params: { id: string } })
     }
   };
 
-  if (!conversation) {
+  if (error) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-          <p className="text-[#6B7280] mb-4">Conversation not found</p>
+      <div className="p-8 max-w-7xl mx-auto w-full">
+        <div className="flex items-center gap-4 mb-8">
           <button
             onClick={() => router.back()}
-            className="px-6 py-3 bg-[#33A7B5] text-white rounded-lg hover:bg-[#2A92A3]"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            Go Back
+            <ArrowLeft className="w-5 h-5 text-gray-text" />
           </button>
+          <h1 className="text-4xl font-serif font-bold text-navy">Conversation</h1>
+        </div>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-red-800 mb-2">Error</h2>
+          <p className="text-red-600">{error}</p>
         </div>
       </div>
     );
   }
 
-  const project = getProjectById(conversation.projectId);
-  const client = getClientById(conversation.clientId);
-
-  return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="bg-white border-b border-[#E5E7EB] px-8 py-4">
-        <div className="flex items-center gap-4">
+  if (!conversation) {
+    return (
+      <div className="p-8 max-w-7xl mx-auto w-full">
+        <div className="flex items-center gap-4 mb-8">
           <button
             onClick={() => router.back()}
-            className="p-2 hover:bg-[#F3F4F6] rounded-lg"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-[#6B7280]" />
+            <ArrowLeft className="w-5 h-5 text-gray-text" />
           </button>
-          <div className="flex-1">
-            <h1 className="text-xl font-semibold text-[#0F172A]">{conversation.title}</h1>
-            <p className="text-sm text-[#6B7280]">
-              {client?.name} → {project?.name} → {conversation.agent}
+          <h1 className="text-4xl font-serif font-bold text-navy">Conversation</h1>
+        </div>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-border p-4">
+        <div className="max-w-7xl mx-auto flex items-center gap-4">
+          <button
+            onClick={() => router.back()}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-text" />
+          </button>
+          <div>
+            <h1 className="text-2xl font-serif font-bold text-navy">
+              {conversation.title || 'Conversation'}
+            </h1>
+            <p className="text-sm text-gray-text">
+              {conversation.messages.length} messages
             </p>
           </div>
         </div>
       </div>
 
-      {/* Error Display */}
-      {error && (
-        <div className="mx-8 mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <p className="text-sm font-medium text-red-800">Error</p>
-            <p className="text-sm text-red-600">{error}</p>
-          </div>
-          <button
-            onClick={() => setError('')}
-            className="text-red-400 hover:text-red-600"
-          >
-            ×
-          </button>
-        </div>
-      )}
-
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-8 bg-[#F9FAFB]">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="max-w-4xl mx-auto space-y-4">
           {conversation.messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-2xl rounded-2xl px-6 py-4 ${
+                className={`max-w-3xl px-4 py-3 rounded-lg ${
                   message.role === 'user'
-                    ? 'bg-[#33A7B5] text-white'
-                    : 'bg-white border border-[#E5E7EB] text-[#0F172A] shadow-sm'
+                    ? 'bg-primary text-white'
+                    : 'bg-white border border-border'
                 }`}
               >
-                {message.role === 'assistant' && (
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">{conversation.agentAvatar}</span>
-                    <span className="text-sm font-medium text-[#33A7B5]">
-                      {conversation.agent}
-                    </span>
-                  </div>
-                )}
-                <p className="whitespace-pre-wrap">{message.content}</p>
-                <p className={`text-xs mt-2 ${
-                  message.role === 'user' ? 'text-white/70' : 'text-[#9CA3AF]'
-                }`}>
+                <div className="whitespace-pre-wrap">{message.content}</div>
+                <div
+                  className={`text-xs mt-2 ${
+                    message.role === 'user' ? 'text-primary-100' : 'text-gray-text'
+                  }`}
+                >
                   {new Date(message.timestamp).toLocaleTimeString()}
-                </p>
+                </div>
               </div>
             </div>
           ))}
 
           {/* Streaming response */}
-          {streamingContent && (
+          {isLoading && streamingContent && (
             <div className="flex justify-start">
-              <div className="max-w-2xl bg-white border border-[#E5E7EB] rounded-2xl px-6 py-4 shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">{conversation.agentAvatar}</span>
-                  <span className="text-sm font-medium text-[#33A7B5]">
-                    {conversation.agent}
-                  </span>
-                </div>
-                <p className="whitespace-pre-wrap text-[#0F172A]">{streamingContent}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <Loader2 className="w-3 h-3 text-[#33A7B5] animate-spin" />
-                  <span className="text-xs text-[#9CA3AF]">Thinking...</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Loading indicator (when not streaming) */}
-          {isLoading && !streamingContent && (
-            <div className="flex justify-start">
-              <div className="bg-white border border-[#E5E7EB] rounded-2xl px-6 py-4 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-[#33A7B5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                  <div className="w-2 h-2 bg-[#33A7B5] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                  <div className="w-2 h-2 bg-[#33A7B5] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              <div className="max-w-3xl px-4 py-3 rounded-lg bg-white border border-border">
+                <div className="whitespace-pre-wrap">{streamingContent}</div>
+                <div className="text-xs mt-2 text-gray-text">
+                  <Loader2 className="w-3 h-3 animate-spin inline mr-1" />
+                  AI is typing...
                 </div>
               </div>
             </div>
@@ -250,36 +236,32 @@ export default function ConversationPage({ params }: { params: { id: string } })
       </div>
 
       {/* Input */}
-      <div className="bg-white border-t border-[#E5E7EB] p-6">
-        <div className="max-w-4xl mx-auto flex items-end gap-4">
-          <button className="p-3 text-[#6B7280] hover:text-[#33A7B5] transition-colors">
-            <Paperclip className="w-5 h-5" />
-          </button>
-          <div className="flex-1">
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Ask anything about your strategy..."
-              disabled={isLoading}
-              className="w-full px-4 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-[#33A7B5] resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              rows={3}
-            />
-            <p className="text-xs text-[#9CA3AF] mt-2">
-              Press Enter to send, Shift+Enter for new line
-            </p>
+      <div className="bg-white border-t border-border p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex gap-2">
+            <div className="flex-1 relative">
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message..."
+                className="w-full px-4 py-3 border border-border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                rows={1}
+                disabled={isLoading}
+              />
+            </div>
+            <button
+              onClick={handleSendMessage}
+              disabled={!input.trim() || isLoading}
+              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Send className="w-5 h-5" />
+              )}
+            </button>
           </div>
-          <button
-            onClick={handleSendMessage}
-            disabled={!input.trim() || isLoading}
-            className="p-4 bg-[#33A7B5] text-white rounded-full hover:bg-[#2A92A3] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:shadow-lg"
-          >
-            {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <Send className="w-5 h-5" />
-            )}
-          </button>
         </div>
       </div>
     </div>
