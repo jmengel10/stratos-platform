@@ -1,0 +1,46 @@
+name: Deploy Stratos Backend
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_NAME: stratos-platform-func-829197
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './backend'
+  NODE_VERSION: '18.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Install dependencies
+      working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      run: npm install
+
+    - name: Build
+      working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      run: npm run build
+
+    - name: Deploy to Azure Functions
+      uses: Azure/functions-action@v1
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
+    - name: Test deployment
+      run: |
+        sleep 30
+        curl -I https://${{ env.AZURE_FUNCTIONAPP_NAME }}.azurewebsites.net/api/chat || echo "Functions warming up..."
