@@ -99,12 +99,12 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           <FolderOpen className="w-16 h-16 text-gray-text mx-auto mb-4" />
           <h3 className="text-xl font-serif font-semibold text-navy mb-2">No projects yet</h3>
           <p className="text-gray-text mb-6">Start a new project for this client</p>
-          <button 
-            onClick={() => router.push(`/projects/new?clientId=${params.id}`)}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors"
+          <Link 
+            href={`/projects/new?clientId=${params.id}`}
+            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors inline-block"
           >
             Create New Project
-          </button>
+          </Link>
         </div>
       </div>
     </div>
