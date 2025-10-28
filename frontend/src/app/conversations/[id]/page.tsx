@@ -13,6 +13,19 @@ import {
 import { sendMessageToAI, type AIStreamChunk } from '@/lib/azure-ai-service';
 import { Send, Paperclip, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 
+// Generate static paths for sample conversations
+export async function generateStaticParams() {
+  // Return a few sample IDs for static generation
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ];
+}
+
+// This page needs to be client-rendered for real-time chat
+export const dynamicParams = true; // Allow runtime params not in generateStaticParams
+
 export default function ConversationPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [conversation, setConversation] = useState<Conversation | null>(null);

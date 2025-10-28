@@ -1,12 +1,16 @@
-'use client';
-
 import { ArrowLeft, Users, FolderOpen, MessageSquare, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { getAllClients } from '@/lib/storage';
 
+// Generate static paths for all clients
+export async function generateStaticParams() {
+  const clients = getAllClients();
+  return clients.map((client) => ({
+    id: client.id,
+  }));
+}
+
 export default function ClientDetailPage({ params }: { params: { id: string } }) {
-  const router = useRouter();
   
   return (
     <div className="p-8 max-w-7xl mx-auto w-full">
